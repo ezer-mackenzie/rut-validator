@@ -1,17 +1,142 @@
 [project]
-name = "python-rut-validator"
+name = "rut-validator"
 version = "0.1.0"
-description = ""
+description = "Chilean RUT validation library with Pydantic, Django, and SQLAlchemy support"
 authors = [
-    {name = "Eli-ezer Reuven Ramirez Ruiz",email = "ramirez.ruiz.eliezer.reuven@gmail.com"}
+    {name = "Eli-ezer Reuven Ramirez Ruiz", email = "ramirez.ruiz.eliezer.reuven@gmail.com"}
 ]
 readme = "README.md"
-requires-python = ">=3.14"
+license = {text = "MIT"}
+requires-python = ">=3.9,<4.0"
+keywords = ["rut", "chile", "validation", "pydantic", "django", "sqlalchemy", "fastapi"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Utilities",
+]
 dependencies = [
+    "sqlalchemy (>=2.0.49,<3.0.0)",
+    "django (>=3.2,<5.0)",
+    "click (>=8.0.0,<9.0.0)",
+    "twine (>=6.2.0,<7.0.0)"
 ]
 
+[project.optional-dependencies]
+pydantic = ["pydantic (>=2.12.5,<3.0.0)"]
+fastapi = ["fastapi (>=0.111.0,<1.0.0)"]
+dev = [
+    "pytest (>=7.0.0)",
+    "pytest-cov",
+    "black",
+    "isort",
+    "flake8",
+    "mypy",
+    "pre-commit"
+]
+docs = [
+    "sphinx",
+    "sphinx-rtd-theme",
+    "myst-parser"
+]
+
+[project.scripts]
+rut-validator = "rut_validator.cli:cli"
+
+[project.urls]
+Homepage = "https://github.com/yourusername/rut-validator"
+Documentation = "https://rut-validator.readthedocs.io/"
+Repository = "https://github.com/yourusername/rut-validator"
+Issues = "https://github.com/yourusername/rut-validator/issues"
+Changelog = "https://github.com/yourusername/rut-validator/blob/main/CHANGELOG.md"
+
 [tool.poetry]
-packages = [{include = "python_rut_validator", from = "src"}]
+packages = [{include = "rut_validator", from = "src"}]
+
+[tool.black]
+line-length = 88
+target-version = ['py39', 'py310', 'py311', 'py312', 'py313']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+line_length = 88
+known_first_party = ["rut_validator"]
+
+[tool.mypy]
+python_version = "3.9"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_unreachable = true
+strict_equality = true
+
+[[tool.mypy.overrides]]
+module = [
+    "pydantic.*",
+    "django.*",
+    "sqlalchemy.*",
+    "fastapi.*"
+]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = "-ra -q --strict-markers --strict-config"
+testpaths = ["tests"]
+python_files = "test_*.py"
+python_classes = "Test*"
+python_functions = "test_*"
+filterwarnings = [
+    "error",
+    "ignore::UserWarning",
+    "ignore::DeprecationWarning"
+]
+
+[tool.coverage.run]
+source = ["src/rut_validator"]
+omit = [
+    "*/tests/*",
+    "*/test_*.py",
+    "setup.py"
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError"
+]
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
