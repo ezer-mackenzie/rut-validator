@@ -1,0 +1,163 @@
+"""Pure RUT validator - no dependencies."""
+
+import logging
+
+from typing import TYPE_CHECKING
+
+from rut_validator.core.parser import RutParser
+from rut_validator.types.enums import ValidationResult
+
+from rut_validator.errors import (
+    RutInvalidFormatError,
+    RutInvalidValueError,
+    RutModuleElevenValidationError,
+)
+
+from rut_validator.constants import RUT_MODULE_ELEVEN_FACTORS
+
+if TYPE_CHECKING:
+    from rut_validator.types.rut import Rut
+
+logger = logging.getLogger(__name__)
+
+
+class RutValidator:
+    """Validator for Chilean RUTs with pure Python logic."""
+
+    __slots__ = []
+
+    @classmethod
+    def get_validation_result(cls, rut: str) -> ValidationResult:
+        """
+        Get the validation result for a RUT string.
+
+        Args:
+            rut (str): The RUT string to validate.
+
+        Returns:
+            ValidationResult: The validation result.
+        """
+        logger.debug(f"Getting validation result for RUT: {rut}")
+        
+        try:
+            body, check_digit, _ = RutParser.parse(rut)
+
+        except RutInvalidValueError:
+            logger.debug("RUT invalid due to empty or missing value")
+            return ValidationResult.INVALID_VALUE
+
+        except RutInvalidFormatError:
+            logger.debug("RUT invalid due to incorrect format")
+            return ValidationResult.INVALID_FORMAT
+
+        if cls.is_valid_check_digit(body, check_digit):
+            logger.debug("RUT check digit is valid")
+            return ValidationResult.VALID
+
+        logger.debug("RUT check digit is invalid")
+        return ValidationResult.INVALID_CHECK_DIGIT
+
+    @classmethod
+    def is_valid(cls, rut: str) -> bool:
+        """
+        Check if a RUT string is valid without raising exceptions.
+
+        Args:
+            rut (str): The RUT string to check.
+
+        Returns:
+            bool: True if valid, False otherwise.
+        """
+        validation_result = cls.get_validation_result(rut)
+        is_valid = validation_result == ValidationResult.VALID
+        
+        logger.debug(f"RUT {rut} validity: {is_valid} ({validation_result})")
+        
+        return is_valid
+
+    @classmethod
+    def validate(cls, rut: str) -> Rut:
+        """
+        Validate a RUT string and return a Rut object.
+
+        Args:
+            rut (str): The RUT string to validate.
+
+        Returns:
+            Rut: A validated Rut object.
+
+        Raises:
+            RutInvalidValueError: If the RUT is empty or missing.
+            RutInvalidFormatError: If the RUT format is invalid.
+            RutModuleElevenValidationError: If the check digit does not match.
+        """
+        logger.debug(f"Validating RUT: {rut}")
+        
+        try:
+            body, check_digit, format_detected = RutParser.parse(rut)
+
+        except RutInvalidValueError:
+            raise RutInvalidValueError(
+                "No se puede parsear un RUT vacío, por favor ingrese un valor"
+            )
+            
+        except RutInvalidFormatError:
+            raise RutInvalidFormatError(
+                "Formato no válido, se esperaba algo como '12345678-9', "
+                "'123456789' o '12.345.678-9'"
+            )
+
+        if not cls.is_valid_check_digit(body, check_digit):
+            check_digit_expected = cls.module_eleven(body)
+
+            logger.warning(
+                f"Validation failed for RUT {rut}: expected {check_digit_expected}, got {check_digit}"
+            )
+
+            raise RutModuleElevenValidationError(
+                f"El dígito verificador no coincide, se esperaba '{check_digit_expected}' en vez de '{check_digit}'"
+            )
+
+        from rut_validator.types.rut import Rut
+
+        logger.info(f"Validation successful for RUT: {rut}")
+        return Rut(rut, format_detected, skip_validation=True)
+
+    @classmethod
+    def module_eleven(cls, body: str) -> str:
+        """
+        Calculates the check digit using the modulo 11 algorithm.
+
+        Returns:
+            str: The calculated check digit (0-9 or 'K')
+        """
+        reversed_digits = map(int, reversed(body))
+        total = sum(
+            d * RUT_MODULE_ELEVEN_FACTORS[i % len(RUT_MODULE_ELEVEN_FACTORS)]
+            for i, d in enumerate(reversed_digits)
+        )
+        remainder = total % 11
+        result = 11 - remainder
+
+        if result == 11:
+            return "0"
+
+        if result == 10:
+            return "K"
+
+        return str(result)
+
+    @classmethod
+    def is_valid_check_digit(cls, body: str, check_digit: str) -> bool:
+        """
+        Validates that the provided check digit matches the calculated one.
+
+        Args:
+            body (str): The numeric part of the RUT.
+            check_digit (str): The check digit to validate.
+
+        Returns:
+            bool: True if the check digit is valid, False otherwise.
+        """
+        expected_check_digit = cls.module_eleven(body)
+        return check_digit.upper() == expected_check_digit
