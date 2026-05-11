@@ -11,7 +11,7 @@ from ....errors import (
 )
 
 
-class RUTField(CharField[str]):
+class RUTField(CharField):
     description = "A field to store Chilean RUT (Rol Único Tributario) numbers."
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
@@ -65,7 +65,10 @@ class RUTField(CharField[str]):
         if value is None:
             return None
 
-        return RutValidator.validate(str(value)).normalized
+        try:
+            return RutValidator.validate(str(value)).normalized
+        except Exception as e:
+            raise ValidationError(str(e))
 
     def get_prep_value(self, value: object | None) -> str | None:
         return self.to_python(value)

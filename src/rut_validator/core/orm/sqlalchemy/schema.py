@@ -30,8 +30,11 @@ class RutSQLAlchemy(TypeDecorator):  # type: ignore
         if value is None:
             return None
 
-        validated_rut = RutValidator.validate(str(value))
-        return validated_rut.normalized
+        try:
+            validated_rut = RutValidator.validate(str(value))
+            return validated_rut.normalized
+        except Exception as e:
+            raise ValueError(str(e))
 
     def process_result_value(self, value: Any, dialect: Dialect) -> str | None:
         """

@@ -55,6 +55,10 @@ else:
 
             return field_schema
 
+        def __new__(cls, value: str) -> 'RutStr':
+            validated = cls._validate(value)
+            return str.__new__(cls, validated)
+
         @classmethod
         def _validate(cls, input_value: str, /) -> str:
             """
@@ -70,4 +74,7 @@ else:
             Raises:
                 ValueError: If the input is not a valid RUT.
             """
-            return RutValidator.validate(input_value).normalized
+            try:
+                return RutValidator.validate(input_value).normalized
+            except Exception as e:
+                raise ValueError(str(e))
