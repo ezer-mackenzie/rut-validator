@@ -1,7 +1,6 @@
 from sqlalchemy.types import String, TypeDecorator
 from sqlalchemy import Dialect
 
-from typing import Any
 
 from rut_validator.core.validator import RutValidator
 
