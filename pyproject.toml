@@ -38,6 +38,7 @@ dev = [
     "black",
     "isort",
     "flake8",
+    "ruff",
     "mypy",
     "pre-commit"
 ]
