@@ -43,7 +43,7 @@ jobs:
       run: poetry run pytest --cov=rut_validator --cov-report=xml
 
     - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v5
+      uses: codecov/codecov-action@v6
       with:
         file: ./coverage.xml
         flags: unittests
