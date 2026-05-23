@@ -55,7 +55,7 @@ else:
 
             return field_schema
 
-        def __new__(cls, value: str) -> 'RutStr':
+        def __new__(cls, value: str) -> "RutStr":
             validated = cls._validate(value)
             return str.__new__(cls, validated)
 

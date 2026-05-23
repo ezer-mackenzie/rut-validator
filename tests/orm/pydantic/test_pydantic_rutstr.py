@@ -19,14 +19,16 @@ class TestRutStr:
 
     def test_json_schema_generation(self):
         from pydantic import BaseModel
+
         class Model(BaseModel):
             rut: RutStr
+
         schema = Model.model_json_schema()
         # Check that the rut field has the expected properties
-        rut_schema = schema['properties']['rut']
-        assert rut_schema['type'] == 'string'
-        assert 'pattern' in rut_schema
-        assert rut_schema['example'] == '12345678-9'
+        rut_schema = schema["properties"]["rut"]
+        assert rut_schema["type"] == "string"
+        assert "pattern" in rut_schema
+        assert rut_schema["example"] == "12345678-9"
 
     def test_pydantic_model_integration(self):
         class User(BaseModel):

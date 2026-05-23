@@ -38,7 +38,7 @@ class RutValidator:
             ValidationResult: The validation result.
         """
         logger.debug(f"Getting validation result for RUT: {rut}")
-        
+
         try:
             body, check_digit, _ = RutParser.parse(rut)
 
@@ -70,9 +70,9 @@ class RutValidator:
         """
         validation_result = cls.get_validation_result(rut)
         is_valid = validation_result == ValidationResult.VALID
-        
+
         logger.debug(f"RUT {rut} validity: {is_valid} ({validation_result})")
-        
+
         return is_valid
 
     @classmethod
@@ -92,7 +92,7 @@ class RutValidator:
             RutModuleElevenValidationError: If the check digit does not match.
         """
         logger.debug(f"Validating RUT: {rut}")
-        
+
         try:
             body, check_digit, format_detected = RutParser.parse(rut)
 
@@ -100,7 +100,7 @@ class RutValidator:
             raise RutInvalidValueError(
                 "No se puede parsear un RUT vacío, por favor ingrese un valor"
             )
-            
+
         except RutInvalidFormatError:
             raise RutInvalidFormatError(
                 "Formato no válido, se esperaba algo como '12345678-9', "

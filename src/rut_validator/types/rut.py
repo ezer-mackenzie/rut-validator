@@ -39,10 +39,18 @@ class Rut:
 
     __slots__ = ("value", "format")
 
-    def __init__(self, value: str, format_detected: Optional[RutFormat] = None, *, skip_validation: bool = False):
+    def __init__(
+        self,
+        value: str,
+        format_detected: Optional[RutFormat] = None,
+        *,
+        skip_validation: bool = False,
+    ):
         body, check_digit, detected_format = RutParser.destructure(value)
         self.value = value
-        self.format = format_detected if format_detected is not None else detected_format
+        self.format = (
+            format_detected if format_detected is not None else detected_format
+        )
 
         if not skip_validation:
             from rut_validator.core.validator import RutValidator

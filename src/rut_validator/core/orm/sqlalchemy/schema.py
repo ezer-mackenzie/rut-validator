@@ -5,6 +5,7 @@ from typing import Any
 
 from rut_validator.core.validator import RutValidator
 
+
 class RutSQLAlchemy(TypeDecorator):  # type: ignore
     """
     Custom SQLAlchemy type for RUT validation and normalization. This type will ensure that any value being stored in the database is a valid RUT and is normalized to a consistent format.

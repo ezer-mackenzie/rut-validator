@@ -48,7 +48,7 @@ class RutParser:
             Tuple of (body, check_digit, format).
         """
         format_detected = RutPatterns.detect_format(rut)
-        
+
         if format_detected is None:
             raise RutInvalidFormatError(
                 "Formato no válido, se esperaba algo como '12345678-9', '123456789' o '12.345.678-9'"

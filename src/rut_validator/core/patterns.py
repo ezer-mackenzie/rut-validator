@@ -38,13 +38,13 @@ class RutPatterns:
         """
         if cls.FORMATTED_PATTERN.match(rut):
             return RutFormat.FORMATTED
-        
+
         elif cls.HYPHENATED_PATTERN.match(rut):
             return RutFormat.HYPHENATED
-        
+
         elif cls.NORMALIZED_PATTERN.match(rut):
             return RutFormat.NORMALIZED
-        
+
         return None
 
     @classmethod
@@ -60,7 +60,7 @@ class RutPatterns:
         """
         if len(rut) > cls.MAX_RUT_LENGTH:
             return False
-        
+
         return cls.VALIDATION_PATTERN.match(rut) is not None
 
     @classmethod
