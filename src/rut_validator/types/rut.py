@@ -54,34 +54,58 @@ class Rut:
 
     @property
     def normalized(self) -> str:
+        """
+        Returns the normalized RUT value.
+        """
         return RutPatterns.normalize(self.value)
 
     @property
     def formatted(self) -> str:
+        """
+        Returns the formatted RUT value.
+        """
         return RutPatterns.formatted(self.normalized)
 
     @property
     def hyphenated(self) -> str:
+        """
+        Returns the hyphenated RUT value.
+        """
         return RutPatterns.hyphenated(self.normalized)
 
     @property
     def body(self) -> int:
+        """
+        Returns the body of the RUT (the numeric part).
+        """
         return int(self.normalized[:-1])
 
     @property
     def check_digit(self) -> str:
+        """
+        Returns the check digit of the RUT.
+        """
         return self.normalized[-1]
 
     @property
     def is_formatted(self) -> bool:
+        """
+        Returns True if input was formatted format.
+        """
         return self.format == RutFormat.FORMATTED
 
     @property
     def is_hyphenated(self) -> bool:
+        """
+        Returns True if input was hyphenated format.
+        """
         return self.format == RutFormat.HYPHENATED
 
     @property
     def is_normalized(self) -> bool:
+        """
+        Returns True if input was normalized format.
+        """
         return self.format == RutFormat.NORMALIZED
 
     def __str__(self) -> str:
