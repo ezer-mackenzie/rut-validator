@@ -1,6 +1,6 @@
 import pytest
-from sqlalchemy import Column, Integer, String, create_engine
-from sqlalchemy.orm import declarative_base, sessionmaker
+from sqlalchemy import Column, Integer
+from sqlalchemy.orm import declarative_base
 
 from rut_validator.core.orm.sqlalchemy.schema import RutSQLAlchemy
 

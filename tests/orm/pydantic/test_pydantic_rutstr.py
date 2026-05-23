@@ -1,5 +1,5 @@
 import pytest
-from pydantic import BaseModel, ValidationError
+from pydantic import BaseModel
 
 from rut_validator.core.orm.pydantic.schema import RutStr
 
