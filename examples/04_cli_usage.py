@@ -91,14 +91,14 @@ def example_json_output():
     
     rut = "20.884.437-7"
     
-    print(f"\nValidate command with JSON output:")
+    print("\nValidate command with JSON output:")
     output = run_command(f"poetry run rut-validator validate '{rut}' --json")
     print(output)
     
     # Parse and show structure
     try:
         data = json.loads(output)
-        print(f"\nParsed JSON structure:")
+        print("\nParsed JSON structure:")
         print(f"  - Valid: {data['valid']}")
         print(f"  - Body: {data['body']}")
         print(f"  - Check Digit: {data['check_digit']}")
@@ -115,7 +115,7 @@ def example_quiet_mode():
     
     rut = "20.884.437-7"
     
-    print(f"\nQuiet mode output (just the result):")
+    print("\nQuiet mode output (just the result):")
     output = run_command(f"poetry run rut-validator format '{rut}' --quiet")
     print(f"Result: {output.strip()}")
 
