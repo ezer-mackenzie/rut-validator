@@ -28,7 +28,11 @@ class TestRutStr:
         rut_schema = schema["properties"]["rut"]
         assert rut_schema["type"] == "string"
         assert "pattern" in rut_schema
-        assert rut_schema["example"] == "12345678-9"
+        assert rut_schema["examples"] == [
+            "12.345.678-5",
+            "12345678-5",
+            "123456785",
+        ]
 
     def test_pydantic_model_integration(self):
         class User(BaseModel):
@@ -36,6 +40,7 @@ class TestRutStr:
 
         user = User(rut="12345678-5")
         assert user.rut == "123456785"
+        assert isinstance(user.rut, RutStr)
 
     def test_edge_case_empty_string(self):
         with pytest.raises(ValueError):
