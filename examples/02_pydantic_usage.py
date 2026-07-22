@@ -14,6 +14,7 @@ print("=" * 60)
 print("EXAMPLE 2: Pydantic Integration")
 print("=" * 60)
 
+
 # Define a model with RutStr
 class Person(BaseModel):
     name: str
@@ -23,12 +24,9 @@ class Person(BaseModel):
 # ✅ Valid person
 print("\n✅ Creating valid person:")
 try:
-    person = Person(name="Juan Pérez", rut="12345678-9")
+    person = Person(name="Juan Pérez", rut="12345678-5")
     print(f"   Name: {person.name}")
     print(f"   RUT (normalized): {person.rut}")
-    print(f"   RUT (formatted): {person.rut.formatted}")
-    print(f"   RUT (number): {person.rut.number}")
-    print(f"   RUT (digit): {person.rut.digit}")
     print(f"   Type of rut: {type(person.rut).__name__}")
 except ValidationError as e:
     print(f"   ❌ Error: {e}")
@@ -50,17 +48,16 @@ except ValidationError as e:
 print("\n" + "-" * 60)
 print("✅ Creating person with RUT (no hyphen):")
 try:
-    person = Person(name="María García", rut="123456789")
+    person = Person(name="María García", rut="123456785")
     print(f"   Name: {person.name}")
     print(f"   RUT (normalized): {person.rut}")
-    print(f"   RUT (formatted): {person.rut.formatted}")
 except ValidationError as e:
     print(f"   ❌ Error: {e}")
 
 # ✅ Serialization
 print("\n" + "-" * 60)
 print("✅ Model serialization:")
-person = Person(name="Carlos López", rut="12345678-9")
+person = Person(name="Carlos López", rut="12345678-5")
 print("   model_dump():")
 print(f"   {person.model_dump()}")
 print("\n   model_dump_json():")

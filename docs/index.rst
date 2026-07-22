@@ -16,7 +16,7 @@ rut-validator
 Librería para validar RUT chileno con enfoque Pydantic-first y soporte completo para frameworks web.
 
 Características principales
---------------------------
+---------------------------
 
 ✅ **Validación pura de RUT chileno** usando algoritmo módulo 11
 ✅ **Detección automática de formato**: dotted (``12.345.678-9``), hyphenated (``12345678-9``), numeric (``123456789``)
@@ -102,25 +102,14 @@ Contenido
    :maxdepth: 2
    :caption: Guías de usuario:
 
-   installation
-   quickstart
-   pydantic-integration
-   django-integration
-   sqlalchemy-integration
-   fastapi-integration
+   GUIA_RUT_VALIDATOR
+   rut_value_object
+   CLI_GUIDE
 
 .. toctree::
    :maxdepth: 2
    :caption: Referencia de API:
 
-   api-reference
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Desarrollo:
-
-   contributing
-   changelog
 
 Índices y tablas
 ================

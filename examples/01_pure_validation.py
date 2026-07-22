@@ -13,8 +13,8 @@ print("EXAMPLE 1: Pure RUT Validation")
 print("=" * 60)
 
 try:
-    result = RutValidator.validate("12345678-9")
-    print("\n✅ Input: '12345678-9'")
+    result = RutValidator.validate("12345678-5")
+    print("\n✅ Input: '12345678-5'")
     print(f"   Normalized: {result.normalized}")
     print(f"   Formatted:  {result.formatted}")
     print(f"   Number:     {result.number}")
@@ -27,7 +27,7 @@ except ValueError as e:
 # ❌ Invalid RUT (wrong check digit)
 print("\n" + "-" * 60)
 try:
-    result = RutValidator.validate("12345678-1")  # Should be 9
+    result = RutValidator.validate("12345678-1")  # Should be 5
     print("✅ Input: '12345678-1'")
 except ValueError as e:
     print("❌ Input: '12345678-1'")
@@ -45,8 +45,8 @@ except ValueError as e:
 # ✅ Valid RUT without hyphen
 print("\n" + "-" * 60)
 try:
-    result = RutValidator.validate("123456789")
-    print("✅ Input: '123456789'")
+    result = RutValidator.validate("123456785")
+    print("✅ Input: '123456785'")
     print(f"   Normalized: {result.normalized}")
     print(f"   Formatted:  {result.formatted}")
     print(f"   Format:     {result.format}")
@@ -56,8 +56,8 @@ except ValueError as e:
 # ✅ Valid RUT with K digit
 print("\n" + "-" * 60)
 try:
-    result = RutValidator.validate("12345677-6")  # Use a valid RUT
-    print("✅ Input: '12345677-6'")
+    result = RutValidator.validate("10000013-K")
+    print("✅ Input: '10000013-K'")
     print(f"   Digit: {result.digit}")
     print(f"   Format: {result.format}")
 except ValueError as e:

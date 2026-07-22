@@ -12,9 +12,9 @@ Then visit:
     http://localhost:8000/docs
 """
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 from pydantic import BaseModel
-from rut_validator import RutStr
+from rut_validator import RutStr, RutValidator
 
 app = FastAPI(title="RUT Validator API")
 
@@ -70,12 +70,13 @@ def create_person(person: Person) -> PersonResponse:
 
     Returns 422 Unprocessable Entity if RUT is invalid.
     """
+    value = RutValidator.validate(person.rut)
     return PersonResponse(
         name=person.name,
         rut=str(person.rut),
-        rut_formatted=person.rut.formatted,
-        rut_number=person.rut.number,
-        rut_digit=person.rut.digit,
+        rut_formatted=value.formatted,
+        rut_number=value.body,
+        rut_digit=value.check_digit,
     )
 
 
@@ -103,7 +104,7 @@ def create_persons(persons: list[Person]) -> dict:
         "persons": [
             {
                 "name": p.name,
-                "rut": p.rut.formatted,
+                "rut": RutValidator.validate(p.rut).formatted,
             }
             for p in persons
         ],
@@ -119,12 +120,11 @@ if __name__ == "__main__":
     print("\n🚀 Starting server on http://localhost:8000")
     print("\n📖 Documentation: http://localhost:8000/docs")
     print("\n✅ Try these JSON requests in /docs:")
-    print(
-        """
+    print("""
    POST /person
    {
        "name": "Juan Pérez",
-       "rut": "12345678-9"
+       "rut": "12345678-5"
    }
 
    POST /person (invalid RUT - returns 422)
@@ -132,8 +132,7 @@ if __name__ == "__main__":
        "name": "Juan Pérez",
        "rut": "12345678-1"
    }
-    """
-    )
+    """)
     print("=" * 60 + "\n")
 
     uvicorn.run(app, host="0.0.0.0", port=8000)
