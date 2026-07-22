@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.0] - 2026-07-22
+
+### Added
+- Public optional integrations under `rut_validator.orm`
+- Functional CLI for validation, formatting, information, and batch processing
+- SQLModel field helper and compatibility aliases for the `Rut` value object
+
+### Changed
+- Framework integrations are optional; the standalone validator no longer imports Pydantic
+- `Rut` is immutable and consistently validates its input
+- Python support now reflects the tested modern syntax baseline (3.10+)
+
+### Fixed
+- Graceful handling of non-string values in the validator
+- Pydantic models now retain the `RutStr` subtype
+- Legacy integration import paths remain available as compatibility shims
+
 ## [0.1.0] - 2026-05-10
 
 ### Added

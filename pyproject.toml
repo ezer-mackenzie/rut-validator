@@ -1,13 +1,13 @@
 [project]
 name = "rut-validator"
-version = "0.1.0"
+version = "0.2.0"
 description = "Chilean RUT validation library with Pydantic, Django, and SQLAlchemy support"
 authors = [
     {name = "Eli-ezer Reuven Ramirez Ruiz", email = "ramirez.ruiz.eliezer.reuven@gmail.com"}
 ]
 readme = "README.md"
-license = {text = "MIT"}
-requires-python = ">=3.9,<4.0"
+license = "MIT"
+requires-python = ">=3.10,<4.0"
 keywords = ["rut", "chile", "validation", "pydantic", "django", "sqlalchemy", "fastapi"]
 classifiers = [
     "Development Status :: 4 - Beta",
@@ -15,7 +15,6 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
@@ -24,13 +23,18 @@ classifiers = [
     "Topic :: Utilities",
 ]
 dependencies = [
-    "sqlalchemy (>=2.0.51,<3.0.0)",
-    "django (>=3.2,<5.0)",
     "click (>=8.0.0,<9.0.0)"
 ]
 
 [project.optional-dependencies]
-pydantic = ["pydantic (>=2.13.4,<3.0.0)"]
+pydantic = ["pydantic (>=2.6,<3.0)"]
+sqlalchemy = ["sqlalchemy (>=2.0,<3.0)"]
+django = ["django (>=4.2,<6.0)"]
+sqlmodel = [
+    "sqlmodel (>=0.0.22,<1.0)",
+    "pydantic (>=2.6,<3.0)",
+    "sqlalchemy (>=2.0,<3.0)",
+]
 fastapi = ["fastapi (>=0.111.0,<1.0.0)"]
 dev = [
     "pytest (>=7.0.0)",
@@ -40,7 +44,11 @@ dev = [
     "flake8",
     "ruff",
     "mypy",
-    "pre-commit"
+    "pre-commit",
+    "pydantic (>=2.6,<3.0)",
+    "sqlalchemy (>=2.0,<3.0)",
+    "django (>=4.2,<6.0)",
+    "sqlmodel (>=0.0.22,<1.0)",
 ]
 docs = [
     "sphinx",
@@ -52,18 +60,18 @@ docs = [
 rut-validator = "rut_validator.cli:cli"
 
 [project.urls]
-Homepage = "https://github.com/yourusername/rut-validator"
+Homepage = "https://github.com/ezer-mackenzie/rut-validator"
 Documentation = "https://rut-validator.readthedocs.io/"
-Repository = "https://github.com/yourusername/rut-validator"
-Issues = "https://github.com/yourusername/rut-validator/issues"
-Changelog = "https://github.com/yourusername/rut-validator/blob/main/CHANGELOG.md"
+Repository = "https://github.com/ezer-mackenzie/rut-validator"
+Issues = "https://github.com/ezer-mackenzie/rut-validator/issues"
+Changelog = "https://github.com/ezer-mackenzie/rut-validator/blob/main/CHANGELOG.md"
 
 [tool.poetry]
 packages = [{include = "rut_validator", from = "src"}]
 
 [tool.black]
 line-length = 88
-target-version = ['py39', 'py310', 'py311', 'py312', 'py313']
+target-version = ['py310', 'py311', 'py312', 'py313']
 include = '\.pyi?$'
 extend-exclude = '''
 /(
@@ -105,7 +113,8 @@ module = [
     "pydantic.*",
     "django.*",
     "sqlalchemy.*",
-    "fastapi.*"
+    "fastapi.*",
+    "sqlmodel.*",
 ]
 ignore_missing_imports = true
 
