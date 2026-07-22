@@ -21,10 +21,10 @@ def example_basic_validation():
     print("=" * 60)
     print("Example 1: Basic RUT Validation")
     print("=" * 60)
-    
+
     # Validate a RUT in different formats
     ruts = ["20.884.437-7", "20884437-7", "208844377"]
-    
+
     for rut in ruts:
         output = run_command(f"poetry run rut-validator validate '{rut}'")
         print(f"\nInput: {rut}")
@@ -36,10 +36,10 @@ def example_format_conversion():
     print("\n" + "=" * 60)
     print("Example 2: Format Conversion")
     print("=" * 60)
-    
+
     rut = "208844377"
     formats = ["dotted", "hyphenated", "numeric"]
-    
+
     for fmt in formats:
         output = run_command(f"poetry run rut-validator format '{rut}' --format {fmt}")
         print(f"\nFormat: {fmt}")
@@ -51,7 +51,7 @@ def example_rut_info():
     print("\n" + "=" * 60)
     print("Example 3: RUT Information")
     print("=" * 60)
-    
+
     rut = "20.884.437-7"
     output = run_command(f"poetry run rut-validator info '{rut}' --detailed")
     print(output)
@@ -62,7 +62,7 @@ def example_batch_processing():
     print("\n" + "=" * 60)
     print("Example 4: Batch Validation")
     print("=" * 60)
-    
+
     # Create a test file
     test_file = Path("example_ruts.txt")
     test_file.write_text("""20.884.437-7
@@ -71,14 +71,14 @@ def example_batch_processing():
 invalid-rut
 208844377
 """)
-    
+
     print("Input file (example_ruts.txt):")
     print(test_file.read_text())
-    
+
     print("\nBatch validation output:")
     output = run_command(f"poetry run rut-validator batch {test_file}")
     print(output)
-    
+
     # Clean up
     test_file.unlink()
 
@@ -88,13 +88,13 @@ def example_json_output():
     print("\n" + "=" * 60)
     print("Example 5: JSON Output")
     print("=" * 60)
-    
+
     rut = "20.884.437-7"
-    
+
     print("\nValidate command with JSON output:")
     output = run_command(f"poetry run rut-validator validate '{rut}' --json")
     print(output)
-    
+
     # Parse and show structure
     try:
         data = json.loads(output)
@@ -112,9 +112,9 @@ def example_quiet_mode():
     print("\n" + "=" * 60)
     print("Example 6: Quiet Mode (for scripting)")
     print("=" * 60)
-    
+
     rut = "20.884.437-7"
-    
+
     print("\nQuiet mode output (just the result):")
     output = run_command(f"poetry run rut-validator format '{rut}' --quiet")
     print(f"Result: {output.strip()}")
@@ -125,13 +125,13 @@ def example_error_handling():
     print("\n" + "=" * 60)
     print("Example 7: Error Handling")
     print("=" * 60)
-    
+
     invalid_ruts = [
         "invalid-format",
         "12345678-9",  # Invalid check digit
         "",  # Empty
     ]
-    
+
     for rut in invalid_ruts:
         print(f"\nValidating: '{rut}'")
         output = run_command(f"poetry run rut-validator validate '{rut}' 2>&1")
@@ -143,7 +143,7 @@ def example_help():
     print("\n" + "=" * 60)
     print("Example 8: Available Commands")
     print("=" * 60)
-    
+
     output = run_command("poetry run rut-validator --help")
     print(output)
 
@@ -157,7 +157,7 @@ if __name__ == "__main__":
     example_quiet_mode()
     example_error_handling()
     example_help()
-    
+
     print("\n" + "=" * 60)
     print("Examples completed!")
     print("=" * 60)

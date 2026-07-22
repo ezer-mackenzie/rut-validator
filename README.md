@@ -3,8 +3,8 @@
 [![PyPI version](https://badge.fury.io/py/rut-validator.svg)](https://pypi.org/project/rut-validator/)
 [![Python versions](https://img.shields.io/pypi/pyversions/rut-validator.svg)](https://pypi.org/project/rut-validator/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![CI](https://github.com/yourusername/rut-validator/workflows/CI/badge.svg)](https://github.com/yourusername/rut-validator/actions)
-[![codecov](https://codecov.io/gh/yourusername/rut-validator/branch/main/graph/badge.svg)](https://codecov.io/gh/yourusername/rut-validator)
+[![CI](https://github.com/ezer-mackenzie/rut-validator/actions/workflows/ci.yml/badge.svg)](https://github.com/ezer-mackenzie/rut-validator/actions)
+[![codecov](https://codecov.io/gh/ezer-mackenzie/rut-validator/branch/main/graph/badge.svg)](https://codecov.io/gh/ezer-mackenzie/rut-validator)
 [![Documentation Status](https://readthedocs.org/projects/rut-validator/badge/?version=latest)](https://rut-validator.readthedocs.io/en/latest/?badge=latest)
 
 Librería para validar RUT chileno con enfoque Pydantic-first y soporte completo para frameworks web.
@@ -16,6 +16,7 @@ Librería para validar RUT chileno con enfoque Pydantic-first y soporte completo
 - ✅ **Integración completa con Pydantic** (`RutStr`)
 - ✅ **Campo Django** (`RUTField`) listo para usar
 - ✅ **Tipo SQLAlchemy** (`RutSQLAlchemy`) para bases de datos
+- ✅ **Integración SQLModel** con almacenamiento normalizado
 - ✅ **Compatible con FastAPI** y otros frameworks web
 - ✅ **Type hints completos** para mejor desarrollo
 - ✅ **Sin dependencias externas** para funcionalidad core
@@ -28,6 +29,11 @@ pip install rut-validator
 
 # Con soporte Pydantic
 pip install rut-validator[pydantic]
+
+# Con soporte para una integración concreta
+pip install rut-validator[sqlalchemy]
+pip install rut-validator[django]
+pip install rut-validator[sqlmodel]
 
 # Con soporte FastAPI
 pip install rut-validator[fastapi]
@@ -46,9 +52,9 @@ from rut_validator import RutValidator
 # Validar RUT con cualquier formato
 rut = RutValidator.validate("20.884.437-7")
 print(f"RUT válido: {rut.formatted}")  # "20.884.437-7"
-print(f"Número: {rut.number}")          # 20884437
-print(f"Dígito: {rut.digit}")          # "7"
-print(f"Formato: {rut.format}")        # RutFormat.DOTTED
+print(f"Número: {rut.body}")           # 20884437
+print(f"Dígito: {rut.check_digit}")    # "7"
+print(f"Formato: {rut.format}")        # RutFormat.FORMATTED
 ```
 
 ### Detección de Formato
@@ -80,14 +86,14 @@ class User(BaseModel):
 
 # Uso
 user = User(name="Juan Pérez", rut="12.345.678-5")
-print(user.rut)  # "12.345.678-5"
+print(user.rut)  # "123456785" (normalizado)
 ```
 
 ### Con Django
 
 ```python
 from django.db import models
-from rut_validator.core.orm.django.schema import RUTField
+from rut_validator.orm.django import RUTField
 
 class Person(models.Model):
     name = models.CharField(max_length=100)
@@ -99,7 +105,7 @@ class Person(models.Model):
 ```python
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
-from rut_validator.core.orm.sqlalchemy.schema import RutSQLAlchemy
+from rut_validator.orm.sqlalchemy import RutType
 
 Base = declarative_base()
 
@@ -108,7 +114,7 @@ class Person(Base):
 
     id = Column(Integer, primary_key=True)
     name = Column(String)
-    rut = Column(RutSQLAlchemy)  # Validación automática
+    rut = Column(RutType)  # Validación y normalización automáticas
 ```
 
 ## 📚 Guía Completa
