@@ -31,4 +31,4 @@ class TestRUTField:
 
     def test_max_length_constraint(self):
         field = RUTField()
-        assert field.max_length == 12  # As set in schema
+        assert field.max_length == 9  # Normalized storage length
