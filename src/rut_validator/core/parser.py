@@ -1,4 +1,4 @@
-from typing import Tuple, Optional
+from typing import Optional, Tuple
 
 from rut_validator.core.patterns import RutPatterns
 from rut_validator.types.enums import RutFormat
@@ -13,7 +13,7 @@ class RutParser:
     """Parser for Chilean RUT strings with format detection."""
 
     @classmethod
-    def parse(cls, rut: str) -> Tuple[str, str, Optional[RutFormat]]:
+    def parse(cls, rut: object) -> Tuple[str, str, Optional[RutFormat]]:
         """
         Parses a RUT string and returns body, check_digit, and detected format.
 
@@ -27,7 +27,7 @@ class RutParser:
             RutInvalidValueError: If RUT is empty or None.
             RutInvalidFormatError: If RUT format is invalid.
         """
-        if rut.strip() == "":
+        if not isinstance(rut, str) or rut.strip() == "":
             raise RutInvalidValueError(
                 "No se puede parsear un RUT vacío, por favor ingrese un valor"
             )
@@ -36,7 +36,7 @@ class RutParser:
         return body, check_digit, format_detected
 
     @classmethod
-    def destructure(cls, rut: str) -> Tuple[str, str, Optional[RutFormat]]:
+    def destructure(cls, rut: object) -> Tuple[str, str, Optional[RutFormat]]:
         """
         Destructures a RUT string into its body and check digit components,
         while also detecting the input format.
@@ -47,6 +47,9 @@ class RutParser:
         Returns:
             Tuple of (body, check_digit, format).
         """
+        if not isinstance(rut, str) or rut.strip() == "":
+            raise RutInvalidValueError("El RUT debe ser un texto no vacío")
+
         format_detected = RutPatterns.detect_format(rut)
 
         if format_detected is None:

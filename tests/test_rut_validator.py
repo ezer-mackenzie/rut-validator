@@ -133,3 +133,18 @@ def test_is_valid_check_digit_helper():
 def test_is_valid_returns_false_for_invalid_rut():
     assert not RutValidator.is_valid("12-345678-9")
     assert not RutValidator.is_valid("12.345.678-0")
+
+
+@pytest.mark.parametrize("value", [None, 123456785, b"123456785", [], True])
+def test_is_valid_never_raises_for_non_string_values(value):
+    assert RutValidator.is_valid(value) is False
+
+
+def test_rut_is_immutable_and_compatibility_aliases_work():
+    rut = Rut("12.345.678-5")
+    assert rut.number == rut.body == 12345678
+    assert rut.digit == rut.check_digit == "5"
+    assert rut.is_dotted is rut.is_formatted is True
+    assert rut.is_numeric is rut.is_normalized is False
+    with pytest.raises(AttributeError):
+        rut.value = "208844377"

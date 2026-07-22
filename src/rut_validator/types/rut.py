@@ -9,7 +9,7 @@ from rut_validator.core.patterns import RutPatterns, RutFormat
 from rut_validator.errors import RutModuleElevenValidationError
 
 
-@dataclass(init=True)
+@dataclass(frozen=True, slots=True, init=False)
 class Rut:
     """
     A class representing a validated RUT (Rol Único Tributario) value object.
@@ -37,28 +37,33 @@ class Rut:
         is_normalized: Returns True if input was normalized format.
     """
 
-    __slots__ = ("value", "format")
+    value: str
+    format: RutFormat
 
     def __init__(
         self,
         value: str,
         format_detected: Optional[RutFormat] = None,
-        *,
-        skip_validation: bool = False,
-    ):
+    ) -> None:
         body, check_digit, detected_format = RutParser.destructure(value)
-        self.value = value
-        self.format = (
-            format_detected if format_detected is not None else detected_format
-        )
+        object.__setattr__(self, "value", value)
+        resolved_format = format_detected or detected_format
+        assert resolved_format is not None
+        object.__setattr__(self, "format", resolved_format)
 
-        if not skip_validation:
-            from rut_validator.core.validator import RutValidator
+        from rut_validator.core.validator import RutValidator
 
-            if not RutValidator.is_valid_check_digit(body, check_digit):
-                raise RutModuleElevenValidationError(
-                    f"El dígito verificador no coincide, se esperaba '{RutValidator.module_eleven(body)}' en vez de '{check_digit}'"
-                )
+        if not RutValidator.is_valid_check_digit(body, check_digit):
+            raise RutModuleElevenValidationError(
+                f"El dígito verificador no coincide, se esperaba '{RutValidator.module_eleven(body)}' en vez de '{check_digit}'"
+            )
+
+    @classmethod
+    def _from_validated(cls, value: str, format_detected: RutFormat) -> "Rut":
+        instance = object.__new__(cls)
+        object.__setattr__(instance, "value", value)
+        object.__setattr__(instance, "format", format_detected)
+        return instance
 
     @property
     def normalized(self) -> str:
@@ -96,6 +101,16 @@ class Rut:
         return self.normalized[-1]
 
     @property
+    def number(self) -> int:
+        """Backward-compatible alias for :attr:`body`."""
+        return self.body
+
+    @property
+    def digit(self) -> str:
+        """Backward-compatible alias for :attr:`check_digit`."""
+        return self.check_digit
+
+    @property
     def is_formatted(self) -> bool:
         """
         Returns True if input was formatted format.
@@ -115,6 +130,16 @@ class Rut:
         Returns True if input was normalized format.
         """
         return self.format == RutFormat.NORMALIZED
+
+    @property
+    def is_dotted(self) -> bool:
+        """Backward-compatible alias for :attr:`is_formatted`."""
+        return self.is_formatted
+
+    @property
+    def is_numeric(self) -> bool:
+        """Backward-compatible alias for :attr:`is_normalized`."""
+        return self.is_normalized
 
     def __str__(self) -> str:
         return self.formatted
