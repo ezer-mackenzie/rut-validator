@@ -33,7 +33,12 @@ class RutSQLAlchemy(TypeDecorator[str]):
         self, value: Optional[str], dialect: Dialect
     ) -> Optional[str]:
         del dialect
-        return value
+        if value is None:
+            return None
+        try:
+            return RutValidator.validate(value).normalized
+        except RutValidationError as exc:
+            raise ValueError("La base de datos contiene un RUT inválido") from exc
 
 
 __all__ = ["RutSQLAlchemy"]

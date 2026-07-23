@@ -37,6 +37,13 @@ def test_result_value_returns_stored_string():
     assert result == "123456785"
 
 
+def test_result_value_rejects_corrupted_database_value():
+    type_instance = RutSQLAlchemy()
+
+    with pytest.raises(ValueError, match="base de datos"):
+        type_instance.process_result_value("corrupt", None)
+
+
 def test_sqlalchemy_session_round_trip_normalizes_value():
     engine = create_engine("sqlite://")
     try:
@@ -58,5 +65,22 @@ def test_sqlalchemy_session_rejects_invalid_value():
             session.add(TestModel(rut="invalid"))
             with pytest.raises(StatementError):
                 session.commit()
+    finally:
+        engine.dispose()
+
+
+def test_sqlalchemy_session_accepts_none_and_recovers_after_rollback():
+    engine = create_engine("sqlite://")
+    try:
+        Base.metadata.create_all(engine)
+        with Session(engine) as session:
+            session.add(TestModel(rut="invalid"))
+            with pytest.raises(StatementError):
+                session.commit()
+            session.rollback()
+
+            session.add(TestModel(rut=None))
+            session.commit()
+            assert session.scalars(select(TestModel)).one().rut is None
     finally:
         engine.dispose()

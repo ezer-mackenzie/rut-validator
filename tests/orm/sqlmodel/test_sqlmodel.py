@@ -1,3 +1,4 @@
+import json
 from typing import Optional
 
 import pytest
@@ -10,6 +11,11 @@ from rut_validator.orm.sqlmodel import RutSQLModel, rut_sqlmodel_field
 class Person(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     rut: RutSQLModel = rut_sqlmodel_field(unique=True)
+
+
+class OptionalPerson(SQLModel, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    rut: Optional[RutSQLModel] = rut_sqlmodel_field(default=None, nullable=True)
 
 
 def test_sqlmodel_round_trip_normalizes_rut():
@@ -41,3 +47,14 @@ def test_sqlmodel_rejects_invalid_rut_when_persisting():
                 session.commit()
     finally:
         engine.dispose()
+
+
+def test_sqlmodel_optional_field_and_json_serialization():
+    person = OptionalPerson.model_validate({"rut": None})
+    valid = Person.model_validate({"rut": "12.345.678-5"})
+
+    assert person.rut is None
+    assert json.loads(valid.model_dump_json()) == {
+        "id": None,
+        "rut": "123456785",
+    }
