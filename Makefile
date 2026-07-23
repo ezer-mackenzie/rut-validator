@@ -10,7 +10,7 @@ install: ## Install dependencies
 	poetry install
 
 install-dev: ## Install development dependencies
-	poetry install --with dev
+	poetry install --all-extras
 
 test: ## Run tests
 	poetry run pytest
@@ -53,10 +53,10 @@ publish: ## Publish to PyPI (requires PYPI_API_TOKEN)
 	poetry publish
 
 docs: ## Build documentation
-	poetry run sphinx-build docs docs/_build/html
+	poetry run mkdocs build --strict
 
-serve-docs: docs ## Serve documentation locally
-	cd docs/_build/html && python -m http.server 8000
+serve-docs: ## Serve documentation locally
+	poetry run mkdocs serve
 
 pre-commit: ## Run pre-commit on all files
 	poetry run pre-commit run --all-files

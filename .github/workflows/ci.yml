@@ -34,5 +34,6 @@ jobs:
       - run: ruff check src tests examples
       - run: black --check src tests examples
       - run: mypy src/rut_validator
+      - run: mkdocs build --strict
       - run: python -m build
       - run: twine check dist/*
