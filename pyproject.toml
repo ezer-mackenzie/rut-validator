@@ -1,6 +1,6 @@
 [project]
 name = "rut-validator"
-version = "0.9.0"
+version = "1.0.0"
 description = "Framework-agnostic Chilean RUT validation with optional ORM adapters"
 authors = [
     {name = "Eli-ezer Reuven Ramirez Ruiz", email = "ramirez.ruiz.eliezer.reuven@gmail.com"}
@@ -10,7 +10,7 @@ license = "MIT"
 requires-python = ">=3.10,<4.0"
 keywords = ["rut", "chile", "validation", "pydantic", "django", "sqlalchemy", "fastapi"]
 classifiers = [
-    "Development Status :: 4 - Beta",
+    "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
@@ -18,6 +18,7 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Topic :: Software Development :: Libraries :: Python Modules",
     "Topic :: Utilities",
 ]

@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.0] - 2026-07-23
+
+### Added
+- Stable public API and documented deprecation policy
+- CI coverage for Python 3.10 through 3.14
+- Architectural tests preventing optional frameworks from leaking into
+  standalone imports
+
+### Changed
+- Internal imports now consistently respect package-layer boundaries
+- Django typing uses its canonical `deconstructible` import and a
+  runtime-safe generic `CharField` base
+- `Rut` construction no longer exposes an unchecked protected factory
+- Package status is now Production/Stable
+
 ## [0.9.0] - 2026-07-23
 
 ### Added
