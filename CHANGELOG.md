@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0] - 2026-07-23
+
+### Added
+- New MkDocs Material documentation site
+- Guides for core, CLI, Pydantic, FastAPI, Django, SQLAlchemy, and SQLModel
+- API reference, development workflow, and release policy
+
+### Changed
+- Replaced the complete legacy Sphinx documentation tree
+- CI and Read the Docs now build MkDocs in strict mode
+- Development commands now use the current optional dependency layout
+
 ## [0.3.0] - 2026-07-23
 
 ### Added

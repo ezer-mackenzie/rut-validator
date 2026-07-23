@@ -1,6 +1,6 @@
 [project]
 name = "rut-validator"
-version = "0.3.0"
+version = "0.4.0"
 description = "Chilean RUT validation library with Pydantic, Django, and SQLAlchemy support"
 authors = [
     {name = "Eli-ezer Reuven Ramirez Ruiz", email = "ramirez.ruiz.eliezer.reuven@gmail.com"}
@@ -58,9 +58,8 @@ dev = [
     "sqlmodel (>=0.0.22,<1.0)",
 ]
 docs = [
-    "sphinx",
-    "sphinx-rtd-theme",
-    "myst-parser"
+    "mkdocs (>=1.6,<2.0)",
+    "mkdocs-material (>=9.6,<10.0)",
 ]
 
 [project.scripts]
