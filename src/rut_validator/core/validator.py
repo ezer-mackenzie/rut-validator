@@ -23,6 +23,16 @@ if TYPE_CHECKING:
 logger = logging.getLogger(__name__)
 
 
+def calculate_check_digit(body: str) -> str:
+    """Calculate the modulo-11 check digit for a numeric RUT body."""
+    return RutValidator.module_eleven(body)
+
+
+def validate_rut(value: object) -> "Rut":
+    """Validate *value* and return an immutable :class:`Rut` value object."""
+    return RutValidator.validate(value)
+
+
 class RutValidator:
     """Validator for Chilean RUTs with pure Python logic."""
 

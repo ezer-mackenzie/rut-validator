@@ -2,9 +2,10 @@
 rut-validator: Validation of Chilean RUTs for Pydantic and FastAPI
 """
 
+from importlib.metadata import PackageNotFoundError, version
 from typing import Any
 
-from .core.validator import RutValidator
+from .core.validator import RutValidator, calculate_check_digit, validate_rut
 from .core.patterns import RutFormat
 from .errors import (
     RutInvalidFormatError,
@@ -16,7 +17,10 @@ from .types.enums import ValidationResult
 from .types.rut import Rut
 
 ValidatedRut = Rut
-__version__ = "0.2.0"
+try:
+    __version__ = version("rut-validator")
+except PackageNotFoundError:  # pragma: no cover - source tree without install
+    __version__ = "0+unknown"
 __all__ = [
     "RutValidator",  # For pure validation
     "Rut",
@@ -24,6 +28,8 @@ __all__ = [
     "RutStr",  # For use with Pydantic
     "RutFormat",  # Format enumeration
     "ValidationResult",
+    "calculate_check_digit",
+    "validate_rut",
     "RutInvalidFormatError",  # Custom exception
     "RutInvalidValueError",  # Custom exception
     "RutModuleElevenValidationError",  # Custom exception

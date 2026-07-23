@@ -1,4 +1,4 @@
-from rut_validator.core.patterns import RutPatterns
+from rut_validator.core.validator import RutValidator
 
 
 class RutFormatter:
@@ -15,7 +15,7 @@ class RutFormatter:
         Returns:
             str: The RUT string in original format (e.g. "12.345.678-9")
         """
-        return RutPatterns.formatted(rut)
+        return RutValidator.validate(rut).formatted
 
     @staticmethod
     def to_normalize_format(rut: str) -> str:
@@ -29,4 +29,9 @@ class RutFormatter:
         Returns:
             str: The cleaned RUT string (e.g. "123456789")
         """
-        return RutPatterns.normalized(rut)
+        return RutValidator.validate(rut).normalized
+
+    @staticmethod
+    def to_hyphenated_format(rut: str) -> str:
+        """Validate *rut* and return its canonical hyphenated representation."""
+        return RutValidator.validate(rut).hyphenated
