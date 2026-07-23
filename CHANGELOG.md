@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.0] - 2026-07-23
+
+### Changed
+- `rut_validator.core` now contains only domain types
+- Framework-agnostic parsing, formatting, and validation moved to
+  `rut_validator.validation`
+- Framework adapters now live exclusively in `rut_validator.orm`
+- Documentation and examples now use the canonical architecture
+
+### Removed
+- Legacy `rut_validator.core.orm` compatibility modules
+- Redundant root adapter re-export modules
+- Legacy `rut_validator.types` and unused `rut_validator.utils` packages
+- Lazy `RutStr` export from the package root
+
 ## [0.4.0] - 2026-07-23
 
 ### Added
