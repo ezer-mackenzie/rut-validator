@@ -1,6 +1,8 @@
 import subprocess
 import sys
 
+import pytest
+
 from rut_validator.core import Rut, RutFormat, ValidationResult
 from rut_validator.validation import (
     RutFormatter,
@@ -26,12 +28,22 @@ def test_validation_layer_exposes_framework_agnostic_implementation():
     assert RutValidator
 
 
-def test_package_root_does_not_import_optional_frameworks():
-    code = """
+@pytest.mark.parametrize(
+    "module",
+    [
+        "rut_validator",
+        "rut_validator.core",
+        "rut_validator.validation",
+        "rut_validator.orm",
+    ],
+)
+def test_standalone_layers_do_not_import_optional_frameworks(module):
+    code = f"""
 import sys
+import {module}
 import rut_validator
 assert rut_validator.RutValidator.is_valid("12.345.678-5")
-frameworks = {"django", "sqlalchemy", "sqlmodel", "pydantic"}
+frameworks = {{"django", "sqlalchemy", "sqlmodel", "pydantic"}}
 assert not frameworks.intersection(sys.modules)
 """
     result = subprocess.run(

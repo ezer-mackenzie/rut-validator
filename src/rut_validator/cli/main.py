@@ -5,8 +5,8 @@ from pathlib import Path
 
 import click
 
-from rut_validator import RutValidator
-from rut_validator.errors import RutValidationError
+from ..errors import RutValidationError
+from ..validation import RutValidator
 
 
 def _payload(value: str) -> dict[str, object]:

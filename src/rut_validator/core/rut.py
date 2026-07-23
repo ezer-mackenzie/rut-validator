@@ -2,10 +2,10 @@
 
 from dataclasses import dataclass
 
-from rut_validator.core.enums import RutFormat
-from rut_validator.errors import RutModuleElevenValidationError
-from rut_validator.validation.parser import RutParser
-from rut_validator.validation.patterns import RutPatterns
+from ..errors import RutModuleElevenValidationError
+from ..validation.parser import RutParser
+from ..validation.patterns import RutPatterns
+from .enums import RutFormat
 
 
 @dataclass(frozen=True, slots=True, init=False)
@@ -50,7 +50,7 @@ class Rut:
         assert resolved_format is not None
         object.__setattr__(self, "format", resolved_format)
 
-        from rut_validator.validation.validator import RutValidator
+        from ..validation.validator import RutValidator
 
         if not RutValidator.is_valid_check_digit(body, check_digit):
             raise RutModuleElevenValidationError(

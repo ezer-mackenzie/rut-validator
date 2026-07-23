@@ -1,9 +1,9 @@
-from rut_validator.core.enums import RutFormat
-from rut_validator.errors import (
+from ..core.enums import RutFormat
+from ..errors import (
     RutInvalidFormatError,
     RutInvalidValueError,
 )
-from rut_validator.validation.patterns import RutPatterns
+from .patterns import RutPatterns
 
 
 class RutParser:

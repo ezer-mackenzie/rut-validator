@@ -11,7 +11,7 @@ from ..errors import (
     RutInvalidValueError,
     RutModuleElevenValidationError,
 )
-from ..validation.parser import RutParser
+from .parser import RutParser
 
 if TYPE_CHECKING:
     from ..core.rut import Rut
@@ -126,7 +126,7 @@ class RutValidator:
                 received=check_digit,
             )
 
-        from rut_validator.core.rut import Rut
+        from ..core.rut import Rut
 
         logger.debug("RUT validation successful")
         assert isinstance(rut, str)

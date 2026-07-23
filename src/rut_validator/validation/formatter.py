@@ -1,4 +1,4 @@
-from rut_validator.validation.validator import RutValidator
+from .validator import RutValidator
 
 
 class RutFormatter:
