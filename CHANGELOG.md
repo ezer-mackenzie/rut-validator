@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.0] - 2026-07-23
+
+### Changed
+- The modulo-11 factors are now a typed `Final` constant colocated with the
+  framework-agnostic validator
+- Framework implementations now use explicit class names:
+  `RutPydantic`, `RutDjango`, `RutSQLAlchemy`, and `RutSQLModel`
+- SQLModel field configuration is exposed as `rut_sqlmodel_field`
+
+### Removed
+- `constants.py`, whose only value now belongs to the agnostic implementation
+- Framework class aliases such as `RutType`, `RutStr`, `RUTField`, and
+  `RutField`
+
 ## [0.5.0] - 2026-07-23
 
 ### Changed

@@ -1,6 +1,6 @@
 [project]
 name = "rut-validator"
-version = "0.5.0"
+version = "0.6.0"
 description = "Framework-agnostic Chilean RUT validation with optional ORM adapters"
 authors = [
     {name = "Eli-ezer Reuven Ramirez Ruiz", email = "ramirez.ruiz.eliezer.reuven@gmail.com"}
