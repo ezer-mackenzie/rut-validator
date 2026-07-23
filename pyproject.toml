@@ -1,6 +1,6 @@
 [project]
 name = "rut-validator"
-version = "0.7.0"
+version = "0.8.0"
 description = "Framework-agnostic Chilean RUT validation with optional ORM adapters"
 authors = [
     {name = "Eli-ezer Reuven Ramirez Ruiz", email = "ramirez.ruiz.eliezer.reuven@gmail.com"}
@@ -53,6 +53,7 @@ dev = [
     "mypy",
     "pre-commit",
     "hypothesis (>=6,<7)",
+    "httpx (>=0.27,<1.0)",
     "pydantic (>=2.6,<3.0)",
     "sqlalchemy (>=2.0,<3.0)",
     "django (>=4.2,<6.0)",

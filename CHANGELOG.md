@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.8.0] - 2026-07-23
+
+### Added
+- Real Django model, ModelForm, migration deconstruction, nullable, unique, and
+  SQLite round-trip tests
+- FastAPI TestClient coverage for valid requests, HTTP 422, and OpenAPI
+- SQLAlchemy rollback, nullable, and corrupted database value tests
+- SQLModel optional field and JSON serialization tests
+
+### Changed
+- Django forms accept formatted 12-character input while databases keep
+  normalized 9-character storage
+- SQLAlchemy validates values read from the database to preserve its type
+  invariant
+
 ## [0.7.0] - 2026-07-23
 
 ### Added
