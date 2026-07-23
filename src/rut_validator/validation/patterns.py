@@ -10,13 +10,14 @@ class RutPatterns:
     """Collection of regex patterns for RUT validation and format detection."""
 
     # Individual patterns for format detection
-    FORMATTED_PATTERN = compile(r"^\d{1,2}(?:\.\d{3}){2}-[\dkK]$")
-    HYPHENATED_PATTERN = compile(r"^\d{7,8}-[\dkK]$")
-    NORMALIZED_PATTERN = compile(r"^\d{7,8}[\dkK]$")
+    FORMATTED_PATTERN = compile(r"[0-9]{1,2}(?:\.[0-9]{3}){2}-[0-9kK]")
+    HYPHENATED_PATTERN = compile(r"[0-9]{7,8}-[0-9kK]")
+    NORMALIZED_PATTERN = compile(r"[0-9]{7,8}[0-9kK]")
 
     # Combined pattern for general validation
     VALIDATION_PATTERN = compile(
-        r"^(?:\d{1,2}(?:\.\d{3}){2}-[\dkK]|\d{7,8}-[\dkK]|\d{7,8}[\dkK])$"
+        r"(?:[0-9]{1,2}(?:\.[0-9]{3}){2}-[0-9kK]"
+        r"|[0-9]{7,8}-[0-9kK]|[0-9]{7,8}[0-9kK])"
     )
 
     # Maximum supported length for a formatted RUT string.
@@ -36,13 +37,13 @@ class RutPatterns:
         Returns:
             RutFormat if the format is recognized, None otherwise.
         """
-        if cls.FORMATTED_PATTERN.match(rut):
+        if cls.FORMATTED_PATTERN.fullmatch(rut):
             return RutFormat.FORMATTED
 
-        elif cls.HYPHENATED_PATTERN.match(rut):
+        elif cls.HYPHENATED_PATTERN.fullmatch(rut):
             return RutFormat.HYPHENATED
 
-        elif cls.NORMALIZED_PATTERN.match(rut):
+        elif cls.NORMALIZED_PATTERN.fullmatch(rut):
             return RutFormat.NORMALIZED
 
         return None
@@ -61,7 +62,7 @@ class RutPatterns:
         if len(rut) > cls.MAX_RUT_LENGTH:
             return False
 
-        return cls.VALIDATION_PATTERN.match(rut) is not None
+        return cls.VALIDATION_PATTERN.fullmatch(rut) is not None
 
     @classmethod
     def normalize(cls, rut: str) -> str:

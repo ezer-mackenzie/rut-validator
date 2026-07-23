@@ -124,7 +124,8 @@ class RutValidator:
             logger.debug("RUT check digit validation failed")
 
             raise RutModuleElevenValidationError(
-                f"El dígito verificador no coincide, se esperaba '{check_digit_expected}' en vez de '{check_digit}'"
+                expected=check_digit_expected,
+                received=check_digit,
             )
 
         from rut_validator.core.rut import Rut
@@ -162,7 +163,7 @@ class RutValidator:
         return str(result)
 
     @classmethod
-    def is_valid_check_digit(cls, body: str, check_digit: str) -> bool:
+    def is_valid_check_digit(cls, body: object, check_digit: object) -> bool:
         """
         Validates that the provided check digit matches the calculated one.
 
@@ -173,5 +174,16 @@ class RutValidator:
         Returns:
             bool: True if the check digit is valid, False otherwise.
         """
-        expected_check_digit = cls.module_eleven(body)
+        if (
+            not isinstance(body, str)
+            or not isinstance(check_digit, str)
+            or len(check_digit) != 1
+            or check_digit not in "0123456789kK"
+        ):
+            return False
+
+        try:
+            expected_check_digit = cls.module_eleven(body)
+        except RutInvalidValueError:
+            return False
         return check_digit.upper() == expected_check_digit

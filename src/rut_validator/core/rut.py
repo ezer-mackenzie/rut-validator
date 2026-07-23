@@ -56,7 +56,8 @@ class Rut:
 
         if not RutValidator.is_valid_check_digit(body, check_digit):
             raise RutModuleElevenValidationError(
-                f"El dígito verificador no coincide, se esperaba '{RutValidator.module_eleven(body)}' en vez de '{check_digit}'"
+                expected=RutValidator.module_eleven(body),
+                received=check_digit,
             )
 
     @classmethod

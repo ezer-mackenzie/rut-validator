@@ -1,7 +1,11 @@
 import pytest
 
 from rut_validator.core import Rut, RutFormat
-from rut_validator.errors import RutInvalidFormatError, RutValidationError
+from rut_validator.errors import (
+    RutInvalidFormatError,
+    RutModuleElevenValidationError,
+    RutValidationError,
+)
 from rut_validator.validation import RutParser, RutPatterns, RutValidator
 
 
@@ -131,6 +135,57 @@ def test_is_valid_check_digit_helper():
 def test_is_valid_returns_false_for_invalid_rut():
     assert not RutValidator.is_valid("12-345678-9")
     assert not RutValidator.is_valid("12.345.678-0")
+
+
+@pytest.mark.parametrize(
+    "value",
+    [
+        "１２３４５６７８５",
+        "١٢٣٤٥٦٧٨٥",
+        "123456785\n",
+        " 123456785",
+        "123456785 ",
+        "12345678‐5",
+        "12345678–5",
+        "1" * 100_000,
+    ],
+)
+def test_is_valid_returns_false_for_unicode_whitespace_and_oversized_input(value):
+    assert RutValidator.is_valid(value) is False
+
+
+@pytest.mark.parametrize(
+    ("body", "check_digit"),
+    [
+        (None, "5"),
+        ("12345678", None),
+        (12345678, "5"),
+        ("12345678", 5),
+        ("１２３４５６７８", "5"),
+        ("12345678", "55"),
+        ("12345678", "X"),
+    ],
+)
+def test_check_digit_helper_never_raises_for_invalid_types(body, check_digit):
+    assert RutValidator.is_valid_check_digit(body, check_digit) is False
+
+
+def test_structured_check_digit_error():
+    with pytest.raises(RutModuleElevenValidationError) as captured:
+        RutValidator.validate("12.345.678-0")
+
+    error = captured.value
+    assert error.code == "invalid_check_digit"
+    assert error.expected_check_digit == "5"
+    assert error.received_check_digit == "0"
+    assert error.as_dict() == {
+        "code": "invalid_check_digit",
+        "message": (
+            "El dígito verificador no coincide, " "se esperaba '5' en vez de '0'"
+        ),
+        "expected_check_digit": "5",
+        "received_check_digit": "0",
+    }
 
 
 @pytest.mark.parametrize("value", [None, 123456785, b"123456785", [], True])
