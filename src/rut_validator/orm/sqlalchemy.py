@@ -9,7 +9,7 @@ from ..errors import RutValidationError
 from ..validation import RutValidator
 
 
-class RutType(TypeDecorator[str]):
+class RutSQLAlchemy(TypeDecorator[str]):
     """Store a valid RUT as a normalized nine-character string."""
 
     impl = String(9)
@@ -36,6 +36,4 @@ class RutType(TypeDecorator[str]):
         return value
 
 
-RutSQLAlchemy = RutType
-
-__all__ = ["RutSQLAlchemy", "RutType"]
+__all__ = ["RutSQLAlchemy"]

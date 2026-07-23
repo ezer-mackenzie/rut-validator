@@ -1,9 +1,9 @@
 import rut_validator
 from rut_validator import Rut, calculate_check_digit, validate_rut
-from rut_validator.orm.django import RUTField
-from rut_validator.orm.pydantic import RutStr
-from rut_validator.orm.sqlalchemy import RutType
-from rut_validator.orm.sqlmodel import RutField
+from rut_validator.orm.django import RutDjango
+from rut_validator.orm.pydantic import RutPydantic
+from rut_validator.orm.sqlalchemy import RutSQLAlchemy
+from rut_validator.orm.sqlmodel import RutSQLModel, rut_sqlmodel_field
 from rut_validator.validation import RutFormatter
 
 
@@ -17,10 +17,11 @@ def test_public_standalone_helpers():
 
 
 def test_public_integration_imports():
-    assert RutStr("12.345.678-5") == "123456785"
-    assert RutType.impl.length == 9
-    assert RUTField().max_length == 9
-    assert callable(RutField)
+    assert RutPydantic("12.345.678-5") == "123456785"
+    assert RutSQLAlchemy.impl.length == 9
+    assert RutDjango().max_length == 9
+    assert issubclass(RutSQLModel, RutPydantic)
+    assert callable(rut_sqlmodel_field)
 
 
 def test_formatter_validates_and_formats():

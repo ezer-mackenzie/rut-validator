@@ -10,10 +10,10 @@ from rut_validator.errors import RutValidationError
 from rut_validator.validation import RutValidator
 
 
-class RutStr(str):
+class RutPydantic(str):
     """A validated RUT string stored in normalized form."""
 
-    def __new__(cls, value: str) -> "RutStr":
+    def __new__(cls, value: str) -> "RutPydantic":
         return str.__new__(cls, cls._normalize(value))
 
     @staticmethod
@@ -24,7 +24,7 @@ class RutStr(str):
             raise ValueError(str(exc)) from exc
 
     @classmethod
-    def _from_input(cls, value: str) -> "RutStr":
+    def _from_input(cls, value: str) -> "RutPydantic":
         return str.__new__(cls, cls._normalize(value))
 
     @classmethod
@@ -60,4 +60,4 @@ class RutStr(str):
         return field_schema
 
 
-__all__ = ["RutStr"]
+__all__ = ["RutPydantic"]

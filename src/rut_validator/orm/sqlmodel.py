@@ -4,17 +4,22 @@ from typing import Any
 
 from sqlmodel import Field
 
-from .pydantic import RutStr
-from .sqlalchemy import RutType
+from .pydantic import RutPydantic
+from .sqlalchemy import RutSQLAlchemy
 
 
-def RutField(**kwargs: Any) -> Any:
-    """Create a SQLModel field backed by :class:`RutType`.
+class RutSQLModel(RutPydantic):
+    """Validated RUT type intended for SQLModel attributes."""
 
-    Use it as ``rut: RutStr = RutField(index=True, unique=True)``.
+
+def rut_sqlmodel_field(**kwargs: Any) -> Any:
+    """Create a SQLModel field backed by :class:`RutSQLAlchemy`.
+
+    Use it as
+    ``rut: RutSQLModel = rut_sqlmodel_field(index=True, unique=True)``.
     """
 
-    return Field(sa_type=RutType, **kwargs)
+    return Field(sa_type=RutSQLAlchemy, **kwargs)
 
 
-__all__ = ["RutField", "RutStr"]
+__all__ = ["RutSQLModel", "rut_sqlmodel_field"]

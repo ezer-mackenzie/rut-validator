@@ -4,13 +4,12 @@ import pytest
 from sqlalchemy.exc import StatementError
 from sqlmodel import Field, Session, SQLModel, create_engine, select
 
-from rut_validator.orm.pydantic import RutStr
-from rut_validator.orm.sqlmodel import RutField
+from rut_validator.orm.sqlmodel import RutSQLModel, rut_sqlmodel_field
 
 
 class Person(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
-    rut: RutStr = RutField(unique=True)
+    rut: RutSQLModel = rut_sqlmodel_field(unique=True)
 
 
 def test_sqlmodel_round_trip_normalizes_rut():
@@ -20,7 +19,7 @@ def test_sqlmodel_round_trip_normalizes_rut():
 
         with Session(engine) as session:
             person = Person.model_validate({"rut": "12.345.678-5"})
-            assert isinstance(person.rut, RutStr)
+            assert isinstance(person.rut, RutSQLModel)
             session.add(person)
             session.commit()
             session.refresh(person)

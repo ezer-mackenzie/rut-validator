@@ -25,7 +25,7 @@ class RutDjangoValidator:
             raise ValidationError(str(exc), code=self.code) from exc
 
 
-class RUTField(CharField):
+class RutDjango(CharField):
     """A Django field that validates and stores normalized RUT strings."""
 
     description = "RUT chileno normalizado"
@@ -49,4 +49,4 @@ class RUTField(CharField):
         return self.to_python(value)
 
 
-__all__ = ["RUTField", "RutDjangoValidator"]
+__all__ = ["RutDjango", "RutDjangoValidator"]
