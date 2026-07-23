@@ -8,15 +8,15 @@ pip install "rut-validator[django]"
 
 ```python
 from django.db import models
-from rut_validator.orm.django import RUTField
+from rut_validator.orm.django import RutDjango
 
 
 class Person(models.Model):
     name = models.CharField(max_length=100)
-    rut = RUTField(unique=True)
+    rut = RutDjango(unique=True)
 ```
 
-`RUTField`:
+`RutDjango`:
 
 - usa una longitud de almacenamiento de 9 caracteres;
 - normaliza antes de preparar el valor para la base de datos;

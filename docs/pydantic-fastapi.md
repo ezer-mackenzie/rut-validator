@@ -10,22 +10,22 @@ pip install "rut-validator[pydantic]"
 
 ```python
 from pydantic import BaseModel
-from rut_validator.orm.pydantic import RutStr
+from rut_validator.orm.pydantic import RutPydantic
 
 
 class Person(BaseModel):
     name: str
-    rut: RutStr
+    rut: RutPydantic
 
 
 person = Person(name="Ana", rut="12.345.678-5")
 
-assert isinstance(person.rut, RutStr)
+assert isinstance(person.rut, RutPydantic)
 assert person.rut == "123456785"
 assert person.model_dump_json() == '{"name":"Ana","rut":"123456785"}'
 ```
 
-`RutStr` es un subtipo estricto de `str`. Valida los tres formatos de entrada y
+`RutPydantic` es un subtipo estricto de `str`. Valida los tres formatos de entrada y
 almacena siempre el valor normalizado.
 
 ## FastAPI
@@ -37,13 +37,13 @@ pip install "rut-validator[fastapi]"
 ```python
 from fastapi import FastAPI
 from pydantic import BaseModel
-from rut_validator.orm.pydantic import RutStr
+from rut_validator.orm.pydantic import RutPydantic
 
 app = FastAPI()
 
 
 class Person(BaseModel):
-    rut: RutStr
+    rut: RutPydantic
 
 
 @app.post("/people")
@@ -56,7 +56,7 @@ FastAPI. El JSON Schema incluye patrón, descripción y ejemplos.
 
 ## Value object enriquecido
 
-`RutStr` se comporta como texto. Para acceder a `formatted`, `body` y otras
+`RutPydantic` se comporta como texto. Para acceder a `formatted`, `body` y otras
 propiedades, valida el valor con el core:
 
 ```python

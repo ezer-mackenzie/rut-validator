@@ -4,13 +4,12 @@ from typing import Optional
 
 from sqlmodel import Field, Session, SQLModel, create_engine, select
 
-from rut_validator.orm.pydantic import RutStr
-from rut_validator.orm.sqlmodel import RutField
+from rut_validator.orm.sqlmodel import RutSQLModel, rut_sqlmodel_field
 
 
 class Person(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
-    rut: RutStr = RutField(unique=True, index=True)
+    rut: RutSQLModel = rut_sqlmodel_field(unique=True, index=True)
 
 
 engine = create_engine("sqlite://")

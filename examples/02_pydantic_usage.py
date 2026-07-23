@@ -1,12 +1,12 @@
 """
-Example 2: Using RutStr with Pydantic models
+Example 2: Using RutPydantic with Pydantic models
 
-This shows how RutStr automatically validates RUTs
+This shows how RutPydantic automatically validates RUTs
 when used in Pydantic BaseModel.
 """
 
 from pydantic import BaseModel, ValidationError
-from rut_validator.orm.pydantic import RutStr
+from rut_validator.orm.pydantic import RutPydantic
 
 import json
 
@@ -15,10 +15,10 @@ print("EXAMPLE 2: Pydantic Integration")
 print("=" * 60)
 
 
-# Define a model with RutStr
+# Define a model with RutPydantic
 class Person(BaseModel):
     name: str
-    rut: RutStr  # ✅ Automatically validated!
+    rut: RutPydantic  # ✅ Automatically validated!
 
 
 # ✅ Valid person

@@ -13,8 +13,8 @@ Librería para validar RUT chileno con enfoque Pydantic-first y soporte completo
 
 - ✅ **Validación pura de RUT chileno** usando algoritmo módulo 11
 - ✅ **Detección automática de formato**: dotted (`12.345.678-9`), hyphenated (`12345678-9`), numeric (`123456789`)
-- ✅ **Integración completa con Pydantic** (`RutStr`)
-- ✅ **Campo Django** (`RUTField`) listo para usar
+- ✅ **Integración completa con Pydantic** (`RutPydantic`)
+- ✅ **Campo Django** (`RutDjango`) listo para usar
 - ✅ **Tipo SQLAlchemy** (`RutSQLAlchemy`) para bases de datos
 - ✅ **Integración SQLModel** con almacenamiento normalizado
 - ✅ **Compatible con FastAPI** y otros frameworks web
@@ -91,11 +91,11 @@ for rut_str in formats:
 
 ```python
 from pydantic import BaseModel
-from rut_validator.orm.pydantic import RutStr
+from rut_validator.orm.pydantic import RutPydantic
 
 class User(BaseModel):
     name: str
-    rut: RutStr  # Validación automática
+    rut: RutPydantic  # Validación automática
 
 # Uso
 user = User(name="Juan Pérez", rut="12.345.678-5")
@@ -106,11 +106,11 @@ print(user.rut)  # "123456785" (normalizado)
 
 ```python
 from django.db import models
-from rut_validator.orm.django import RUTField
+from rut_validator.orm.django import RutDjango
 
 class Person(models.Model):
     name = models.CharField(max_length=100)
-    rut = RUTField(unique=True)  # Validación automática en DB
+    rut = RutDjango(unique=True)  # Validación automática en DB
 ```
 
 ### Con SQLAlchemy
@@ -118,7 +118,7 @@ class Person(models.Model):
 ```python
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
-from rut_validator.orm.sqlalchemy import RutType
+from rut_validator.orm.sqlalchemy import RutSQLAlchemy
 
 Base = declarative_base()
 
@@ -127,7 +127,7 @@ class Person(Base):
 
     id = Column(Integer, primary_key=True)
     name = Column(String)
-    rut = Column(RutType)  # Validación y normalización automáticas
+    rut = Column(RutSQLAlchemy)  # Validación y normalización automáticas
 ```
 
 ## 📚 Documentación

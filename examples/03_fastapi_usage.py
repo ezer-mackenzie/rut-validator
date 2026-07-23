@@ -1,7 +1,7 @@
 """
-Example 3: Using RutStr with FastAPI
+Example 3: Using RutPydantic with FastAPI
 
-This shows how RutStr automatically validates RUTs
+This shows how RutPydantic automatically validates RUTs
 in FastAPI request/response models.
 
 Run with:
@@ -15,14 +15,14 @@ Then visit:
 from fastapi import FastAPI
 from pydantic import BaseModel
 from rut_validator import RutValidator
-from rut_validator.orm.pydantic import RutStr
+from rut_validator.orm.pydantic import RutPydantic
 
 app = FastAPI(title="RUT Validator API")
 
 
 class Person(BaseModel):
     name: str
-    rut: RutStr  # ✅ Automatically validated by Pydantic
+    rut: RutPydantic  # ✅ Automatically validated by Pydantic
 
 
 class PersonResponse(BaseModel):

@@ -51,10 +51,10 @@ ValueError
 
 | Import | Símbolos |
 | --- | --- |
-| `rut_validator.orm.pydantic` | `RutStr` |
-| `rut_validator.orm.sqlalchemy` | `RutType`, `RutSQLAlchemy` |
-| `rut_validator.orm.sqlmodel` | `RutField`, `RutStr` |
-| `rut_validator.orm.django` | `RUTField`, `RutDjangoValidator` |
+| `rut_validator.orm.pydantic` | `RutPydantic` |
+| `rut_validator.orm.sqlalchemy` | `RutSQLAlchemy` |
+| `rut_validator.orm.sqlmodel` | `RutSQLModel`, `rut_sqlmodel_field` |
+| `rut_validator.orm.django` | `RutDjango`, `RutDjangoValidator` |
 
 Los tipos de dominio están en `rut_validator.core`; la implementación agnóstica
 está en `rut_validator.validation`; los adapters viven únicamente en
