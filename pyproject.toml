@@ -1,6 +1,6 @@
 [project]
 name = "rut-validator"
-version = "0.8.0"
+version = "0.9.0"
 description = "Framework-agnostic Chilean RUT validation with optional ORM adapters"
 authors = [
     {name = "Eli-ezer Reuven Ramirez Ruiz", email = "ramirez.ruiz.eliezer.reuven@gmail.com"}
@@ -12,7 +12,6 @@ keywords = ["rut", "chile", "validation", "pydantic", "django", "sqlalchemy", "f
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.10",
@@ -148,6 +147,7 @@ omit = [
 ]
 
 [tool.coverage.report]
+fail_under = 95
 exclude_lines = [
     "pragma: no cover",
     "def __repr__",

@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.9.0] - 2026-07-23
+
+### Added
+- Isolated CI jobs for every optional integration extra
+- Installed-wheel smoke tests and safe example execution
+- Dependency auditing with `pip-audit`
+- A 95% project coverage release gate
+- Migration guide for the stabilized public API
+
+### Changed
+- CI actions and pre-commit configuration now use the current project toolchain
+- Package metadata no longer uses the deprecated license classifier
+
 ## [0.8.0] - 2026-07-23
 
 ### Added
