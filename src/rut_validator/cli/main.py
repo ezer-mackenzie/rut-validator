@@ -38,7 +38,13 @@ def validate(rut: str, as_json: bool) -> None:
         data = _payload(rut)
     except RutValidationError as exc:
         if as_json:
-            click.echo(json_module.dumps({"valid": False, "error": str(exc)}))
+            click.echo(
+                json_module.dumps(
+                    {"valid": False, "error": exc.as_dict()},
+                    ensure_ascii=False,
+                )
+            )
+            raise click.exceptions.Exit(1) from exc
         raise click.ClickException(str(exc)) from exc
     if as_json:
         click.echo(json_module.dumps(data, ensure_ascii=False))
@@ -106,7 +112,7 @@ def batch(file: Path, output: Optional[Path]) -> None:
             data = _payload(value)
         except RutValidationError as exc:
             has_errors = True
-            data = {"valid": False, "value": value, "error": str(exc)}
+            data = {"valid": False, "error": exc.as_dict()}
         data["line"] = line_number
         rows.append(json_module.dumps(data, ensure_ascii=False))
     rendered = "\n".join(rows) + ("\n" if rows else "")
