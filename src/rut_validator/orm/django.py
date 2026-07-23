@@ -1,6 +1,6 @@
 """Django model field integration."""
 
-from typing import Any
+from typing import TYPE_CHECKING, Any, TypeAlias
 
 from django.core.exceptions import ValidationError
 from django.db.models import CharField
@@ -8,6 +8,11 @@ from django.utils.deconstruct import deconstructible
 
 from ..errors import RutValidationError
 from ..validation import RutValidator
+
+if TYPE_CHECKING:
+    RutDjangoBase: TypeAlias = CharField[str]
+else:
+    RutDjangoBase: TypeAlias = CharField
 
 
 @deconstructible
@@ -25,7 +30,7 @@ class RutDjangoValidator:
             raise ValidationError(str(exc), code=self.code) from exc
 
 
-class RutDjango(CharField):
+class RutDjango(RutDjangoBase):
     """A Django field that validates and stores normalized RUT strings."""
 
     description = "RUT chileno normalizado"
