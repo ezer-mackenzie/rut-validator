@@ -1,6 +1,6 @@
 [project]
 name = "rut-validator"
-version = "0.2.0"
+version = "0.3.0"
 description = "Chilean RUT validation library with Pydantic, Django, and SQLAlchemy support"
 authors = [
     {name = "Eli-ezer Reuven Ramirez Ruiz", email = "ramirez.ruiz.eliezer.reuven@gmail.com"}
@@ -36,6 +36,13 @@ sqlmodel = [
     "sqlalchemy (>=2.0,<3.0)",
 ]
 fastapi = ["fastapi (>=0.111.0,<1.0.0)"]
+all = [
+    "pydantic (>=2.6,<3.0)",
+    "sqlalchemy (>=2.0,<3.0)",
+    "django (>=4.2,<6.0)",
+    "sqlmodel (>=0.0.22,<1.0)",
+    "fastapi (>=0.111.0,<1.0.0)",
+]
 dev = [
     "pytest (>=7.0.0)",
     "pytest-cov",

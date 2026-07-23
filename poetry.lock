@@ -20,7 +20,7 @@ description = "Document parameters, class attributes, return types, and variable
 optional = true
 python-versions = ">=3.8"
 groups = ["main"]
-markers = "extra == \"fastapi\""
+markers = "extra == \"fastapi\" or extra == \"all\""
 files = [
     {file = "annotated_doc-0.0.4-py3-none-any.whl", hash = "sha256:571ac1dc6991c450b25a9c2d84a3705e2ae7a53467b5d111c24fa8baabbed320"},
     {file = "annotated_doc-0.0.4.tar.gz", hash = "sha256:fbcda96e87e9c92ad167c2e53839e57503ecfda18804ea28102353485033faa4"},
@@ -33,7 +33,7 @@ description = "Reusable constraint types to use with typing.Annotated"
 optional = true
 python-versions = ">=3.8"
 groups = ["main"]
-markers = "extra == \"pydantic\" or extra == \"sqlmodel\" or extra == \"dev\" or extra == \"fastapi\""
+markers = "extra == \"pydantic\" or extra == \"sqlmodel\" or extra == \"all\" or extra == \"dev\" or extra == \"fastapi\""
 files = [
     {file = "annotated_types-0.7.0-py3-none-any.whl", hash = "sha256:1f02e8b43a8fbbc3f3e0d4f0f4bfc8131bcb4eebe8849b8e5c773f3a1c582a53"},
     {file = "annotated_types-0.7.0.tar.gz", hash = "sha256:aff07c09a53a08bc8cfccb9c85b05f1aa9a2a6f23728d790723543408344ce89"},
@@ -46,7 +46,7 @@ description = "High-level concurrency and networking framework on top of asyncio
 optional = true
 python-versions = ">=3.9"
 groups = ["main"]
-markers = "extra == \"fastapi\""
+markers = "extra == \"fastapi\" or extra == \"all\""
 files = [
     {file = "anyio-4.12.1-py3-none-any.whl", hash = "sha256:d405828884fc140aa80a3c667b8beed277f1dfedec42ba031bd6ac3db606ab6c"},
     {file = "anyio-4.12.1.tar.gz", hash = "sha256:41cfcc3a4c85d3f05c932da7c26d0201ac36f72abd4435ba90d0464a3ffed703"},
@@ -67,7 +67,7 @@ description = "ASGI specs, helper code, and adapters"
 optional = true
 python-versions = ">=3.9"
 groups = ["main"]
-markers = "extra == \"django\" or extra == \"dev\""
+markers = "extra == \"django\" or extra == \"all\" or extra == \"dev\""
 files = [
     {file = "asgiref-3.11.1-py3-none-any.whl", hash = "sha256:e8667a091e69529631969fd45dc268fa79b99c92c5fcdda727757e52146ec133"},
     {file = "asgiref-3.11.1.tar.gz", hash = "sha256:5f184dc43b7e763efe848065441eac62229c9f7b0475f41f80e207a114eda4ce"},
@@ -486,7 +486,7 @@ description = "A high-level Python web framework that encourages rapid developme
 optional = true
 python-versions = ">=3.8"
 groups = ["main"]
-markers = "extra == \"django\" or extra == \"dev\""
+markers = "extra == \"django\" or extra == \"all\" or extra == \"dev\""
 files = [
     {file = "django-4.2.30-py3-none-any.whl", hash = "sha256:4d07aaf1c62f9984842b67c2874ebbf7056a17be253860299b93ae1881faad65"},
     {file = "django-4.2.30.tar.gz", hash = "sha256:4ebc7a434e3819db6cf4b399fb5b3f536310a30e8486f08b66886840be84b37c"},
@@ -534,7 +534,7 @@ description = "Backport of PEP 654 (exception groups)"
 optional = true
 python-versions = ">=3.7"
 groups = ["main"]
-markers = "(extra == \"fastapi\" or extra == \"dev\") and python_version == \"3.10\""
+markers = "(extra == \"fastapi\" or extra == \"all\" or extra == \"dev\") and python_version == \"3.10\""
 files = [
     {file = "exceptiongroup-1.3.1-py3-none-any.whl", hash = "sha256:a7a39a3bd276781e98394987d3a5701d0c4edffb633bb7a5144577f82c773598"},
     {file = "exceptiongroup-1.3.1.tar.gz", hash = "sha256:8b412432c6055b0b7d14c310000ae93352ed6754f70fa8f7c34141f91c4e3219"},
@@ -553,7 +553,7 @@ description = "FastAPI framework, high performance, easy to learn, fast to code,
 optional = true
 python-versions = ">=3.9"
 groups = ["main"]
-markers = "extra == \"fastapi\""
+markers = "extra == \"fastapi\" or extra == \"all\""
 files = [
     {file = "fastapi-0.128.8-py3-none-any.whl", hash = "sha256:5618f492d0fe973a778f8fec97723f598aa9deee495040a8d51aaf3cf123ecf1"},
     {file = "fastapi-0.128.8.tar.gz", hash = "sha256:3171f9f328c4a218f0a8d2ba8310ac3a55d1ee12c28c949650288aee25966007"},
@@ -609,7 +609,7 @@ description = "Lightweight in-process concurrent programming"
 optional = true
 python-versions = ">=3.9"
 groups = ["main"]
-markers = "(extra == \"sqlalchemy\" or extra == \"sqlmodel\" or extra == \"dev\") and (platform_machine == \"aarch64\" or platform_machine == \"ppc64le\" or platform_machine == \"x86_64\" or platform_machine == \"amd64\" or platform_machine == \"AMD64\" or platform_machine == \"win32\" or platform_machine == \"WIN32\")"
+markers = "(extra == \"sqlalchemy\" or extra == \"sqlmodel\" or extra == \"all\" or extra == \"dev\") and (platform_machine == \"aarch64\" or platform_machine == \"ppc64le\" or platform_machine == \"x86_64\" or platform_machine == \"amd64\" or platform_machine == \"AMD64\" or platform_machine == \"win32\" or platform_machine == \"WIN32\")"
 files = [
     {file = "greenlet-3.2.5-cp310-cp310-macosx_11_0_universal2.whl", hash = "sha256:34cc7cf8ab6f4b85298b01e13e881265ee7b3c1daf6bc10a2944abc15d4f87c3"},
     {file = "greenlet-3.2.5-cp310-cp310-manylinux2014_aarch64.manylinux_2_17_aarch64.whl", hash = "sha256:c11fe0cfb0ce33132f0b5d27eeadd1954976a82e5e9b60909ec2c4b884a55382"},
@@ -687,7 +687,7 @@ description = "Internationalized Domain Names in Applications (IDNA)"
 optional = true
 python-versions = ">=3.8"
 groups = ["main"]
-markers = "extra == \"fastapi\" or extra == \"docs\""
+markers = "extra == \"fastapi\" or extra == \"all\" or extra == \"docs\""
 files = [
     {file = "idna-3.11-py3-none-any.whl", hash = "sha256:771a87f49d9defaf64091e6e6fe9c18d4833f140bd19464795bc32d966ca37ea"},
     {file = "idna-3.11.tar.gz", hash = "sha256:795dafcc9c04ed0c1fb032c2aa73654d8e8c5023a7df64a53f39190ada629902"},
@@ -1325,7 +1325,7 @@ description = "Data validation using Python type hints"
 optional = true
 python-versions = ">=3.9"
 groups = ["main"]
-markers = "extra == \"pydantic\" or extra == \"sqlmodel\" or extra == \"dev\" or extra == \"fastapi\""
+markers = "extra == \"pydantic\" or extra == \"sqlmodel\" or extra == \"all\" or extra == \"dev\" or extra == \"fastapi\""
 files = [
     {file = "pydantic-2.12.5-py3-none-any.whl", hash = "sha256:e561593fccf61e8a20fc46dfc2dfe075b8be7d0188df33f221ad1f0139180f9d"},
     {file = "pydantic-2.12.5.tar.gz", hash = "sha256:4d351024c75c0f085a9febbb665ce8c0c6ec5d30e903bdb6394b7ede26aebb49"},
@@ -1348,7 +1348,7 @@ description = "Core functionality for Pydantic validation and serialization"
 optional = true
 python-versions = ">=3.9"
 groups = ["main"]
-markers = "extra == \"pydantic\" or extra == \"sqlmodel\" or extra == \"dev\" or extra == \"fastapi\""
+markers = "extra == \"pydantic\" or extra == \"sqlmodel\" or extra == \"all\" or extra == \"dev\" or extra == \"fastapi\""
 files = [
     {file = "pydantic_core-2.41.5-cp310-cp310-macosx_10_12_x86_64.whl", hash = "sha256:77b63866ca88d804225eaa4af3e664c5faf3568cea95360d21f4725ab6e07146"},
     {file = "pydantic_core-2.41.5-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:dfa8a0c812ac681395907e71e1274819dec685fec28273a28905df579ef137e2"},
@@ -2009,7 +2009,7 @@ description = "Database Abstraction Library"
 optional = true
 python-versions = ">=3.7"
 groups = ["main"]
-markers = "extra == \"sqlalchemy\" or extra == \"sqlmodel\" or extra == \"dev\""
+markers = "extra == \"sqlalchemy\" or extra == \"sqlmodel\" or extra == \"all\" or extra == \"dev\""
 files = [
     {file = "sqlalchemy-2.0.49-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:42e8804962f9e6f4be2cbaedc0c3718f08f60a16910fa3d86da5a1e3b1bfe60f"},
     {file = "sqlalchemy-2.0.49-cp310-cp310-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:cc992c6ed024c8c3c592c5fc9846a03dd68a425674900c70122c77ea16c5fb0b"},
@@ -2112,7 +2112,7 @@ description = "SQLModel, SQL databases in Python, designed for simplicity, compa
 optional = true
 python-versions = ">=3.10"
 groups = ["main"]
-markers = "extra == \"sqlmodel\" or extra == \"dev\""
+markers = "extra == \"sqlmodel\" or extra == \"all\" or extra == \"dev\""
 files = [
     {file = "sqlmodel-0.0.39-py3-none-any.whl", hash = "sha256:90ebe92ce5cc11d7fff8dc7cb594790a102333c8fe7c14865254f6fc5c939795"},
     {file = "sqlmodel-0.0.39.tar.gz", hash = "sha256:23d8e50a8d8ee936032ed79c55023a5d618dd6bc3c510bbf4909d1a7a605a570"},
@@ -2130,7 +2130,7 @@ description = "A non-validating SQL parser."
 optional = true
 python-versions = ">=3.8"
 groups = ["main"]
-markers = "extra == \"django\" or extra == \"dev\""
+markers = "extra == \"django\" or extra == \"all\" or extra == \"dev\""
 files = [
     {file = "sqlparse-0.5.5-py3-none-any.whl", hash = "sha256:12a08b3bf3eec877c519589833aed092e2444e68240a3577e8e26148acc7b1ba"},
     {file = "sqlparse-0.5.5.tar.gz", hash = "sha256:e20d4a9b0b8585fdf63b10d30066c7c94c5d7a7ec47c889a2d83a3caa93ff28e"},
@@ -2147,7 +2147,7 @@ description = "The little ASGI library that shines."
 optional = true
 python-versions = ">=3.9"
 groups = ["main"]
-markers = "extra == \"fastapi\""
+markers = "extra == \"fastapi\" or extra == \"all\""
 files = [
     {file = "starlette-0.49.3-py3-none-any.whl", hash = "sha256:b579b99715fdc2980cf88c8ec96d3bf1ce16f5a8051a7c2b84ef9b1cdecaea2f"},
     {file = "starlette-0.49.3.tar.gz", hash = "sha256:1c14546f299b5901a1ea0e34410575bc33bbd741377a10484a54445588d00284"},
@@ -2225,7 +2225,7 @@ description = "Backported and Experimental Type Hints for Python 3.9+"
 optional = true
 python-versions = ">=3.9"
 groups = ["main"]
-markers = "python_version == \"3.10\" and (extra == \"pydantic\" or extra == \"sqlmodel\" or extra == \"dev\" or extra == \"fastapi\" or extra == \"sqlalchemy\" or extra == \"django\") or extra == \"pydantic\" or extra == \"sqlmodel\" or extra == \"dev\" or extra == \"fastapi\" or extra == \"sqlalchemy\""
+markers = "python_version == \"3.10\" and (extra == \"pydantic\" or extra == \"sqlmodel\" or extra == \"all\" or extra == \"dev\" or extra == \"fastapi\" or extra == \"sqlalchemy\" or extra == \"django\") or extra == \"pydantic\" or extra == \"sqlmodel\" or extra == \"all\" or extra == \"dev\" or extra == \"fastapi\" or extra == \"sqlalchemy\""
 files = [
     {file = "typing_extensions-4.15.0-py3-none-any.whl", hash = "sha256:f0fa19c6845758ab08074a0cfa8b7aecb71c999ca73d62883bc25cc018c4e548"},
     {file = "typing_extensions-4.15.0.tar.gz", hash = "sha256:0cea48d173cc12fa28ecabc3b837ea3cf6f38c6d1136f85cbaaf598984861466"},
@@ -2238,7 +2238,7 @@ description = "Runtime typing introspection tools"
 optional = true
 python-versions = ">=3.9"
 groups = ["main"]
-markers = "extra == \"pydantic\" or extra == \"sqlmodel\" or extra == \"dev\" or extra == \"fastapi\""
+markers = "extra == \"pydantic\" or extra == \"sqlmodel\" or extra == \"all\" or extra == \"dev\" or extra == \"fastapi\""
 files = [
     {file = "typing_inspection-0.4.2-py3-none-any.whl", hash = "sha256:4ed1cacbdc298c220f1bd249ed5287caa16f34d44ef4e9c3d0cbad5b521545e7"},
     {file = "typing_inspection-0.4.2.tar.gz", hash = "sha256:ba561c48a67c5958007083d386c3295464928b01faa735ab8547c5692e87f464"},
@@ -2254,7 +2254,7 @@ description = "Provider of IANA time zone data"
 optional = true
 python-versions = ">=2"
 groups = ["main"]
-markers = "(extra == \"django\" or extra == \"dev\") and sys_platform == \"win32\""
+markers = "(extra == \"django\" or extra == \"all\" or extra == \"dev\") and sys_platform == \"win32\""
 files = [
     {file = "tzdata-2026.1-py2.py3-none-any.whl", hash = "sha256:4b1d2be7ac37ceafd7327b961aa3a54e467efbdb563a23655fbfe0d39cfc42a9"},
     {file = "tzdata-2026.1.tar.gz", hash = "sha256:67658a1903c75917309e753fdc349ac0efd8c27db7a0cb406a25be4840f87f98"},
@@ -2300,6 +2300,7 @@ python-discovery = ">=1.2.2"
 typing-extensions = {version = ">=4.13.2", markers = "python_version < \"3.11\""}
 
 [extras]
+all = ["django", "fastapi", "pydantic", "sqlalchemy", "sqlmodel"]
 dev = ["black", "django", "flake8", "isort", "mypy", "pre-commit", "pydantic", "pytest", "pytest-cov", "ruff", "sqlalchemy", "sqlmodel"]
 django = ["django"]
 docs = ["myst-parser", "sphinx", "sphinx-rtd-theme"]
@@ -2311,4 +2312,4 @@ sqlmodel = ["pydantic", "sqlalchemy", "sqlmodel"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<4.0"
-content-hash = "34e8a002a7adb4f8ec9762b10b77141d9575d1d8fa5e744875382ce9b3665c63"
+content-hash = "d687ebd2ed456fd892f896f077237c63f86b44964c939ff63e5b1b4f582c3181"

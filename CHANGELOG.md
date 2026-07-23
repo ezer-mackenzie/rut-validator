@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - 2026-07-23
+
+### Added
+- Functional standalone helpers `validate_rut` and `calculate_check_digit`
+- Stable convenience imports for Pydantic, Django, SQLAlchemy, and SQLModel
+- Strict hyphenated output support in `RutFormatter`
+- An `all` installation extra for every supported integration
+
+### Changed
+- Public formatting validates input before converting it
+- Runtime version is now read from installed package metadata
+- Expanded API contract and database round-trip coverage
+
 ## [0.2.0] - 2026-07-22
 
 ### Added
