@@ -148,3 +148,6 @@ Thumbs.db
 .coverage
 .pytest_cache/
 *.log
+
+temp/
+tmp/
