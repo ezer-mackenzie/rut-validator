@@ -1,7 +1,7 @@
 import pytest
 from django.core.exceptions import ValidationError
 
-from rut_validator.core.orm.django.schema import RUTField
+from rut_validator.orm.django import RUTField
 
 
 class TestRUTField:

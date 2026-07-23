@@ -5,8 +5,8 @@ from typing import Optional
 from sqlalchemy import Dialect
 from sqlalchemy.types import String, TypeDecorator
 
-from rut_validator.core.validator import RutValidator
-from rut_validator.errors import RutValidationError
+from ..errors import RutValidationError
+from ..validation import RutValidator
 
 
 class RutType(TypeDecorator[str]):
@@ -19,12 +19,13 @@ class RutType(TypeDecorator[str]):
         self, value: Optional[str], dialect: Dialect
     ) -> Optional[str]:
         del dialect
+
         if value is None:
             return None
-        if not isinstance(value, str):
-            raise ValueError("El RUT debe ser un texto")
+
         try:
             return RutValidator.validate(value).normalized
+
         except RutValidationError as exc:
             raise ValueError(str(exc)) from exc
 

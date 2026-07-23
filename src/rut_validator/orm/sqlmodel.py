@@ -4,8 +4,8 @@ from typing import Any
 
 from sqlmodel import Field
 
-from rut_validator.orm.pydantic import RutStr
-from rut_validator.orm.sqlalchemy import RutType
+from .pydantic import RutStr
+from .sqlalchemy import RutType
 
 
 def RutField(**kwargs: Any) -> Any:

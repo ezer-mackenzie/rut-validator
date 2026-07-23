@@ -1,10 +1,10 @@
 import rut_validator
 from rut_validator import Rut, calculate_check_digit, validate_rut
-from rut_validator.core.formatter import RutFormatter
-from rut_validator.django import RUTField
-from rut_validator.pydantic import RutStr
-from rut_validator.sqlalchemy import RutType
-from rut_validator.sqlmodel import RutField
+from rut_validator.orm.django import RUTField
+from rut_validator.orm.pydantic import RutStr
+from rut_validator.orm.sqlalchemy import RutType
+from rut_validator.orm.sqlmodel import RutField
+from rut_validator.validation import RutFormatter
 
 
 def test_public_standalone_helpers():

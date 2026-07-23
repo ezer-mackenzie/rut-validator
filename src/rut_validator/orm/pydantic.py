@@ -6,8 +6,8 @@ from pydantic import GetCoreSchemaHandler, GetJsonSchemaHandler
 from pydantic.json_schema import JsonSchemaValue
 from pydantic_core import CoreSchema, core_schema
 
-from rut_validator.core.validator import RutValidator
 from rut_validator.errors import RutValidationError
+from rut_validator.validation import RutValidator
 
 
 class RutStr(str):

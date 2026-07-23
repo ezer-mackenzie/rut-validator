@@ -1,7 +1,7 @@
 import pytest
 from pydantic import BaseModel
 
-from rut_validator.core.orm.pydantic.schema import RutStr
+from rut_validator.orm.pydantic import RutStr
 
 
 class TestRutStr:

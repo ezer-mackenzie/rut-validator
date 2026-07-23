@@ -6,8 +6,8 @@ from django.core.exceptions import ValidationError
 from django.core.validators import deconstructible
 from django.db.models import CharField
 
-from rut_validator.core.validator import RutValidator
 from rut_validator.errors import RutValidationError
+from rut_validator.validation import RutValidator
 
 
 @deconstructible
