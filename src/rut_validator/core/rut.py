@@ -58,13 +58,6 @@ class Rut:
                 received=check_digit,
             )
 
-    @classmethod
-    def _from_validated(cls, value: str, format_detected: RutFormat) -> "Rut":
-        instance = object.__new__(cls)
-        object.__setattr__(instance, "value", value)
-        object.__setattr__(instance, "format", format_detected)
-        return instance
-
     @property
     def normalized(self) -> str:
         """

@@ -131,7 +131,7 @@ class RutValidator:
         logger.debug("RUT validation successful")
         assert isinstance(rut, str)
         assert format_detected is not None
-        return Rut._from_validated(rut, format_detected)
+        return Rut(rut, format_detected)
 
     @classmethod
     def module_eleven(cls, body: str) -> str:
