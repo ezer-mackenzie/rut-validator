@@ -14,6 +14,13 @@ from rut_validator.validation import RutFormatter, RutParser, RutPatterns
 Las rutas antiguas `rut_validator.types`, `rut_validator.core.validator` y
 `rut_validator.core.orm` ya no existen.
 
+`ValidatedRut` era exactamente el mismo objeto que `Rut`. Está obsoleto desde
+1.0.x y se eliminará en 2.0. Usa directamente:
+
+```python
+from rut_validator import Rut
+```
+
 ## Pydantic
 
 ```python

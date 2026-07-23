@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Deprecated
+- `ValidatedRut`, which was only an alias of `Rut`; use `Rut` directly
+
 ### Removed
 - Obsolete `Makefile`; Poetry, pre-commit, and CI provide the maintained
   development workflows

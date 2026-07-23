@@ -1,3 +1,5 @@
+import pytest
+
 import rut_validator
 from rut_validator import Rut, calculate_check_digit, validate_rut
 from rut_validator.orm.django import RutDjango
@@ -28,3 +30,16 @@ def test_formatter_validates_and_formats():
     assert RutFormatter.to_original_format("123456785") == "12.345.678-5"
     assert RutFormatter.to_normalize_format("12.345.678-5") == "123456785"
     assert RutFormatter.to_hyphenated_format("123456785") == "12345678-5"
+
+
+def test_validated_rut_is_deprecated_compatibility_alias():
+    assert "ValidatedRut" not in rut_validator.__all__
+
+    with pytest.warns(DeprecationWarning, match="usa Rut"):
+        assert rut_validator.ValidatedRut is Rut
+
+
+def test_unknown_root_attribute_raises_attribute_error():
+    unknown_name = "UnknownType"
+    with pytest.raises(AttributeError):
+        getattr(rut_validator, unknown_name)
