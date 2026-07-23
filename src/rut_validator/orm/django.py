@@ -3,8 +3,8 @@
 from typing import Any
 
 from django.core.exceptions import ValidationError
-from django.core.validators import deconstructible
 from django.db.models import CharField
+from django.utils.deconstruct import deconstructible
 
 from ..errors import RutValidationError
 from ..validation import RutValidator
