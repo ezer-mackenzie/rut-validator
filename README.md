@@ -130,15 +130,23 @@ class Person(Base):
     rut = Column(RutType)  # Validación y normalización automáticas
 ```
 
-## 📚 Guía Completa
+## 📚 Documentación
 
-Lee la documentación completa en [docs/GUIA_RUT_VALIDATOR.md](docs/GUIA_RUT_VALIDATOR.md)
+Lee la documentación completa en [docs/index.md](docs/index.md) o constrúyela
+localmente:
+
+```bash
+poetry install --all-extras
+poetry run mkdocs serve
+```
 
 ## 🧪 Ejemplos
 
 - [Validación pura](examples/01_pure_validation.py)
 - [Uso con Pydantic](examples/02_pydantic_usage.py)
 - [Uso con FastAPI](examples/03_fastapi_usage.py)
+- [Uso del CLI](examples/04_cli_usage.py)
+- [Uso con SQLModel](examples/05_sqlmodel_usage.py)
 
 ## 🔧 Desarrollo
 
