@@ -1,7 +1,7 @@
 # Migración desde versiones 0.x
 
-La API candidata a 1.0 quedó estabilizada en 0.9.0. Los proyectos que utilizaban
-versiones tempranas deben actualizar imports y nombres antes de adoptar 1.0.
+La API pública quedó estabilizada en 1.0.0. Los proyectos que utilizaban
+versiones tempranas deben actualizar imports y nombres al adoptar 1.0.
 
 ## Core y validación
 
@@ -62,7 +62,7 @@ except RutValidationError as error:
     code = error.code
 ```
 
-## Contrato congelado
+## Contrato estable
 
-A partir de `1.0.0rc1` sólo se corregirán bugs. No se renombrarán símbolos ni
-se moverán módulos públicos antes de `1.0.0`.
+A partir de `1.0.0`, los cambios incompatibles requieren una nueva versión
+mayor. Los símbolos obsoletos seguirán la política de deprecación publicada.

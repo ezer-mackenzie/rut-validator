@@ -7,7 +7,8 @@
 [![codecov](https://codecov.io/gh/ezer-mackenzie/rut-validator/branch/main/graph/badge.svg)](https://codecov.io/gh/ezer-mackenzie/rut-validator)
 [![Documentation Status](https://readthedocs.org/projects/rut-validator/badge/?version=latest)](https://rut-validator.readthedocs.io/en/latest/?badge=latest)
 
-Librería para validar RUT chileno con enfoque Pydantic-first y soporte completo para frameworks web.
+Librería agnóstica para validar RUT chileno, con integraciones opcionales para
+frameworks web y ORM.
 
 ## ✨ Características
 
