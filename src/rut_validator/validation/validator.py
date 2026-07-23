@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import logging
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Final
 
 from rut_validator.core.enums import ValidationResult
 from rut_validator.validation.parser import RutParser
@@ -15,12 +15,11 @@ from rut_validator.errors import (
     RutModuleElevenValidationError,
 )
 
-from rut_validator.constants import RUT_MODULE_ELEVEN_FACTORS
-
 if TYPE_CHECKING:
     from rut_validator.core.rut import Rut
 
 logger = logging.getLogger(__name__)
+RUT_MODULE_ELEVEN_FACTORS: Final[tuple[int, ...]] = (2, 3, 4, 5, 6, 7)
 
 
 def calculate_check_digit(body: str) -> str:
