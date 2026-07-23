@@ -19,6 +19,7 @@ class Person(models.Model):
 `RutDjango`:
 
 - usa una longitud de almacenamiento de 9 caracteres;
+- acepta hasta 12 caracteres formateados en formularios;
 - normaliza antes de preparar el valor para la base de datos;
 - admite `None` cuando el campo se configura como nullable;
 - expone errores Django con código `invalid_rut`;
@@ -37,6 +38,7 @@ person.save()
 ```
 
 Después de la preparación para base de datos el valor canónico es `123456785`.
+Durante `ModelForm.is_valid()` la instancia ya contiene el valor normalizado.
 
 ## Formularios, nulos y blancos
 

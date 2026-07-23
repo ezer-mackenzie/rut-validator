@@ -32,8 +32,9 @@ with Session(engine) as session:
 ```
 
 `RutSQLAlchemy` valida al enlazar el parámetro y almacena `123456785` en un
-`VARCHAR(9)`. Los valores inválidos generan un `StatementError` de SQLAlchemy
-cuya causa es el error de validación.
+`VARCHAR(9)`. También valida al leer para detectar datos históricos corruptos.
+Los valores inválidos generan un `StatementError` de SQLAlchemy cuya causa es
+el error de validación.
 
 ## SQLModel
 
