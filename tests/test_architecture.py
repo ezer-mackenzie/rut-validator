@@ -11,9 +11,9 @@ from rut_validator.validation import (
 
 
 def test_core_exports_only_domain_types():
-    import rut_validator.core as core
+    from rut_validator import core
 
-    assert core.__all__ == ["RutFormat", "Rut", "ValidationResult"]
+    assert set(core.__all__) == {"RutFormat", "Rut", "ValidationResult"}
     assert Rut
     assert RutFormat
     assert ValidationResult

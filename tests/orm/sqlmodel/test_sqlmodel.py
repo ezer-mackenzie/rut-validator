@@ -1,5 +1,4 @@
 import json
-from typing import Optional
 
 import pytest
 from sqlalchemy.exc import StatementError
@@ -9,13 +8,13 @@ from rut_validator.orm.sqlmodel import RutSQLModel, rut_sqlmodel_field
 
 
 class Person(SQLModel, table=True):
-    id: Optional[int] = Field(default=None, primary_key=True)
+    id: int | None = Field(default=None, primary_key=True)
     rut: RutSQLModel = rut_sqlmodel_field(unique=True)
 
 
 class OptionalPerson(SQLModel, table=True):
-    id: Optional[int] = Field(default=None, primary_key=True)
-    rut: Optional[RutSQLModel] = rut_sqlmodel_field(default=None, nullable=True)
+    id: int | None = Field(default=None, primary_key=True)
+    rut: RutSQLModel | None = rut_sqlmodel_field(default=None, nullable=True)
 
 
 def test_sqlmodel_round_trip_normalizes_rut():

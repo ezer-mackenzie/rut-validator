@@ -1,3 +1,5 @@
+from typing import ClassVar
+
 import django
 import pytest
 from django import forms
@@ -34,7 +36,7 @@ class OptionalPerson(models.Model):
 class PersonForm(forms.ModelForm):
     class Meta:
         model = Person
-        fields = ["rut"]
+        fields: ClassVar = ["rut"]
 
 
 @pytest.fixture(autouse=True)

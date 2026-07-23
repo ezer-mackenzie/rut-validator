@@ -1,7 +1,5 @@
 """Validated RUT value object."""
 
-from typing import Optional
-
 from dataclasses import dataclass
 
 from rut_validator.core.enums import RutFormat
@@ -44,7 +42,7 @@ class Rut:
     def __init__(
         self,
         value: str,
-        format_detected: Optional[RutFormat] = None,
+        format_detected: RutFormat | None = None,
     ) -> None:
         body, check_digit, detected_format = RutParser.destructure(value)
         object.__setattr__(self, "value", value)

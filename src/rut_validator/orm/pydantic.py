@@ -6,14 +6,14 @@ from pydantic import GetCoreSchemaHandler, GetJsonSchemaHandler
 from pydantic.json_schema import JsonSchemaValue
 from pydantic_core import CoreSchema, core_schema
 
-from rut_validator.errors import RutValidationError
-from rut_validator.validation import RutValidator
+from ..errors import RutValidationError
+from ..validation import RutValidator
 
 
 class RutPydantic(str):
     """A validated RUT string stored in normalized form."""
 
-    def __new__(cls, value: str) -> "RutPydantic":
+    def __new__(cls, value: str) -> "RutPydantic":  # noqa: PYI034
         return str.__new__(cls, cls._normalize(value))
 
     @staticmethod
@@ -50,8 +50,8 @@ class RutPydantic(str):
             {
                 "type": "string",
                 "pattern": (
-                    r"^(?:\d{1,2}(?:\.\d{3}){2}-[0-9kK]"
-                    r"|\d{7,8}-[0-9kK]|\d{7,8}[0-9kK])$"
+                    r"^(?:[0-9]{1,2}(?:\.[0-9]{3}){2}-[0-9kK]"
+                    r"|[0-9]{7,8}-[0-9kK]|[0-9]{7,8}[0-9kK])$"
                 ),
                 "examples": ["12.345.678-5", "12345678-5", "123456785"],
                 "description": "RUT chileno válido; se normaliza antes de almacenar.",

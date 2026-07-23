@@ -1,13 +1,13 @@
 """Django model field integration."""
 
-from typing import Any, Optional
+from typing import Any
 
 from django.core.exceptions import ValidationError
 from django.core.validators import deconstructible
 from django.db.models import CharField
 
-from rut_validator.errors import RutValidationError
-from rut_validator.validation import RutValidator
+from ..errors import RutValidationError
+from ..validation import RutValidator
 
 
 @deconstructible
@@ -36,7 +36,7 @@ class RutDjango(CharField):
         super().__init__(*args, **kwargs)
         self.validators.append(RutDjangoValidator())
 
-    def to_python(self, value: object) -> Optional[str]:
+    def to_python(self, value: object) -> str | None:
         if value is None:
             return None
         if not isinstance(value, str):
@@ -46,7 +46,7 @@ class RutDjango(CharField):
         except RutValidationError as exc:
             raise ValidationError(str(exc), code="invalid_rut") from exc
 
-    def get_prep_value(self, value: object) -> Optional[str]:
+    def get_prep_value(self, value: object) -> str | None:
         return self.to_python(value)
 
     def formfield(self, **kwargs: Any) -> Any:

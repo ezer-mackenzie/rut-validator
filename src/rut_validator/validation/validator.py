@@ -3,20 +3,18 @@
 from __future__ import annotations
 
 import logging
-
 from typing import TYPE_CHECKING, Final
 
-from rut_validator.core.enums import ValidationResult
-from rut_validator.validation.parser import RutParser
-
-from rut_validator.errors import (
+from ..core.enums import ValidationResult
+from ..errors import (
     RutInvalidFormatError,
     RutInvalidValueError,
     RutModuleElevenValidationError,
 )
+from ..validation.parser import RutParser
 
 if TYPE_CHECKING:
-    from rut_validator.core.rut import Rut
+    from ..core.rut import Rut
 
 logger = logging.getLogger(__name__)
 RUT_MODULE_ELEVEN_FACTORS: Final[tuple[int, ...]] = (2, 3, 4, 5, 6, 7)
@@ -27,7 +25,7 @@ def calculate_check_digit(body: str) -> str:
     return RutValidator.module_eleven(body)
 
 
-def validate_rut(value: object) -> "Rut":
+def validate_rut(value: object) -> Rut:
     """Validate *value* and return an immutable :class:`Rut` value object."""
     return RutValidator.validate(value)
 
@@ -143,7 +141,7 @@ class RutValidator:
         Returns:
             str: The calculated check digit (0-9 or 'K')
         """
-        if not isinstance(body, str) or not body.isascii() or not body.isdigit():
+        if not body.isascii() or not body.isdigit():
             raise RutInvalidValueError("El cuerpo del RUT debe contener sólo dígitos")
 
         reversed_digits = map(int, reversed(body))

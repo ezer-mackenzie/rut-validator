@@ -1,9 +1,8 @@
 """RUT pattern definitions and format detection."""
 
 from re import compile
-from typing import Optional
 
-from rut_validator.core.enums import RutFormat
+from ..core.enums import RutFormat
 
 
 class RutPatterns:
@@ -27,7 +26,7 @@ class RutPatterns:
     CLEANING_PATTERN = compile(r"[^0-9kK]")
 
     @classmethod
-    def detect_format(cls, rut: str) -> Optional[RutFormat]:
+    def detect_format(cls, rut: str) -> RutFormat | None:
         """
         Detect the format of a RUT string.
 

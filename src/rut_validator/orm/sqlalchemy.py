@@ -1,7 +1,5 @@
 """SQLAlchemy 2 integration."""
 
-from typing import Optional
-
 from sqlalchemy import Dialect
 from sqlalchemy.types import String, TypeDecorator
 
@@ -15,9 +13,7 @@ class RutSQLAlchemy(TypeDecorator[str]):
     impl = String(9)
     cache_ok = True
 
-    def process_bind_param(
-        self, value: Optional[str], dialect: Dialect
-    ) -> Optional[str]:
+    def process_bind_param(self, value: str | None, dialect: Dialect) -> str | None:
         del dialect
 
         if value is None:
@@ -29,9 +25,7 @@ class RutSQLAlchemy(TypeDecorator[str]):
         except RutValidationError as exc:
             raise ValueError(str(exc)) from exc
 
-    def process_result_value(
-        self, value: Optional[str], dialect: Dialect
-    ) -> Optional[str]:
+    def process_result_value(self, value: str | None, dialect: Dialect) -> str | None:
         del dialect
         if value is None:
             return None

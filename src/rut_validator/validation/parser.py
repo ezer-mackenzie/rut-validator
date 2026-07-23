@@ -1,19 +1,16 @@
-from typing import Optional, Tuple
-
 from rut_validator.core.enums import RutFormat
-from rut_validator.validation.patterns import RutPatterns
-
 from rut_validator.errors import (
     RutInvalidFormatError,
     RutInvalidValueError,
 )
+from rut_validator.validation.patterns import RutPatterns
 
 
 class RutParser:
     """Parser for Chilean RUT strings with format detection."""
 
     @classmethod
-    def parse(cls, rut: object) -> Tuple[str, str, Optional[RutFormat]]:
+    def parse(cls, rut: object) -> tuple[str, str, RutFormat | None]:
         """
         Parses a RUT string and returns body, check_digit, and detected format.
 
@@ -36,7 +33,7 @@ class RutParser:
         return body, check_digit, format_detected
 
     @classmethod
-    def destructure(cls, rut: object) -> Tuple[str, str, Optional[RutFormat]]:
+    def destructure(cls, rut: object) -> tuple[str, str, RutFormat | None]:
         """
         Destructures a RUT string into its body and check digit components,
         while also detecting the input format.

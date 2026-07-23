@@ -5,14 +5,16 @@ This script demonstrates various CLI commands for validating, formatting,
 and processing Chilean RUTs.
 """
 
-import subprocess
 import json
+import subprocess
 from pathlib import Path
 
 
 def run_command(cmd: str) -> str:
     """Run a CLI command and return the output."""
-    result = subprocess.run(cmd, shell=True, capture_output=True, text=True)
+    result = subprocess.run(
+        cmd, shell=True, capture_output=True, text=True, check=False
+    )
     return result.stdout + result.stderr
 
 

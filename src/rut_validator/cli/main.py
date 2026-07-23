@@ -2,7 +2,6 @@
 
 import json as json_module
 from pathlib import Path
-from typing import Optional
 
 import click
 
@@ -98,7 +97,7 @@ def info(rut: str, detailed: bool) -> None:
 @cli.command()
 @click.argument("file", type=click.Path(exists=True, dir_okay=False, path_type=Path))
 @click.option("--output", type=click.Path(dir_okay=False, path_type=Path))
-def batch(file: Path, output: Optional[Path]) -> None:
+def batch(file: Path, output: Path | None) -> None:
     """Valida un RUT por línea y entrega JSON Lines."""
     rows: list[str] = []
     has_errors = False

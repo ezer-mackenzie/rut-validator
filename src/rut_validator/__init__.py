@@ -19,15 +19,15 @@ try:
 except PackageNotFoundError:  # pragma: no cover - source tree without install
     __version__ = "0+unknown"
 __all__ = [
-    "RutValidator",  # For pure validation
     "Rut",
-    "ValidatedRut",  # Validation result (alias for Rut)
     "RutFormat",  # Format enumeration
-    "ValidationResult",
-    "calculate_check_digit",
-    "validate_rut",
     "RutInvalidFormatError",  # Custom exception
     "RutInvalidValueError",  # Custom exception
     "RutModuleElevenValidationError",  # Custom exception
     "RutValidationError",  # Base exception
+    "RutValidator",  # For pure validation
+    "ValidatedRut",  # Validation result (alias for Rut)
+    "ValidationResult",
+    "calculate_check_digit",
+    "validate_rut",
 ]

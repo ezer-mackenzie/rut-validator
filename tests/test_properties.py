@@ -1,4 +1,5 @@
-from hypothesis import given, strategies as st
+from hypothesis import given
+from hypothesis import strategies as st
 
 from rut_validator import calculate_check_digit, validate_rut
 from rut_validator.validation import RutValidator

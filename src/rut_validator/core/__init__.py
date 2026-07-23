@@ -4,7 +4,7 @@ from .enums import RutFormat, ValidationResult
 from .rut import Rut
 
 __all__ = [
-    "RutFormat",
     "Rut",
+    "RutFormat",
     "ValidationResult",
 ]

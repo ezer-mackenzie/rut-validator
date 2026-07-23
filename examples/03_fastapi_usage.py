@@ -14,6 +14,7 @@ Then visit:
 
 from fastapi import FastAPI
 from pydantic import BaseModel
+
 from rut_validator import RutValidator
 from rut_validator.orm.pydantic import RutPydantic
 
