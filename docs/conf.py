@@ -1,12 +1,12 @@
 # Configuration file for the Sphinx documentation builder.
 
-from importlib.metadata import version
+from importlib.metadata import version as distribution_version
 
 # -- Project information -----------------------------------------------------
 project = "rut-validator"
 copyright = "2024, Eli-ezer Reuven Ramirez Ruiz"
 author = "Eli-ezer Reuven Ramirez Ruiz"
-release = version("rut-validator")
+release = distribution_version("rut-validator")
 
 # -- General configuration ---------------------------------------------------
 extensions = [
