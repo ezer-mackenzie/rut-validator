@@ -54,7 +54,7 @@ Resultados posibles:
 El formatter público primero valida y después convierte:
 
 ```python
-from rut_validator.core import RutFormatter
+from rut_validator.validation import RutFormatter
 
 assert RutFormatter.to_original_format("123456785") == "12.345.678-5"
 assert RutFormatter.to_normalize_format("12.345.678-5") == "123456785"

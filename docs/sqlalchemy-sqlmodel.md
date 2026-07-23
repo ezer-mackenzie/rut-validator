@@ -9,7 +9,7 @@ pip install "rut-validator[sqlalchemy]"
 ```python
 from sqlalchemy import create_engine
 from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column
-from rut_validator.sqlalchemy import RutType
+from rut_validator.orm.sqlalchemy import RutType
 
 
 class Base(DeclarativeBase):
@@ -46,8 +46,8 @@ pip install "rut-validator[sqlmodel]"
 ```python
 from typing import Optional
 from sqlmodel import Field, SQLModel
-from rut_validator.pydantic import RutStr
-from rut_validator.sqlmodel import RutField
+from rut_validator.orm.pydantic import RutStr
+from rut_validator.orm.sqlmodel import RutField
 
 
 class Person(SQLModel, table=True):

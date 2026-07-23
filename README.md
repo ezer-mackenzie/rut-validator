@@ -91,7 +91,7 @@ for rut_str in formats:
 
 ```python
 from pydantic import BaseModel
-from rut_validator import RutStr
+from rut_validator.orm.pydantic import RutStr
 
 class User(BaseModel):
     name: str

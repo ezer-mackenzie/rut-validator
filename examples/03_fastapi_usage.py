@@ -14,7 +14,8 @@ Then visit:
 
 from fastapi import FastAPI
 from pydantic import BaseModel
-from rut_validator import RutStr, RutValidator
+from rut_validator import RutValidator
+from rut_validator.orm.pydantic import RutStr
 
 app = FastAPI(title="RUT Validator API")
 

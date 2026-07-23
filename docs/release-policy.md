@@ -4,8 +4,9 @@ El proyecto sigue Semantic Versioning.
 
 - `0.x`: la API continúa estabilizándose.
 - `1.x`: contrato público estable.
-- Los adapters bajo `rut_validator.orm` y `rut_validator.core.orm` son rutas de
-  compatibilidad; los imports cortos documentados son la API recomendada.
+- Los tipos bajo `rut_validator.core`, la lógica bajo
+  `rut_validator.validation` y los adapters bajo `rut_validator.orm` forman la
+  arquitectura pública.
 
 ## Gate de release
 

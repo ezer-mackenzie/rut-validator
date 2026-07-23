@@ -4,8 +4,8 @@ from typing import Optional
 
 from sqlmodel import Field, Session, SQLModel, create_engine, select
 
-from rut_validator.pydantic import RutStr
-from rut_validator.sqlmodel import RutField
+from rut_validator.orm.pydantic import RutStr
+from rut_validator.orm.sqlmodel import RutField
 
 
 class Person(SQLModel, table=True):

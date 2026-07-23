@@ -6,7 +6,7 @@ when used in Pydantic BaseModel.
 """
 
 from pydantic import BaseModel, ValidationError
-from rut_validator import RutStr
+from rut_validator.orm.pydantic import RutStr
 
 import json
 

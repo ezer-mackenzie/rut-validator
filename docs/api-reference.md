@@ -51,10 +51,11 @@ ValueError
 
 | Import | Símbolos |
 | --- | --- |
-| `rut_validator.pydantic` | `RutStr` |
-| `rut_validator.sqlalchemy` | `RutType`, `RutSQLAlchemy` |
-| `rut_validator.sqlmodel` | `RutField`, `RutStr` |
-| `rut_validator.django` | `RUTField`, `RutDjangoValidator` |
+| `rut_validator.orm.pydantic` | `RutStr` |
+| `rut_validator.orm.sqlalchemy` | `RutType`, `RutSQLAlchemy` |
+| `rut_validator.orm.sqlmodel` | `RutField`, `RutStr` |
+| `rut_validator.orm.django` | `RUTField`, `RutDjangoValidator` |
 
-Las rutas históricas bajo `rut_validator.core.orm` continúan disponibles por
-compatibilidad, pero no deben utilizarse en código nuevo.
+Los tipos de dominio están en `rut_validator.core`; la implementación agnóstica
+está en `rut_validator.validation`; los adapters viven únicamente en
+`rut_validator.orm`.
