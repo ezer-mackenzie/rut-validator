@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.0] - 2026-07-23
+
+### Added
+- Stable machine-readable codes and structured payloads for validation errors
+- Check-digit metadata on modulo-11 validation failures
+- Property-based modulo-11 tests powered by Hypothesis
+- CLI coverage for structured JSON errors, info, and batch processing
+
+### Changed
+- Format recognition now accepts ASCII digits only and uses complete matches
+- Boolean validation helpers safely reject malformed types, Unicode digits,
+  whitespace, alternate hyphens, and oversized input
+- CLI JSON errors remain valid JSON and omit the submitted RUT
+
+### Removed
+- The tracked temporary v1 audit; `tmp/` and `temp/` are now local-only
+
 ## [0.6.0] - 2026-07-23
 
 ### Changed
