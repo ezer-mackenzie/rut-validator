@@ -1,7 +1,7 @@
 from typing import Optional, Tuple
 
-from rut_validator.core.patterns import RutPatterns
-from rut_validator.types.enums import RutFormat
+from rut_validator.core.enums import RutFormat
+from rut_validator.validation.patterns import RutPatterns
 
 from rut_validator.errors import (
     RutInvalidFormatError,

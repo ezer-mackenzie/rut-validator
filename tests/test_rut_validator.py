@@ -1,10 +1,8 @@
 import pytest
 
-from rut_validator.core.parser import RutParser
-from rut_validator.core.validator import RutValidator
-from rut_validator.core.patterns import RutFormat, RutPatterns
+from rut_validator.core import Rut, RutFormat
 from rut_validator.errors import RutInvalidFormatError, RutValidationError
-from rut_validator.types.rut import Rut
+from rut_validator.validation import RutParser, RutPatterns, RutValidator
 
 
 def test_rut_object_normalizes_and_formats_correctly():

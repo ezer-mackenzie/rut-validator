@@ -6,8 +6,8 @@ import logging
 
 from typing import TYPE_CHECKING
 
-from rut_validator.core.parser import RutParser
-from rut_validator.types.enums import ValidationResult
+from rut_validator.core.enums import ValidationResult
+from rut_validator.validation.parser import RutParser
 
 from rut_validator.errors import (
     RutInvalidFormatError,
@@ -18,7 +18,7 @@ from rut_validator.errors import (
 from rut_validator.constants import RUT_MODULE_ELEVEN_FACTORS
 
 if TYPE_CHECKING:
-    from rut_validator.types.rut import Rut
+    from rut_validator.core.rut import Rut
 
 logger = logging.getLogger(__name__)
 
@@ -128,7 +128,7 @@ class RutValidator:
                 f"El dígito verificador no coincide, se esperaba '{check_digit_expected}' en vez de '{check_digit}'"
             )
 
-        from rut_validator.types.rut import Rut
+        from rut_validator.core.rut import Rut
 
         logger.debug("RUT validation successful")
         assert isinstance(rut, str)

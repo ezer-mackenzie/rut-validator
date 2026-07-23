@@ -3,7 +3,7 @@
 from re import compile
 from typing import Optional
 
-from rut_validator.types.enums import RutFormat
+from rut_validator.core.enums import RutFormat
 
 
 class RutPatterns:
