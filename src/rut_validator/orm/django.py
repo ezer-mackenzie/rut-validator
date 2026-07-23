@@ -29,6 +29,7 @@ class RutDjango(CharField):
     """A Django field that validates and stores normalized RUT strings."""
 
     description = "RUT chileno normalizado"
+    max_input_length = 12
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         kwargs.setdefault("max_length", 9)
@@ -47,6 +48,11 @@ class RutDjango(CharField):
 
     def get_prep_value(self, value: object) -> Optional[str]:
         return self.to_python(value)
+
+    def formfield(self, **kwargs: Any) -> Any:
+        """Accept formatted input while keeping normalized database storage."""
+        kwargs.setdefault("max_length", self.max_input_length)
+        return super().formfield(**kwargs)
 
 
 __all__ = ["RutDjango", "RutDjangoValidator"]
