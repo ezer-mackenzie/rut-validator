@@ -47,6 +47,24 @@ ValueError
     └── RutModuleElevenValidationError
 ```
 
+Todas las excepciones incluyen un código estable y pueden serializarse sin
+analizar el mensaje:
+
+```python
+from rut_validator import RutModuleElevenValidationError, validate_rut
+
+try:
+    validate_rut("12.345.678-0")
+except RutModuleElevenValidationError as error:
+    assert error.code == "invalid_check_digit"
+    assert error.expected_check_digit == "5"
+    assert error.received_check_digit == "0"
+    payload = error.as_dict()
+```
+
+Los códigos públicos son `invalid_value`, `invalid_format` e
+`invalid_check_digit`. Los payloads no incluyen el RUT recibido.
+
 ## Integraciones opcionales
 
 | Import | Símbolos |

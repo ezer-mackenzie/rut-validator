@@ -73,6 +73,9 @@ except RutModuleElevenValidationError:
 Todos los errores públicos heredan de `RutValidationError`, que a su vez hereda
 de `ValueError`.
 
+Para APIs y logs estructurados utiliza `error.code` o `error.as_dict()` en vez
+de comparar el mensaje traducible.
+
 ## Formatos aceptados
 
 | Formato | Ejemplo | Enum |
@@ -81,4 +84,6 @@ de `ValueError`.
 | Sólo con guion | `12345678-5` | `RutFormat.HYPHENATED` |
 | Normalizado | `123456785` | `RutFormat.NORMALIZED` |
 
-No se eliminan espacios ni caracteres arbitrarios durante la validación.
+No se eliminan espacios ni caracteres arbitrarios durante la validación. Sólo
+se aceptan dígitos ASCII (`0-9`); dígitos Unicode visualmente similares se
+rechazan.

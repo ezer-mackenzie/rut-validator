@@ -10,7 +10,8 @@ rut-validator validate 12.345.678-5 --json
 ```
 
 La salida JSON incluye estado, formatos canónicos, cuerpo, DV y formato de
-entrada.
+entrada. En caso de error, `--json` mantiene una salida JSON pura con `code` y
+`message`, sin incluir el RUT recibido.
 
 ## Formatear
 
