@@ -15,14 +15,14 @@ This project follows a code of conduct to ensure a welcoming environment for all
 
 ### 1. Reporting Bugs
 
-- Use the [GitHub Issues](https://github.com/yourusername/rut-validator/issues) to report bugs
+- Use the [GitHub Issues](https://github.com/ezer-mackenzie/rut-validator/issues) to report bugs
 - Include detailed steps to reproduce the issue
 - Provide sample code if possible
 - Include your Python version and operating system
 
 ### 2. Suggesting Features
 
-- Open a [GitHub Issue](https://github.com/yourusername/rut-validator/issues) with the "enhancement" label
+- Open a [GitHub Issue](https://github.com/ezer-mackenzie/rut-validator/issues) with the "enhancement" label
 - Clearly describe the feature and its use case
 - Explain why this feature would be useful to other users
 
@@ -32,7 +32,7 @@ This project follows a code of conduct to ensure a welcoming environment for all
 
 ```bash
 # Fork and clone the repository
-git clone https://github.com/yourusername/rut-validator.git
+git clone https://github.com/ezer-mackenzie/rut-validator.git
 cd rut-validator
 
 # Install dependencies

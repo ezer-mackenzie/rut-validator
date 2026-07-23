@@ -53,7 +53,7 @@ def create_person(person: Person) -> PersonResponse:
     ```json
     {
         "name": "Juan Pérez",
-        "rut": "12345678-9"
+        "rut": "12345678-5"
     }
     ```
 
@@ -61,10 +61,10 @@ def create_person(person: Person) -> PersonResponse:
     ```json
     {
         "name": "Juan Pérez",
-        "rut": "123456789",
+        "rut": "123456785",
         "rut_formatted": "12.345.678-9",
         "rut_number": 12345678,
-        "rut_digit": "9"
+        "rut_digit": "5"
     }
     ```
 
@@ -90,7 +90,7 @@ def create_persons(persons: list[Person]) -> dict:
     [
         {
             "name": "Juan Pérez",
-            "rut": "12345678-9"
+            "rut": "12345678-5"
         },
         {
             "name": "María García",

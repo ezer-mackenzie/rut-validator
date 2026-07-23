@@ -57,9 +57,9 @@ Validación simple
    # Validar RUT con cualquier formato
    rut = RutValidator.validate("20.884.437-7")
    print(f"RUT válido: {rut.formatted}")  # "20.884.437-7"
-   print(f"Número: {rut.number}")          # 20884437
-   print(f"Dígito: {rut.digit}")          # "7"
-   print(f"Formato: {rut.format}")        # RutFormat.DOTTED
+   print(f"Número: {rut.body}")            # 20884437
+   print(f"Dígito: {rut.check_digit}")     # "7"
+   print(f"Formato: {rut.format}")         # RutFormat.FORMATTED
 
 Detección de formato
 ~~~~~~~~~~~~~~~~~~~~

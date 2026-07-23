@@ -38,6 +38,9 @@ pip install rut-validator[sqlmodel]
 # Con soporte FastAPI
 pip install rut-validator[fastapi]
 
+# Todas las integraciones
+pip install rut-validator[all]
+
 # Para desarrollo
 pip install rut-validator[dev]
 ```
@@ -55,6 +58,16 @@ print(f"RUT válido: {rut.formatted}")  # "20.884.437-7"
 print(f"Número: {rut.body}")           # 20884437
 print(f"Dígito: {rut.check_digit}")    # "7"
 print(f"Formato: {rut.format}")        # RutFormat.FORMATTED
+```
+
+Para un uso funcional más directo:
+
+```python
+from rut_validator import calculate_check_digit, validate_rut
+
+rut = validate_rut("12.345.678-5")
+assert rut.normalized == "123456785"
+assert calculate_check_digit("12345678") == "5"
 ```
 
 ### Detección de Formato
@@ -133,7 +146,7 @@ Lee la documentación completa en [docs/GUIA_RUT_VALIDATOR.md](docs/GUIA_RUT_VAL
 
 ```bash
 # Clonar repositorio
-git clone https://github.com/yourusername/rut-validator.git
+git clone https://github.com/ezer-mackenzie/rut-validator.git
 cd rut-validator
 
 # Instalar dependencias de desarrollo
@@ -174,6 +187,6 @@ Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) par
 
 ## 📞 Soporte
 
-- 🐛 [Reportar bugs](https://github.com/yourusername/rut-validator/issues)
-- 💡 [Sugerir features](https://github.com/yourusername/rut-validator/issues)
+- 🐛 [Reportar bugs](https://github.com/ezer-mackenzie/rut-validator/issues)
+- 💡 [Sugerir features](https://github.com/ezer-mackenzie/rut-validator/issues)
 - 📖 [Documentación](https://rut-validator.readthedocs.io/)

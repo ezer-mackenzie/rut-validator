@@ -523,6 +523,6 @@ poetry install
 ## Support
 
 For bugs, feature requests, or questions:
-- GitHub Issues: https://github.com/yourusername/rut-validator/issues
+- GitHub Issues: https://github.com/ezer-mackenzie/rut-validator/issues
 - Documentation: https://rut-validator.readthedocs.io/
 - PyPI: https://pypi.org/project/rut-validator/
