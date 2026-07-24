@@ -1,6 +1,6 @@
-# Desarrollo y contribución
+# Development and contribution
 
-## Preparar el entorno
+## Set up the environment
 
 ```bash
 git clone https://github.com/ezer-mackenzie/rut-validator.git
@@ -8,7 +8,7 @@ cd rut-validator
 poetry install --all-extras
 ```
 
-## Verificaciones
+## Quality checks
 
 ```bash
 poetry run pytest --cov=rut_validator
@@ -19,24 +19,24 @@ poetry run mkdocs build --strict
 poetry build
 ```
 
-## Servir documentación
+## Serve documentation
 
 ```bash
 poetry run mkdocs serve
 ```
 
-MkDocs sirve el sitio en `http://127.0.0.1:8000` y recarga al modificar archivos.
+MkDocs serves the site at `http://127.0.0.1:8000` and reloads it when files
+change.
 
 ## Commits
 
-El proyecto utiliza Conventional Commits:
+The project uses Conventional Commits:
 
-- `feat:` funcionalidad nueva;
-- `fix:` corrección;
-- `refactor:` cambio interno;
-- `test:` cobertura;
-- `docs:` documentación;
-- `chore:` mantenimiento y release.
+- `feat:` new functionality;
+- `fix:` bug fix;
+- `refactor:` internal change;
+- `test:` test coverage;
+- `docs:` documentation;
+- `chore:` maintenance and releases.
 
-Toda API pública nueva debe incluir tests, documentación y una entrada en el
-changelog.
+Every new public API must include tests, documentation, and a changelog entry.

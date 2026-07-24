@@ -1,19 +1,19 @@
-# Instalación y primeros pasos
+# Getting started
 
-## Requisitos
+## Requirements
 
-- Python 3.10 o superior.
-- `pip`, Poetry u otro instalador compatible con paquetes Python.
+- Python 3.10 through 3.14.
+- `pip`, Poetry, or another standards-compliant Python package installer.
 
-## Instalación
+## Installation
 
-El paquete base incluye el core y el CLI:
+The base package includes the standalone validation API and CLI:
 
 ```bash
 pip install rut-validator
 ```
 
-Las integraciones se instalan mediante extras:
+Install only the integrations your application needs:
 
 ```bash
 pip install "rut-validator[pydantic]"
@@ -24,23 +24,22 @@ pip install "rut-validator[sqlmodel]"
 pip install "rut-validator[all]"
 ```
 
-## Validación funcional
+## Validate a RUT
 
 ```python
 from rut_validator import calculate_check_digit, validate_rut
 
 rut = validate_rut("20.884.437-7")
 
-print(rut.normalized)   # 208844377
-print(rut.formatted)    # 20.884.437-7
-print(rut.hyphenated)   # 20884437-7
-print(rut.body)         # 20884437
-print(rut.check_digit)  # 7
-
+assert rut.normalized == "208844377"
+assert rut.formatted == "20.884.437-7"
+assert rut.hyphenated == "20884437-7"
+assert rut.body == 20884437
+assert rut.check_digit == "7"
 assert calculate_check_digit("20884437") == "7"
 ```
 
-## Comprobar sin excepciones
+## Boolean validation
 
 ```python
 from rut_validator import RutValidator
@@ -50,40 +49,32 @@ assert not RutValidator.is_valid("12.345.678-0")
 assert not RutValidator.is_valid(None)
 ```
 
-`is_valid()` siempre devuelve un booleano para entradas proporcionadas por el
-usuario. Usa `validate_rut()` cuando necesites conocer la causa de un error.
+Use `is_valid()` when only a boolean is needed. Use `validate_rut()` when the
+application needs the validated value or a specific error.
 
-## Manejo de errores
+## Handle errors
 
 ```python
-from rut_validator import (
-    RutInvalidFormatError,
-    RutModuleElevenValidationError,
-    validate_rut,
-)
+from rut_validator import RutValidationError, validate_rut
 
 try:
     validate_rut("12.345.678-0")
-except RutInvalidFormatError:
-    print("La estructura no es válida")
-except RutModuleElevenValidationError:
-    print("El dígito verificador no coincide")
+except RutValidationError as error:
+    print(error.code)
+    print(error.as_dict())
 ```
 
-Todos los errores públicos heredan de `RutValidationError`, que a su vez hereda
-de `ValueError`.
+All public validation errors inherit from `RutValidationError`, which inherits
+from `ValueError`. Prefer `error.code` and `error.as_dict()` over matching human
+readable messages.
 
-Para APIs y logs estructurados utiliza `error.code` o `error.as_dict()` en vez
-de comparar el mensaje traducible.
+## Accepted formats
 
-## Formatos aceptados
-
-| Formato | Ejemplo | Enum |
+| Format | Example | Enum |
 | --- | --- | --- |
-| Con puntos y guion | `12.345.678-5` | `RutFormat.FORMATTED` |
-| Sólo con guion | `12345678-5` | `RutFormat.HYPHENATED` |
-| Normalizado | `123456785` | `RutFormat.NORMALIZED` |
+| Formatted | `12.345.678-5` | `RutFormat.FORMATTED` |
+| Hyphenated | `12345678-5` | `RutFormat.HYPHENATED` |
+| Normalized | `123456785` | `RutFormat.NORMALIZED` |
 
-No se eliminan espacios ni caracteres arbitrarios durante la validación. Sólo
-se aceptan dígitos ASCII (`0-9`); dígitos Unicode visualmente similares se
-rechazan.
+The validator does not strip whitespace or arbitrary characters. It accepts
+ASCII digits (`0-9`) only and rejects visually similar Unicode digits.

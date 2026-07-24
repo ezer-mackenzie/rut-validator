@@ -24,6 +24,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Redundant `ValidatedRut` alias; use `Rut` directly
 - Obsolete `Makefile`; Poetry, pre-commit, and CI provide the maintained
   development workflows
+- Legacy migration documentation and references to pre-1.0 APIs
+
+### Documentation
+- Rewritten the complete MkDocs site in English as the canonical documentation
 
 ## [0.9.0] - 2026-07-23
 

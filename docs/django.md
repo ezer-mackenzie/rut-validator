@@ -4,10 +4,11 @@
 pip install "rut-validator[django]"
 ```
 
-## Modelo
+## Model field
 
 ```python
 from django.db import models
+
 from rut_validator.orm.django import RutDjango
 
 
@@ -18,18 +19,17 @@ class Person(models.Model):
 
 `RutDjango`:
 
-- usa una longitud de almacenamiento de 9 caracteres;
-- acepta hasta 12 caracteres formateados en formularios;
-- normaliza antes de preparar el valor para la base de datos;
-- admite `None` cuando el campo se configura como nullable;
-- expone errores Django con código `invalid_rut`;
-- utiliza un validator serializable para migraciones.
+- stores a maximum of nine normalized characters;
+- accepts up to twelve formatted characters in forms;
+- normalizes values before preparing database parameters;
+- supports `None` when configured with `null=True`;
+- reports Django validation errors with code `invalid_rut`;
+- uses a deconstructible validator suitable for migrations.
 
-## Validación explícita
+## Explicit validation
 
-Django no ejecuta `full_clean()` automáticamente al llamar `save()`. Cuando la
-entrada provenga del usuario, utiliza un `ModelForm`, un serializer o llama
-explícitamente:
+Django does not call `full_clean()` automatically from `save()`. For
+user-provided values, use a `ModelForm`, a serializer, or call it explicitly:
 
 ```python
 person = Person(rut="12.345.678-5")
@@ -37,11 +37,11 @@ person.full_clean()
 person.save()
 ```
 
-Después de la preparación para base de datos el valor canónico es `123456785`.
-Durante `ModelForm.is_valid()` la instancia ya contiene el valor normalizado.
+The database representation is `123456785`. A valid `ModelForm` also places the
+normalized value on its model instance.
 
-## Formularios, nulos y blancos
+## Optional fields
 
-Configura `blank=True` y `null=True` según las reglas de tu aplicación. Un RUT
-vacío no es válido por sí mismo; la omisión debe gestionarse como opcionalidad
-del campo, no como un RUT especial.
+Use `blank=True` and `null=True` according to the application's data model. An
+empty string is not a valid RUT; optionality should be represented by the field
+configuration rather than by a special RUT value.

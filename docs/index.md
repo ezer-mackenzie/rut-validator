@@ -1,8 +1,8 @@
 # rut-validator
 
-`rut-validator` valida RUT chilenos, detecta su formato de entrada y entrega
-representaciones canónicas. El core es pequeño y puede utilizarse sin instalar
-frameworks web u ORMs.
+`rut-validator` validates Chilean RUT values, detects their input format, and
+provides canonical representations. Its standalone API does not import web
+frameworks or ORM packages.
 
 ```python
 from rut_validator import validate_rut
@@ -14,22 +14,21 @@ assert rut.formatted == "12.345.678-5"
 assert rut.hyphenated == "12345678-5"
 ```
 
-## Características
+## Features
 
-- Validación módulo 11.
-- Entradas con puntos, con guion o normalizadas.
-- Value object `Rut` inmutable y hashable.
-- API funcional y API basada en `RutValidator`.
-- CLI para validación, formato y procesamiento batch.
-- Extras opcionales para Pydantic, FastAPI, Django, SQLAlchemy y SQLModel.
-- Normalización consistente antes de persistir.
+- Strict modulo-11 validation.
+- Formatted, hyphenated, and normalized input.
+- Immutable and hashable `Rut` value object.
+- Functional and class-based validation APIs.
+- CLI validation, formatting, inspection, and batch processing.
+- Optional Pydantic, FastAPI, Django, SQLAlchemy, and SQLModel integrations.
+- Consistent normalization before persistence.
+- Structured errors with stable machine-readable codes.
 
-!!! warning "Alcance de la validación"
+!!! warning "Validation scope"
 
-    La validación confirma estructura y dígito verificador. No comprueba que el
-    RUT exista, esté activo o pertenezca a una persona determinada.
+    Validation confirms syntax and the check digit. It does not confirm that a
+    RUT exists, is active, or belongs to a particular person or organization.
 
-## Siguiente paso
-
-Empieza con [Instalación y primeros pasos](getting-started.md) o consulta
-directamente la [Referencia de API](api-reference.md).
+Continue with [Getting started](getting-started.md), or go directly to the
+[API reference](api-reference.md).

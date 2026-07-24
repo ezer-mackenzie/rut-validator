@@ -1,15 +1,15 @@
-# Referencia de API
+# API reference
 
-## Paquete principal
+## Root package
 
 ### `validate_rut(value)`
 
-Valida una entrada y devuelve `Rut`. Lanza una subclase de
-`RutValidationError` si falla.
+Validates an input and returns `Rut`. It raises a `RutValidationError` subclass
+when validation fails.
 
 ### `calculate_check_digit(body)`
 
-Calcula el DV módulo 11 para un cuerpo ASCII compuesto sólo por dígitos.
+Calculates the modulo-11 check digit for an ASCII-only numeric body.
 
 ### `RutValidator`
 
@@ -21,8 +21,8 @@ Calcula el DV módulo 11 para un cuerpo ASCII compuesto sólo por dígitos.
 
 ### `Rut`
 
-Value object inmutable. Sus representaciones canónicas son `normalized`,
-`formatted` y `hyphenated`.
+Immutable value object with `normalized`, `formatted`, and `hyphenated`
+canonical representations.
 
 ### `RutFormat`
 
@@ -37,7 +37,7 @@ Value object inmutable. Sus representaciones canónicas son `normalized`,
 - `INVALID_FORMAT`
 - `INVALID_CHECK_DIGIT`
 
-## Excepciones
+## Exceptions
 
 ```text
 ValueError
@@ -47,8 +47,8 @@ ValueError
     └── RutModuleElevenValidationError
 ```
 
-Todas las excepciones incluyen un código estable y pueden serializarse sin
-analizar el mensaje:
+Every exception has a stable code and can be serialized without parsing its
+message:
 
 ```python
 from rut_validator import RutModuleElevenValidationError, validate_rut
@@ -62,18 +62,17 @@ except RutModuleElevenValidationError as error:
     payload = error.as_dict()
 ```
 
-Los códigos públicos son `invalid_value`, `invalid_format` e
-`invalid_check_digit`. Los payloads no incluyen el RUT recibido.
+Public error codes are `invalid_value`, `invalid_format`, and
+`invalid_check_digit`. Error payloads do not include the submitted RUT.
 
-## Integraciones opcionales
+## Optional integrations
 
-| Import | Símbolos |
+| Import | Public symbols |
 | --- | --- |
 | `rut_validator.orm.pydantic` | `RutPydantic` |
 | `rut_validator.orm.sqlalchemy` | `RutSQLAlchemy` |
 | `rut_validator.orm.sqlmodel` | `RutSQLModel`, `rut_sqlmodel_field` |
 | `rut_validator.orm.django` | `RutDjango`, `RutDjangoValidator` |
 
-Los tipos de dominio están en `rut_validator.core`; la implementación agnóstica
-está en `rut_validator.validation`; los adapters viven únicamente en
-`rut_validator.orm`.
+Domain types live in `rut_validator.core`, framework-agnostic behavior lives in
+`rut_validator.validation`, and adapters live in `rut_validator.orm`.

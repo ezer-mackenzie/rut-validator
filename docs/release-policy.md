@@ -1,40 +1,39 @@
-# Versionado y releases
+# Versioning and releases
 
-El proyecto sigue Semantic Versioning.
+The project follows Semantic Versioning.
 
-- `0.x`: la API continúa estabilizándose.
-- `1.x`: contrato público estable.
-- Los tipos bajo `rut_validator.core`, la lógica bajo
-  `rut_validator.validation` y los adapters bajo `rut_validator.orm` forman la
-  arquitectura pública.
+- The `1.x` public API is stable.
+- Domain types under `rut_validator.core`, framework-agnostic behavior under
+  `rut_validator.validation`, and adapters under `rut_validator.orm` form the
+  documented architecture.
+- Names listed in the API reference are public. Names prefixed with `_` are
+  internal implementation details.
 
-## Compatibilidad de 1.x
+## Compatibility
 
-- Python 3.10 a 3.14 se valida en CI.
-- La instalación base sólo depende de Click y no importa frameworks
-  opcionales.
-- Pydantic 2.x, SQLAlchemy 2.x, Django 4.2–5.x, SQLModel 0.x y FastAPI 0.x se
-  prueban mediante extras independientes.
-- Los nombres documentados en la referencia de API son públicos. Los detalles
-  con prefijo `_` siguen siendo internos.
+- Python 3.10 through 3.14 is validated in CI.
+- The base installation depends only on Click and does not import optional
+  frameworks.
+- Pydantic 2.x, SQLAlchemy 2.x, Django 4.2–5.x, SQLModel 0.x, and FastAPI 0.x
+  are tested through isolated extras.
 
-## Deprecaciones
+## Deprecation policy
 
-Un símbolo público no se eliminará en una versión menor. Primero emitirá
-`DeprecationWarning`, se documentará en el changelog y se mantendrá durante al
-menos una versión menor. Su eliminación sólo podrá ocurrir en una nueva versión
-mayor.
+A public symbol is not removed in a minor release. It first emits
+`DeprecationWarning`, is documented in the changelog, and remains available for
+at least one minor release. Removal requires a new major version.
 
-## Gate de release
+## Release gate
 
-Una versión sólo debe etiquetarse cuando:
+A release is tagged only when:
 
-1. tests, lint y tipos pasan;
-2. MkDocs construye en modo estricto;
-3. wheel y sdist se construyen;
-4. `twine check` valida ambos artefactos;
-5. el wheel base importa en un entorno sin extras;
-6. las dependencias no tienen vulnerabilidades conocidas;
-7. changelog y versión coinciden.
+1. tests, lint, formatting, and type checks pass;
+2. MkDocs builds in strict mode;
+3. wheel and source distribution build successfully;
+4. Twine validates both artifacts;
+5. the installed base wheel imports without optional frameworks;
+6. dependency auditing reports no known vulnerabilities;
+7. package version, documentation, and changelog agree.
 
-La validación de RUT no certifica identidad ni existencia ante el SII.
+RUT validation does not certify identity, ownership, or registration with the
+Chilean Internal Revenue Service (SII).

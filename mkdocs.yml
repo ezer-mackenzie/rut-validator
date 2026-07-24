@@ -1,5 +1,5 @@
 site_name: rut-validator
-site_description: Validación de RUT chileno para Python y frameworks modernos
+site_description: Chilean RUT validation for Python and modern frameworks
 site_url: https://rut-validator.readthedocs.io/
 repo_url: https://github.com/ezer-mackenzie/rut-validator
 repo_name: ezer-mackenzie/rut-validator
@@ -7,7 +7,7 @@ edit_uri: edit/main/docs/
 
 theme:
   name: material
-  language: es
+  language: en
   features:
     - navigation.instant
     - navigation.sections
@@ -22,28 +22,27 @@ theme:
       accent: blue
       toggle:
         icon: material/brightness-7
-        name: Usar tema oscuro
+        name: Switch to dark mode
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
       primary: indigo
       accent: blue
       toggle:
         icon: material/brightness-4
-        name: Usar tema claro
+        name: Switch to light mode
 
 nav:
-  - Inicio: index.md
-  - Primeros pasos: getting-started.md
-  - Core: core.md
+  - Home: index.md
+  - Getting started: getting-started.md
+  - Core API: core.md
   - CLI: cli.md
-  - Integraciones:
-      - Pydantic y FastAPI: pydantic-fastapi.md
-      - SQLAlchemy y SQLModel: sqlalchemy-sqlmodel.md
+  - Integrations:
+      - Pydantic and FastAPI: pydantic-fastapi.md
+      - SQLAlchemy and SQLModel: sqlalchemy-sqlmodel.md
       - Django: django.md
-  - Referencia de API: api-reference.md
-  - Migración a 1.0: migration-1.md
-  - Desarrollo: development.md
-  - Versionado y releases: release-policy.md
+  - API reference: api-reference.md
+  - Development: development.md
+  - Versioning and releases: release-policy.md
 
 markdown_extensions:
   - admonition

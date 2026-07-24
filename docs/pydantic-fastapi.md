@@ -1,8 +1,6 @@
-# Pydantic y FastAPI
+# Pydantic and FastAPI
 
 ## Pydantic v2
-
-Instala el extra y utiliza el import público:
 
 ```bash
 pip install "rut-validator[pydantic]"
@@ -10,6 +8,7 @@ pip install "rut-validator[pydantic]"
 
 ```python
 from pydantic import BaseModel
+
 from rut_validator.orm.pydantic import RutPydantic
 
 
@@ -25,8 +24,9 @@ assert person.rut == "123456785"
 assert person.model_dump_json() == '{"name":"Ana","rut":"123456785"}'
 ```
 
-`RutPydantic` es un subtipo estricto de `str`. Valida los tres formatos de entrada y
-almacena siempre el valor normalizado.
+`RutPydantic` is a strict `str` subtype. It accepts all three supported input
+formats and always stores the normalized representation. Its JSON Schema
+contains the accepted pattern, a description, and examples.
 
 ## FastAPI
 
@@ -37,6 +37,7 @@ pip install "rut-validator[fastapi]"
 ```python
 from fastapi import FastAPI
 from pydantic import BaseModel
+
 from rut_validator.orm.pydantic import RutPydantic
 
 app = FastAPI()
@@ -51,13 +52,13 @@ def create_person(person: Person) -> Person:
     return person
 ```
 
-Una entrada inválida produce la respuesta de validación `422` habitual de
-FastAPI. El JSON Schema incluye patrón, descripción y ejemplos.
+Invalid input produces FastAPI's standard HTTP `422` validation response. The
+same schema is included in generated OpenAPI documents.
 
-## Value object enriquecido
+## Access rich RUT properties
 
-`RutPydantic` se comporta como texto. Para acceder a `formatted`, `body` y otras
-propiedades, valida el valor con el core:
+`RutPydantic` behaves as text. Use the standalone API when `formatted`, `body`,
+or other rich properties are needed:
 
 ```python
 from rut_validator import validate_rut
