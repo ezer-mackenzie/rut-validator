@@ -2,200 +2,234 @@
 
 [![PyPI version](https://badge.fury.io/py/rut-validator.svg)](https://pypi.org/project/rut-validator/)
 [![Python versions](https://img.shields.io/pypi/pyversions/rut-validator.svg)](https://pypi.org/project/rut-validator/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![CI](https://github.com/ezer-mackenzie/rut-validator/actions/workflows/ci.yml/badge.svg)](https://github.com/ezer-mackenzie/rut-validator/actions)
-[![codecov](https://codecov.io/gh/ezer-mackenzie/rut-validator/branch/main/graph/badge.svg)](https://codecov.io/gh/ezer-mackenzie/rut-validator)
 [![Documentation Status](https://readthedocs.org/projects/rut-validator/badge/?version=latest)](https://rut-validator.readthedocs.io/en/latest/?badge=latest)
 
-Librería agnóstica para validar RUT chileno, con integraciones opcionales para
-frameworks web y ORM.
+Framework-agnostic Chilean RUT validation with optional integrations for
+Pydantic, FastAPI, Django, SQLAlchemy, and SQLModel.
 
-## ✨ Características
+## Features
 
-- ✅ **Validación pura de RUT chileno** usando algoritmo módulo 11
-- ✅ **Detección automática de formato**: dotted (`12.345.678-9`), hyphenated (`12345678-9`), numeric (`123456789`)
-- ✅ **Integración completa con Pydantic** (`RutPydantic`)
-- ✅ **Campo Django** (`RutDjango`) listo para usar
-- ✅ **Tipo SQLAlchemy** (`RutSQLAlchemy`) para bases de datos
-- ✅ **Integración SQLModel** con almacenamiento normalizado
-- ✅ **Compatible con FastAPI** y otros frameworks web
-- ✅ **Type hints completos** para mejor desarrollo
-- ✅ **Sin dependencias externas** para funcionalidad core
-- ✅ **Tests exhaustivos** con alta cobertura
+- Strict modulo-11 check digit validation.
+- Formatted, hyphenated, and normalized input detection.
+- Immutable and hashable `Rut` value object.
+- Functional and class-based validation APIs.
+- Structured errors with stable machine-readable codes.
+- CLI validation, formatting, inspection, and batch processing.
+- Normalized persistence through optional ORM adapters.
+- Strict ASCII input handling.
+- Python 3.10 through 3.14 support.
 
-## 🚀 Instalación
+Validation confirms syntax and the check digit. It does not confirm that a RUT
+exists, is active, or belongs to a particular person or organization.
+
+## Installation
+
+Install the standalone API and CLI:
 
 ```bash
 pip install rut-validator
-
-# Con soporte Pydantic
-pip install rut-validator[pydantic]
-
-# Con soporte para una integración concreta
-pip install rut-validator[sqlalchemy]
-pip install rut-validator[django]
-pip install rut-validator[sqlmodel]
-
-# Con soporte FastAPI
-pip install rut-validator[fastapi]
-
-# Todas las integraciones
-pip install rut-validator[all]
-
-# Para desarrollo
-pip install rut-validator[dev]
 ```
 
-## 📖 Uso Básico
+Install only the integrations your application needs:
 
-### Validación Simple
-
-```python
-from rut_validator import RutValidator
-
-# Validar RUT con cualquier formato
-rut = RutValidator.validate("20.884.437-7")
-print(f"RUT válido: {rut.formatted}")  # "20.884.437-7"
-print(f"Número: {rut.body}")           # 20884437
-print(f"Dígito: {rut.check_digit}")    # "7"
-print(f"Formato: {rut.format}")        # RutFormat.FORMATTED
+```bash
+pip install "rut-validator[pydantic]"
+pip install "rut-validator[fastapi]"
+pip install "rut-validator[django]"
+pip install "rut-validator[sqlalchemy]"
+pip install "rut-validator[sqlmodel]"
+pip install "rut-validator[all]"
 ```
 
-Para un uso funcional más directo:
+## Basic usage
 
 ```python
 from rut_validator import calculate_check_digit, validate_rut
 
-rut = validate_rut("12.345.678-5")
-assert rut.normalized == "123456785"
-assert calculate_check_digit("12345678") == "5"
+rut = validate_rut("20.884.437-7")
+
+assert rut.normalized == "208844377"
+assert rut.formatted == "20.884.437-7"
+assert rut.hyphenated == "20884437-7"
+assert rut.body == 20884437
+assert rut.check_digit == "7"
+assert calculate_check_digit("20884437") == "7"
 ```
 
-### Detección de Formato
+For boolean-only checks:
 
 ```python
 from rut_validator import RutValidator
 
-# La librería detecta automáticamente el formato de entrada
-formats = [
-    "20.884.437-7",  # Formato dotted
-    "20884437-7",    # Formato hyphenated
-    "208844377",     # Formato numeric
-]
-
-for rut_str in formats:
-    rut = RutValidator.validate(rut_str)
-    print(f"'{rut_str}' -> Formato: {rut.format}, Es dotted: {rut.is_dotted}")
+assert RutValidator.is_valid("12.345.678-5")
+assert not RutValidator.is_valid("12.345.678-0")
+assert not RutValidator.is_valid(None)
 ```
 
-### Con Pydantic
+## Error handling
+
+```python
+from rut_validator import RutValidationError, validate_rut
+
+try:
+    validate_rut("12.345.678-0")
+except RutValidationError as error:
+    print(error.code)
+    print(error.as_dict())
+```
+
+Public error codes are `invalid_value`, `invalid_format`, and
+`invalid_check_digit`.
+
+## Pydantic
 
 ```python
 from pydantic import BaseModel
+
 from rut_validator.orm.pydantic import RutPydantic
+
 
 class User(BaseModel):
     name: str
-    rut: RutPydantic  # Validación automática
+    rut: RutPydantic
 
-# Uso
-user = User(name="Juan Pérez", rut="12.345.678-5")
-print(user.rut)  # "123456785" (normalizado)
+
+user = User(name="Ana", rut="12.345.678-5")
+assert user.rut == "123456785"
 ```
 
-### Con Django
+## FastAPI
+
+```python
+from fastapi import FastAPI
+from pydantic import BaseModel
+
+from rut_validator.orm.pydantic import RutPydantic
+
+app = FastAPI()
+
+
+class Person(BaseModel):
+    rut: RutPydantic
+
+
+@app.post("/people")
+def create_person(person: Person) -> Person:
+    return person
+```
+
+Invalid values produce FastAPI's standard HTTP `422` response, and
+`RutPydantic` contributes its pattern and examples to OpenAPI.
+
+## Django
 
 ```python
 from django.db import models
+
 from rut_validator.orm.django import RutDjango
+
 
 class Person(models.Model):
     name = models.CharField(max_length=100)
-    rut = RutDjango(unique=True)  # Validación automática en DB
+    rut = RutDjango(unique=True)
 ```
 
-### Con SQLAlchemy
+The field accepts formatted input and stores the normalized nine-character
+representation.
+
+## SQLAlchemy
 
 ```python
-from sqlalchemy import Column, Integer, String
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
+
 from rut_validator.orm.sqlalchemy import RutSQLAlchemy
 
-Base = declarative_base()
+
+class Base(DeclarativeBase):
+    pass
+
 
 class Person(Base):
-    __tablename__ = 'persons'
+    __tablename__ = "people"
 
-    id = Column(Integer, primary_key=True)
-    name = Column(String)
-    rut = Column(RutSQLAlchemy)  # Validación y normalización automáticas
+    id: Mapped[int] = mapped_column(primary_key=True)
+    rut: Mapped[str] = mapped_column(RutSQLAlchemy(), unique=True)
 ```
 
-## 📚 Documentación
+`RutSQLAlchemy` validates values both before persistence and after database
+reads.
 
-Lee la documentación completa en [docs/index.md](docs/index.md) o constrúyela
-localmente:
+## SQLModel
+
+```python
+from sqlmodel import Field, SQLModel
+
+from rut_validator.orm.sqlmodel import RutSQLModel, rut_sqlmodel_field
+
+
+class Person(SQLModel, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    rut: RutSQLModel = rut_sqlmodel_field(unique=True, index=True)
+```
+
+## CLI
+
+```bash
+rut-validator validate 12.345.678-5
+rut-validator validate 12.345.678-5 --json
+rut-validator format 123456785 --format formatted
+rut-validator info 12.345.678-5 --detailed
+rut-validator batch ruts.txt --output result.jsonl
+```
+
+## Documentation
+
+Read the [published documentation](https://rut-validator.readthedocs.io/) or
+serve it locally:
 
 ```bash
 poetry install --all-extras
 poetry run mkdocs serve
 ```
 
-## 🧪 Ejemplos
+## Examples
 
-- [Validación pura](examples/01_pure_validation.py)
-- [Uso con Pydantic](examples/02_pydantic_usage.py)
-- [Uso con FastAPI](examples/03_fastapi_usage.py)
-- [Uso del CLI](examples/04_cli_usage.py)
-- [Uso con SQLModel](examples/05_sqlmodel_usage.py)
+- [Standalone validation](examples/01_pure_validation.py)
+- [Pydantic](examples/02_pydantic_usage.py)
+- [FastAPI](examples/03_fastapi_usage.py)
+- [CLI](examples/04_cli_usage.py)
+- [SQLModel](examples/05_sqlmodel_usage.py)
 
-## 🔧 Desarrollo
-
-### Configuración del entorno
+## Development
 
 ```bash
-# Clonar repositorio
 git clone https://github.com/ezer-mackenzie/rut-validator.git
 cd rut-validator
+poetry install --all-extras
 
-# Instalar dependencias de desarrollo
-poetry install --with dev
-
-# Ejecutar tests
-poetry run pytest
-
-# Ejecutar linting
-poetry run black src/ tests/
-poetry run isort src/ tests/
-poetry run flake8 src/ tests/
-poetry run mypy src/rut_validator/
+poetry run pytest --cov=rut_validator
+poetry run ruff check src tests examples
+poetry run black --check src tests examples
+poetry run mypy src/rut_validator
+poetry run mkdocs build --strict
+poetry build
 ```
 
-### Pre-commit hooks
+Install the Git hooks with:
 
 ```bash
 poetry run pre-commit install
 ```
 
-## 🤝 Contribuir
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the contribution workflow.
 
-1. Fork el proyecto
-2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
-3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
-4. Push a la rama (`git push origin feature/AmazingFeature`)
-5. Abre un Pull Request
+## Security
 
-## 📄 Licencia
+Report security issues according to [SECURITY.md](SECURITY.md). Do not include
+real personal RUT values in public bug reports or test fixtures.
 
-Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) para más detalles.
+## License
 
-## 🙏 Agradecimientos
-
-- Algoritmo de validación basado en el estándar chileno del Servicio de Impuestos Internos
-- Inspirado en bibliotecas similares pero con enfoque moderno y tipado fuerte
-
-## 📞 Soporte
-
-- 🐛 [Reportar bugs](https://github.com/ezer-mackenzie/rut-validator/issues)
-- 💡 [Sugerir features](https://github.com/ezer-mackenzie/rut-validator/issues)
-- 📖 [Documentación](https://rut-validator.readthedocs.io/)
+Licensed under the [MIT License](LICENSE).

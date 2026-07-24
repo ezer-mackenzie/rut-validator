@@ -28,6 +28,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Documentation
 - Rewritten the complete MkDocs site in English as the canonical documentation
+- Rewritten the README in English with current 1.0 examples and commands
 
 ## [0.9.0] - 2026-07-23
 
