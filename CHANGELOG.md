@@ -5,15 +5,6 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
-
-### Deprecated
-- `ValidatedRut`, which was only an alias of `Rut`; use `Rut` directly
-
-### Removed
-- Obsolete `Makefile`; Poetry, pre-commit, and CI provide the maintained
-  development workflows
-
 ## [1.0.0] - 2026-07-23
 
 ### Added
@@ -28,6 +19,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   runtime-safe generic `CharField` base
 - `Rut` construction no longer exposes an unchecked protected factory
 - Package status is now Production/Stable
+
+### Removed
+- Redundant `ValidatedRut` alias; use `Rut` directly
+- Obsolete `Makefile`; Poetry, pre-commit, and CI provide the maintained
+  development workflows
 
 ## [0.9.0] - 2026-07-23
 
