@@ -52,7 +52,7 @@ dev = [
     "ruff",
     "mypy",
     "pre-commit",
-    "hypothesis (>=6.165.0,<7)",
+    "hypothesis (>=6.165.2,<7)",
     "httpx (>=0.27,<1.0)",
     "pydantic (>=2.6,<3.0)",
     "sqlalchemy (>=2.0,<3.0)",
