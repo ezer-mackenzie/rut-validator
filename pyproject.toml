@@ -35,13 +35,13 @@ sqlmodel = [
     "pydantic (>=2.6,<3.0)",
     "sqlalchemy (>=2.0,<3.0)",
 ]
-fastapi = ["fastapi (>=0.140.7,<1.0.0)"]
+fastapi = ["fastapi (>=0.141.1,<1.0.0)"]
 all = [
     "pydantic (>=2.6,<3.0)",
     "sqlalchemy (>=2.0,<3.0)",
     "django (>=4.2,<6.0)",
     "sqlmodel (>=0.0.22,<1.0)",
-    "fastapi (>=0.140.7,<1.0.0)",
+    "fastapi (>=0.141.1,<1.0.0)",
 ]
 dev = [
     "pytest (>=7.0.0)",
