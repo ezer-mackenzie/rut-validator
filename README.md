@@ -4,6 +4,7 @@
 [![Python versions](https://img.shields.io/pypi/pyversions/rut-validator.svg)](https://pypi.org/project/rut-validator/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![CI](https://github.com/ezer-mackenzie/rut-validator/actions/workflows/ci.yml/badge.svg)](https://github.com/ezer-mackenzie/rut-validator/actions)
+[![codecov](https://codecov.io/gh/ezer-mackenzie/rut-validator/graph/badge.svg)](https://codecov.io/gh/ezer-mackenzie/rut-validator)
 [![Documentation Status](https://readthedocs.org/projects/rut-validator/badge/?version=latest)](https://rut-validator.readthedocs.io/en/latest/?badge=latest)
 
 Framework-agnostic Chilean RUT validation with optional integrations for
