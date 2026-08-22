@@ -19,7 +19,6 @@ def run_command(cmd: str) -> str:
 
 
 def example_basic_validation():
-    """Example 1: Basic RUT validation."""
     print("=" * 60)
     print("Example 1: Basic RUT Validation")
     print("=" * 60)
@@ -34,7 +33,6 @@ def example_basic_validation():
 
 
 def example_format_conversion():
-    """Example 2: Convert between RUT formats."""
     print("\n" + "=" * 60)
     print("Example 2: Format Conversion")
     print("=" * 60)
@@ -49,7 +47,6 @@ def example_format_conversion():
 
 
 def example_rut_info():
-    """Example 3: Get RUT information."""
     print("\n" + "=" * 60)
     print("Example 3: RUT Information")
     print("=" * 60)
@@ -60,7 +57,6 @@ def example_rut_info():
 
 
 def example_batch_processing():
-    """Example 4: Batch validation."""
     print("\n" + "=" * 60)
     print("Example 4: Batch Validation")
     print("=" * 60)
@@ -86,7 +82,6 @@ invalid-rut
 
 
 def example_json_output():
-    """Example 5: JSON output for integration."""
     print("\n" + "=" * 60)
     print("Example 5: JSON Output")
     print("=" * 60)
@@ -110,7 +105,6 @@ def example_json_output():
 
 
 def example_quiet_mode():
-    """Example 6: Quiet mode for scripting."""
     print("\n" + "=" * 60)
     print("Example 6: Quiet Mode (for scripting)")
     print("=" * 60)
@@ -123,7 +117,6 @@ def example_quiet_mode():
 
 
 def example_error_handling():
-    """Example 7: Error handling."""
     print("\n" + "=" * 60)
     print("Example 7: Error Handling")
     print("=" * 60)
@@ -141,7 +134,6 @@ def example_error_handling():
 
 
 def example_help():
-    """Example 8: Help and documentation."""
     print("\n" + "=" * 60)
     print("Example 8: Available Commands")
     print("=" * 60)

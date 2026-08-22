@@ -8,15 +8,15 @@ class RutFormatter:
 
     @staticmethod
     def to_original_format(rut: str) -> str:
-        """Validate *rut* and return its dotted canonical representation."""
+        """Validate and format *rut* with dots and a hyphen."""
         return RutValidator.validate(rut).formatted
 
     @staticmethod
     def to_normalize_format(rut: str) -> str:
-        """Validate *rut* and return its separator-free canonical form."""
+        """Validate and remove separators from *rut*."""
         return RutValidator.validate(rut).normalized
 
     @staticmethod
     def to_hyphenated_format(rut: str) -> str:
-        """Validate *rut* and return its canonical hyphenated representation."""
+        """Validate and format *rut* with only a hyphen."""
         return RutValidator.validate(rut).hyphenated

@@ -160,7 +160,6 @@ def test_rut_equality_across_all_formats():
 
 
 def test_rut_format_properties():
-    """Test that all format properties return consistent values regardless of input format."""
     rut_normalized = Rut("208844377")
     rut_hyphen = Rut("20884437-7")
     rut_formatted = Rut("20.884.437-7")

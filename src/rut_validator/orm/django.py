@@ -54,7 +54,7 @@ class RutDjango(RutDjangoBase):
             raise ValidationError(str(exc), code="invalid_rut") from exc
 
     def get_prep_value(self, value: object) -> str | None:
-        """Return normalized RUT text for database persistence."""
+        """Prepare normalized RUT text for database persistence."""
         return self.to_python(value)
 
     def formfield(self, **kwargs: Any) -> Any:

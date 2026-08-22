@@ -17,7 +17,7 @@ class RutParser:
 
     @classmethod
     def parse(cls, rut: object) -> tuple[str, str, RutFormat]:
-        """Return the body, check digit, and detected format of *rut*.
+        """Parse *rut* into its body, check digit, and detected format.
 
         Raises:
             RutInvalidValueError: If *rut* is missing or not text.
@@ -33,7 +33,7 @@ class RutParser:
 
     @classmethod
     def destructure(cls, rut: object) -> tuple[str, str, RutFormat]:
-        """Split supported RUT text without validating its check digit.
+        """Split supported RUT text without checking its check digit.
 
         Raises:
             RutInvalidValueError: If *rut* is missing or not text.

@@ -19,7 +19,6 @@ RUT_MODULE_ELEVEN_FACTORS: Final[tuple[int, ...]] = (2, 3, 4, 5, 6, 7)
 
 
 def detect_format(value: str) -> RutFormat | None:
-    """Return the recognized format for *value*, if any."""
     if FORMATTED_PATTERN.fullmatch(value):
         return RutFormat.FORMATTED
 
@@ -33,23 +32,25 @@ def detect_format(value: str) -> RutFormat | None:
 
 
 def normalize(value: str) -> str:
-    """Remove RUT separators and uppercase the check digit."""
     return CLEANING_PATTERN.sub("", value).upper()
 
 
 def format_normalized(value: str) -> str:
-    """Format a normalized RUT with dots and a hyphen."""
     body, check_digit = value[:-1], value[-1]
     return f"{int(body):,}".replace(",", ".") + f"-{check_digit}"
 
 
 def hyphenate_normalized(value: str) -> str:
-    """Format a normalized RUT with a hyphen."""
     return f"{value[:-1]}-{value[-1]}"
 
 
 def module_eleven(body: str) -> str:
-    """Calculate the modulo-11 check digit for an ASCII numeric body."""
+    """Calculate the modulo-11 check digit for an ASCII numeric body.
+
+    Raises:
+        RutInvalidValueError: If *body* contains anything other than ASCII
+            digits.
+    """
     if not body.isascii() or not body.isdigit():
         raise RutInvalidValueError("El cuerpo del RUT debe contener sólo dígitos")
 
@@ -66,7 +67,7 @@ def module_eleven(body: str) -> str:
 
 
 def is_valid_check_digit(body: object, check_digit: object) -> bool:
-    """Return whether *check_digit* is valid for *body*."""
+    """Check a body and digit without raising for malformed values."""
     if (
         not isinstance(body, str)
         or not isinstance(check_digit, str)

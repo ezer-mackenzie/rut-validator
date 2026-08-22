@@ -12,7 +12,6 @@ from .enums import RutFormat
 
 
 def _require_text(value: object) -> str:
-    """Return a non-empty text value or raise the public value error."""
     if not isinstance(value, str) or value.strip() == "":
         raise RutInvalidValueError("El RUT debe ser un texto no vacío")
     return value
@@ -32,7 +31,6 @@ class Rut:
     _normalized: str = field(init=False, repr=False)
 
     def __post_init__(self, format_detected: RutFormat | None) -> None:
-        """Validate the input and initialize its derived canonical fields."""
         value = _require_text(self.value)
         detected_format = engine.detect_format(value)
         if detected_format is None:
@@ -58,27 +56,27 @@ class Rut:
 
     @property
     def normalized(self) -> str:
-        """Return body and check digit without separators."""
+        """Body and check digit without separators."""
         return self._normalized
 
     @property
     def formatted(self) -> str:
-        """Return the canonical representation with dots and a hyphen."""
+        """Canonical representation with dots and a hyphen."""
         return engine.format_normalized(self.normalized)
 
     @property
     def hyphenated(self) -> str:
-        """Return the canonical representation with only a hyphen."""
+        """Canonical representation with only a hyphen."""
         return engine.hyphenate_normalized(self.normalized)
 
     @property
     def body(self) -> int:
-        """Return the numeric body."""
+        """Numeric body without the check digit."""
         return int(self.normalized[:-1])
 
     @property
     def check_digit(self) -> str:
-        """Return the check digit."""
+        """Uppercase modulo-11 check digit."""
         return self.normalized[-1]
 
     @property
@@ -93,17 +91,17 @@ class Rut:
 
     @property
     def is_formatted(self) -> bool:
-        """Return whether the input used dots and a hyphen."""
+        """Whether the input used dots and a hyphen."""
         return self.format == RutFormat.FORMATTED
 
     @property
     def is_hyphenated(self) -> bool:
-        """Return whether the input used only a hyphen."""
+        """Whether the input used only a hyphen."""
         return self.format == RutFormat.HYPHENATED
 
     @property
     def is_normalized(self) -> bool:
-        """Return whether the input contained no separators."""
+        """Whether the input contained no separators."""
         return self.format == RutFormat.NORMALIZED
 
     @property
@@ -123,7 +121,7 @@ class Rut:
         return f"Rut(value='<redacted>', format={self.format})"
 
     def equals(self, other: object) -> bool:
-        """Return True when two Rut objects represent the same normalized RUT."""
+        """Compare two RUTs by their normalized representation."""
         return self == other
 
     def __eq__(self, other: object) -> bool:

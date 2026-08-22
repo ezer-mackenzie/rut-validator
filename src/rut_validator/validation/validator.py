@@ -21,7 +21,7 @@ RUT_MODULE_ELEVEN_FACTORS = engine.RUT_MODULE_ELEVEN_FACTORS
 
 
 def calculate_check_digit(body: str) -> str:
-    """Return the modulo-11 check digit for an ASCII numeric body.
+    """Calculate the modulo-11 check digit for an ASCII numeric body.
 
     Raises:
         RutInvalidValueError: If *body* contains non-ASCII or non-digit text.
@@ -30,7 +30,7 @@ def calculate_check_digit(body: str) -> str:
 
 
 def validate_rut(value: object) -> Rut:
-    """Return *value* as an immutable, validated :class:`Rut`.
+    """Validate *value* and return its immutable :class:`Rut` representation.
 
     Raises:
         RutInvalidValueError: If *value* is missing or not text.
@@ -41,13 +41,13 @@ def validate_rut(value: object) -> Rut:
 
 
 class RutValidator:
-    """Expose raising and non-raising RUT validation operations."""
+    """Validate RUT values with either exceptions or structured outcomes."""
 
     __slots__ = []
 
     @classmethod
     def get_validation_result(cls, rut: object) -> ValidationResult:
-        """Return the detailed validation outcome for *rut*."""
+        """Classify *rut* without raising a validation exception."""
         logger.debug("Getting RUT validation result")
 
         try:
@@ -70,7 +70,7 @@ class RutValidator:
 
     @classmethod
     def is_valid(cls, rut: object) -> bool:
-        """Return whether *rut* is valid without raising validation errors."""
+        """Check *rut* without raising a validation exception."""
         validation_result = cls.get_validation_result(rut)
         is_valid = validation_result == ValidationResult.VALID
 
@@ -80,7 +80,7 @@ class RutValidator:
 
     @classmethod
     def validate(cls, rut: object) -> Rut:
-        """Return *rut* as an immutable, validated :class:`Rut`.
+        """Validate *rut* and return its immutable :class:`Rut` representation.
 
         Raises:
             RutInvalidValueError: If *rut* is missing or not text.
@@ -102,7 +102,7 @@ class RutValidator:
 
     @classmethod
     def module_eleven(cls, body: str) -> str:
-        """Return the modulo-11 check digit for an ASCII numeric body.
+        """Calculate the modulo-11 check digit for an ASCII numeric body.
 
         Raises:
             RutInvalidValueError: If *body* contains non-ASCII or non-digit text.
@@ -111,5 +111,5 @@ class RutValidator:
 
     @classmethod
     def is_valid_check_digit(cls, body: object, check_digit: object) -> bool:
-        """Return whether *check_digit* is valid for *body*."""
+        """Check a body and digit without raising for malformed values."""
         return engine.is_valid_check_digit(body, check_digit)

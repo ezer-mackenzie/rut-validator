@@ -28,12 +28,12 @@ class RutPatterns:
 
     @classmethod
     def detect_format(cls, rut: str) -> RutFormat | None:
-        """Return the recognized format of *rut*, or ``None``."""
+        """Detect the representation used by *rut*, if supported."""
         return engine.detect_format(rut)
 
     @classmethod
     def is_valid_format(cls, rut: str) -> bool:
-        """Return whether *rut* uses a supported representation."""
+        """Check whether *rut* uses a supported representation."""
         if len(rut) > cls.MAX_RUT_LENGTH:
             return False
 
@@ -46,15 +46,15 @@ class RutPatterns:
 
     @classmethod
     def formatted(cls, rut: str) -> str:
-        """Return *rut* with thousands separators and a hyphen."""
+        """Format *rut* with thousands separators and a hyphen."""
         return engine.format_normalized(cls.normalize(rut))
 
     @classmethod
     def hyphenated(cls, rut: str) -> str:
-        """Return *rut* with a hyphen before its check digit."""
+        """Format *rut* with a hyphen before its check digit."""
         return engine.hyphenate_normalized(cls.normalize(rut))
 
     @classmethod
     def normalized(cls, rut: str) -> str:
-        """Return *rut* without separators."""
+        """Remove separators from *rut*."""
         return cls.normalize(rut)

@@ -8,7 +8,7 @@ from ..validation import RutValidator
 
 
 class RutSQLAlchemy(TypeDecorator[str]):
-    """Store a valid RUT as a normalized nine-character string."""
+    """SQLAlchemy type that stores RUTs as normalized strings."""
 
     impl = String(9)
     cache_ok = True

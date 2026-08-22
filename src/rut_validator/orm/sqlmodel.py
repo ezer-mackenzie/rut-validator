@@ -13,9 +13,9 @@ class RutSQLModel(RutPydantic):
 
 
 def rut_sqlmodel_field(**kwargs: Any) -> Any:
-    """Return a SQLModel field backed by :class:`RutSQLAlchemy`.
+    """Create a SQLModel field backed by :class:`RutSQLAlchemy`.
 
-    Example:
+    Examples:
         ``rut: RutSQLModel = rut_sqlmodel_field(index=True, unique=True)``
     """
 
