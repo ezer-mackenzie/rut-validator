@@ -1,6 +1,6 @@
 """Validated RUT value object."""
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 from ..errors import RutInvalidFormatError, RutModuleElevenValidationError
 from ..validation.parser import RutParser
@@ -8,36 +8,17 @@ from ..validation.patterns import RutPatterns
 from .enums import RutFormat
 
 
-@dataclass(frozen=True, slots=True, init=False)
+@dataclass(frozen=True, slots=True, init=False, eq=False, repr=False)
 class Rut:
-    """
-    A class representing a validated RUT (Rol Único Tributario) value object.
+    """Immutable, hashable and validated Chilean RUT value object.
 
-    This class encapsulates a validated RUT value and provides properties to access its components,
-    such as the body and check digit, as well as formatted and normalized representations.
-
-    The Rut class ensures that the RUT value is valid upon instantiation,
-    and it provides methods to retrieve the normalized and formatted versions of the RUT.
-
-    The normalized version is the raw RUT value without any formatting,
-    while the formatted version includes thousands separators and a hyphen before the check digit.
-
-    Attributes:
-        value (str): The original RUT input string as provided by the caller.
-        format (Optional[RutFormat]): The detected format of the input.
-
-    Methods:
-        normalized: Returns the normalized RUT value.
-        formatted: Returns the formatted RUT value.
-        body: Returns the body of the RUT (the numeric part).
-        check_digit: Returns the check digit of the RUT.
-        is_formatted: Returns True if input was formatted format.
-        is_hyphenated: Returns True if input was hyphenated format.
-        is_normalized: Returns True if input was normalized format.
+    ``value`` preserves the submitted text and ``format`` records its detected
+    syntax. Equality and hashing use the canonical normalized representation.
     """
 
     value: str
     format: RutFormat
+    _normalized: str = field(init=False, repr=False)
 
     def __init__(
         self,
@@ -61,40 +42,31 @@ class Rut:
                 expected=RutValidator.module_eleven(body),
                 received=check_digit,
             )
+        object.__setattr__(self, "_normalized", f"{body}{check_digit.upper()}")
 
     @property
     def normalized(self) -> str:
-        """
-        Returns the normalized RUT value.
-        """
-        return RutPatterns.normalize(self.value)
+        """Return body and check digit without separators."""
+        return self._normalized
 
     @property
     def formatted(self) -> str:
-        """
-        Returns the formatted RUT value.
-        """
+        """Return the canonical representation with dots and a hyphen."""
         return RutPatterns.formatted(self.normalized)
 
     @property
     def hyphenated(self) -> str:
-        """
-        Returns the hyphenated RUT value.
-        """
+        """Return the canonical representation with only a hyphen."""
         return RutPatterns.hyphenated(self.normalized)
 
     @property
     def body(self) -> int:
-        """
-        Returns the body of the RUT (the numeric part).
-        """
+        """Return the numeric body."""
         return int(self.normalized[:-1])
 
     @property
     def check_digit(self) -> str:
-        """
-        Returns the check digit of the RUT.
-        """
+        """Return the check digit."""
         return self.normalized[-1]
 
     @property
@@ -109,23 +81,17 @@ class Rut:
 
     @property
     def is_formatted(self) -> bool:
-        """
-        Returns True if input was formatted format.
-        """
+        """Return whether the input used dots and a hyphen."""
         return self.format == RutFormat.FORMATTED
 
     @property
     def is_hyphenated(self) -> bool:
-        """
-        Returns True if input was hyphenated format.
-        """
+        """Return whether the input used only a hyphen."""
         return self.format == RutFormat.HYPHENATED
 
     @property
     def is_normalized(self) -> bool:
-        """
-        Returns True if input was normalized format.
-        """
+        """Return whether the input contained no separators."""
         return self.format == RutFormat.NORMALIZED
 
     @property

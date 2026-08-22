@@ -1,3 +1,5 @@
+from inspect import signature
+
 import pytest
 
 from rut_validator.core import Rut, RutFormat
@@ -29,6 +31,26 @@ def test_rut_object_preserves_input_value():
     assert rut.value == original
     assert rut.normalized == "208844377"
     assert rut.format == RutFormat.HYPHENATED
+
+
+def test_rut_constructor_preserves_public_signature():
+    parameters = signature(Rut).parameters
+
+    assert list(parameters) == ["value", "format_detected"]
+    assert parameters["format_detected"].default is None
+
+
+def test_rut_reuses_the_normalized_value_computed_during_validation(monkeypatch):
+    rut = Rut("12.345.678-5")
+
+    def unexpected_normalization(_value: str) -> str:
+        raise AssertionError("normalization should not run again")
+
+    monkeypatch.setattr(RutPatterns, "normalize", unexpected_normalization)
+
+    assert rut.normalized == "123456785"
+    assert rut.body == 12345678
+    assert rut.check_digit == "5"
 
 
 def test_rut_validator_returns_rut_object():

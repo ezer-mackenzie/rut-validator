@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The legacy `format --quiet` compatibility option is documented as a no-op
   because format output is already quiet.
 - Validation constructs `Rut` through a single check-digit validation pass.
+- `Rut` now caches the normalized representation established during validation.
 - Documentation now distinguishes validating APIs from low-level parsing and
   pattern helpers.
 
