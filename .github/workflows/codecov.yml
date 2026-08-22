@@ -1,0 +1,41 @@
+name: Codecov
+
+on:
+  workflow_run:
+    workflows: ["CI"]
+    types: [completed]
+
+permissions:
+  actions: read
+  contents: read
+  id-token: write
+
+jobs:
+  upload:
+    name: Upload coverage
+    if: github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the tested commit
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+
+      - name: Download coverage report
+        uses: actions/download-artifact@v7
+        with:
+          name: coverage-report
+          path: coverage
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ github.event.workflow_run.id }}
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v7
+        with:
+          use_oidc: true
+          files: coverage/coverage.xml
+          disable_search: true
+          fail_ci_if_error: true
+          override_commit: ${{ github.event.workflow_run.head_sha }}
+          override_branch: ${{ github.event.workflow_run.head_branch }}
+          override_pr: ${{ github.event.workflow_run.pull_requests[0].number }}
