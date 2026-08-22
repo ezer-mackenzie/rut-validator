@@ -14,7 +14,7 @@ The project follows Semantic Versioning.
 - Python 3.10 through 3.14 is validated in CI.
 - The base installation depends only on Click and does not import optional
   frameworks.
-- Pydantic 2.x, SQLAlchemy 2.x, Django 4.2–5.x, SQLModel 0.x, and FastAPI 0.x
+- Pydantic 2.x, SQLAlchemy 2.x, Django 5.2.x, SQLModel 0.x, and FastAPI 0.x
   are tested through isolated extras.
 
 ## Deprecation policy

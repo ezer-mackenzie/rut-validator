@@ -60,7 +60,8 @@ jobs:
           python-version: "3.12"
           cache: pip
       - run: python -m pip install --upgrade pip
-      - run: python -m pip install ".[dev,docs]" build twine pip-audit
+      - run: python -m pip install ".[dev,docs]" build poetry twine pip-audit
+      - run: poetry check
       - run: ruff check src tests examples
       - run: black --check src tests examples
       - run: mypy src/rut_validator

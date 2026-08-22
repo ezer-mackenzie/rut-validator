@@ -47,8 +47,6 @@ dev = [
     "pytest (>=7.0.0)",
     "pytest-cov",
     "black",
-    "isort",
-    "flake8",
     "ruff",
     "mypy",
     "pre-commit",
@@ -95,12 +93,6 @@ extend-exclude = '''
 )/
 '''
 
-[tool.isort]
-profile = "black"
-multi_line_output = 3
-line_length = 88
-known_first_party = ["rut_validator"]
-
 [tool.mypy]
 python_version = "3.10"
 warn_return_any = true
@@ -121,7 +113,6 @@ module = [
     "pydantic.*",
     "django.*",
     "sqlalchemy.*",
-    "fastapi.*",
     "sqlmodel.*",
 ]
 ignore_missing_imports = true
