@@ -2,10 +2,10 @@ from inspect import signature
 
 import pytest
 
-from rut_validator import _engine
-from rut_validator.core import Rut, RutFormat
+from rut_validator.core import Rut, RutFormat, engine
 from rut_validator.errors import (
     RutInvalidFormatError,
+    RutInvalidValueError,
     RutModuleElevenValidationError,
     RutValidationError,
 )
@@ -39,6 +39,19 @@ def test_rut_constructor_preserves_public_signature():
 
     assert list(parameters) == ["value", "format_detected"]
     assert parameters["format_detected"].default is None
+
+
+@pytest.mark.parametrize("value", [None, 123456785, b"123456785", [], True])
+def test_rut_constructor_rejects_non_text_runtime_values(value):
+    with pytest.raises(RutInvalidValueError):
+        Rut(value)
+
+
+def test_rut_constructor_accepts_string_subclasses():
+    class RutText(str):
+        pass
+
+    assert Rut(RutText("12345678-5")).normalized == "123456785"
 
 
 def test_rut_reuses_the_normalized_value_computed_during_validation(monkeypatch):
@@ -93,14 +106,14 @@ def test_rut_rejects_a_format_that_contradicts_the_input():
 
 def test_validator_checks_the_digit_once(monkeypatch):
     calls = 0
-    original = _engine.is_valid_check_digit
+    original = engine.is_valid_check_digit
 
     def counting_check(body: object, check_digit: object) -> bool:
         nonlocal calls
         calls += 1
         return original(body, check_digit)
 
-    monkeypatch.setattr(_engine, "is_valid_check_digit", counting_check)
+    monkeypatch.setattr(engine, "is_valid_check_digit", counting_check)
 
     assert RutValidator.validate("12345678-5").normalized == "123456785"
     assert calls == 1

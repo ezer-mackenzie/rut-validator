@@ -2,19 +2,13 @@
 
 from dataclasses import dataclass, field
 
-from .. import _engine
 from ..errors import (
     RutInvalidFormatError,
     RutInvalidValueError,
     RutModuleElevenValidationError,
 )
+from . import engine
 from .enums import RutFormat
-
-_FORMAT_BY_NAME = {
-    "formatted": RutFormat.FORMATTED,
-    "hyphenated": RutFormat.HYPHENATED,
-    "normalized": RutFormat.NORMALIZED,
-}
 
 
 @dataclass(frozen=True, slots=True, init=False, eq=False, repr=False)
@@ -36,29 +30,27 @@ class Rut:
     ) -> None:
         if not isinstance(value, str) or value.strip() == "":
             raise RutInvalidValueError("El RUT debe ser un texto no vacío")
-        format_name = _engine.detect_format(value)
-        if format_name is None:
+        detected_format = engine.detect_format(value)
+        if detected_format is None:
             raise RutInvalidFormatError(
                 "Formato no válido, se esperaba algo como '12345678-9', "
                 "'123456789' o '12.345.678-9'"
             )
-        detected_format = _FORMAT_BY_NAME[format_name]
-        normalized = _engine.normalize(value)
+        normalized = engine.normalize(value)
         body, check_digit = normalized[:-1], normalized[-1]
         if format_detected is not None and format_detected != detected_format:
             raise RutInvalidFormatError(
                 "El formato indicado no coincide con el formato del RUT"
             )
-        object.__setattr__(self, "value", value)
-        resolved_format = format_detected or detected_format
-        assert resolved_format is not None
-        object.__setattr__(self, "format", resolved_format)
-
-        if not _engine.is_valid_check_digit(body, check_digit):
+        if not engine.is_valid_check_digit(body, check_digit):
             raise RutModuleElevenValidationError(
-                expected=_engine.module_eleven(body),
+                expected=engine.module_eleven(body),
                 received=check_digit,
             )
+        # Frozen dataclasses require this standard initialization mechanism for
+        # validated and derived fields. No mutation is allowed after __init__.
+        object.__setattr__(self, "value", value)
+        object.__setattr__(self, "format", detected_format)
         object.__setattr__(self, "_normalized", normalized)
 
     @property
@@ -69,12 +61,12 @@ class Rut:
     @property
     def formatted(self) -> str:
         """Return the canonical representation with dots and a hyphen."""
-        return _engine.format_normalized(self.normalized)
+        return engine.format_normalized(self.normalized)
 
     @property
     def hyphenated(self) -> str:
         """Return the canonical representation with only a hyphen."""
-        return _engine.hyphenate_normalized(self.normalized)
+        return engine.hyphenate_normalized(self.normalized)
 
     @property
     def body(self) -> int:

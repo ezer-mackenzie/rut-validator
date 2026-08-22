@@ -44,10 +44,11 @@ def test_domain_object_does_not_import_the_validation_layer():
     assert not any("validation" in module for module in imports)
 
 
-def test_private_engine_does_not_import_core_or_validation_layers():
-    imports = _imported_modules("_engine.py")
+def test_engine_does_not_import_validation_or_optional_layers():
+    imports = _imported_modules("core/engine.py")
 
-    assert not any("core" in module or "validation" in module for module in imports)
+    forbidden = ("validation", "orm", "django", "pydantic", "sqlalchemy", "sqlmodel")
+    assert not any(any(name in module for name in forbidden) for module in imports)
 
 
 @pytest.mark.parametrize(

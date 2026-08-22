@@ -14,7 +14,8 @@ does not prove that a RUT exists, is active, or belongs to a person or company.
 
 ## Repository map
 
-- `src/rut_validator/core/`: domain objects and enums only.
+- `src/rut_validator/core/`: domain objects, enums, and private invariant
+  primitives shared by the domain and validation layers.
 - `src/rut_validator/validation/`: parsing, formatting, patterns, and validation.
 - `src/rut_validator/orm/`: optional framework and ORM adapters.
 - `src/rut_validator/cli/`: Click-based command-line interface.
@@ -24,7 +25,9 @@ does not prove that a RUT exists, is active, or belongs to a person or company.
 
 ## Architectural rules
 
-- Keep the core and validation layers framework-agnostic.
+- Keep the core and validation layers framework-agnostic. Private core
+  primitives may be consumed by validation, but adapters must use public
+  validation helpers rather than importing internal core modules.
 - Importing `rut_validator`, `rut_validator.core`, `rut_validator.validation`, or
   `rut_validator.orm` must not import optional frameworks.
 - Keep integrations optional and located in `src/rut_validator/orm/`.

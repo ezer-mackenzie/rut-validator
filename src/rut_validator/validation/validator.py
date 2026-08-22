@@ -1,11 +1,11 @@
-"""Pure RUT validator - no dependencies."""
+"""Framework-independent validation of Chilean RUT values."""
 
 from __future__ import annotations
 
 import logging
 from typing import TYPE_CHECKING
 
-from .. import _engine
+from ..core import engine
 from ..core.enums import ValidationResult
 from ..errors import (
     RutInvalidFormatError,
@@ -17,35 +17,37 @@ if TYPE_CHECKING:
     from ..core.rut import Rut
 
 logger = logging.getLogger(__name__)
-RUT_MODULE_ELEVEN_FACTORS = _engine.RUT_MODULE_ELEVEN_FACTORS
+RUT_MODULE_ELEVEN_FACTORS = engine.RUT_MODULE_ELEVEN_FACTORS
 
 
 def calculate_check_digit(body: str) -> str:
-    """Calculate the modulo-11 check digit for a numeric RUT body."""
+    """Return the modulo-11 check digit for an ASCII numeric body.
+
+    Raises:
+        RutInvalidValueError: If *body* contains non-ASCII or non-digit text.
+    """
     return RutValidator.module_eleven(body)
 
 
 def validate_rut(value: object) -> Rut:
-    """Validate *value* and return an immutable :class:`Rut` value object."""
+    """Return *value* as an immutable, validated :class:`Rut`.
+
+    Raises:
+        RutInvalidValueError: If *value* is missing or not text.
+        RutInvalidFormatError: If *value* uses an unsupported representation.
+        RutModuleElevenValidationError: If its check digit is incorrect.
+    """
     return RutValidator.validate(value)
 
 
 class RutValidator:
-    """Validator for Chilean RUTs with pure Python logic."""
+    """Expose raising and non-raising RUT validation operations."""
 
     __slots__ = []
 
     @classmethod
     def get_validation_result(cls, rut: object) -> ValidationResult:
-        """
-        Get the validation result for a RUT string.
-
-        Args:
-            rut (str): The RUT string to validate.
-
-        Returns:
-            ValidationResult: The validation result.
-        """
+        """Return the detailed validation outcome for *rut*."""
         logger.debug("Getting RUT validation result")
 
         try:
@@ -68,15 +70,7 @@ class RutValidator:
 
     @classmethod
     def is_valid(cls, rut: object) -> bool:
-        """
-        Check if a RUT string is valid without raising exceptions.
-
-        Args:
-            rut (str): The RUT string to check.
-
-        Returns:
-            bool: True if valid, False otherwise.
-        """
+        """Return whether *rut* is valid without raising validation errors."""
         validation_result = cls.get_validation_result(rut)
         is_valid = validation_result == ValidationResult.VALID
 
@@ -86,19 +80,12 @@ class RutValidator:
 
     @classmethod
     def validate(cls, rut: object) -> Rut:
-        """
-        Validate a RUT string and return a Rut object.
-
-        Args:
-            rut (str): The RUT string to validate.
-
-        Returns:
-            Rut: A validated Rut object.
+        """Return *rut* as an immutable, validated :class:`Rut`.
 
         Raises:
-            RutInvalidValueError: If the RUT is empty or missing.
-            RutInvalidFormatError: If the RUT format is invalid.
-            RutModuleElevenValidationError: If the check digit does not match.
+            RutInvalidValueError: If *rut* is missing or not text.
+            RutInvalidFormatError: If *rut* uses an unsupported representation.
+            RutModuleElevenValidationError: If its check digit is incorrect.
         """
         logger.debug("Validating RUT")
 
@@ -115,24 +102,14 @@ class RutValidator:
 
     @classmethod
     def module_eleven(cls, body: str) -> str:
-        """
-        Calculates the check digit using the modulo 11 algorithm.
+        """Return the modulo-11 check digit for an ASCII numeric body.
 
-        Returns:
-            str: The calculated check digit (0-9 or 'K')
+        Raises:
+            RutInvalidValueError: If *body* contains non-ASCII or non-digit text.
         """
-        return _engine.module_eleven(body)
+        return engine.module_eleven(body)
 
     @classmethod
     def is_valid_check_digit(cls, body: object, check_digit: object) -> bool:
-        """
-        Validates that the provided check digit matches the calculated one.
-
-        Args:
-            body (str): The numeric part of the RUT.
-            check_digit (str): The check digit to validate.
-
-        Returns:
-            bool: True if the check digit is valid, False otherwise.
-        """
-        return _engine.is_valid_check_digit(body, check_digit)
+        """Return whether *check_digit* is valid for *body*."""
+        return engine.is_valid_check_digit(body, check_digit)

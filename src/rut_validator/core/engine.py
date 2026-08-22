@@ -1,30 +1,34 @@
-"""Private, dependency-free primitives shared by domain and validation APIs."""
+"""Internal primitives shared by the domain object and validation APIs."""
 
 from re import Pattern, compile
-from typing import Final, Literal
+from typing import Final
 
-from .errors import RutInvalidValueError
-
-FormatName = Literal["formatted", "hyphenated", "normalized"]
+from ..errors import RutInvalidValueError
+from .enums import RutFormat
 
 FORMATTED_PATTERN: Final[Pattern[str]] = compile(r"[0-9]{1,2}(?:\.[0-9]{3}){2}-[0-9kK]")
 HYPHENATED_PATTERN: Final[Pattern[str]] = compile(r"[0-9]{7,8}-[0-9kK]")
 NORMALIZED_PATTERN: Final[Pattern[str]] = compile(r"[0-9]{7,8}[0-9kK]")
 VALIDATION_PATTERN: Final[Pattern[str]] = compile(
-    r"(?:[0-9]{1,2}(?:\.[0-9]{3}){2}-[0-9kK]" r"|[0-9]{7,8}-[0-9kK]|[0-9]{7,8}[0-9kK])"
+    rf"(?:{FORMATTED_PATTERN.pattern}|{HYPHENATED_PATTERN.pattern}"
+    rf"|{NORMALIZED_PATTERN.pattern})"
 )
 CLEANING_PATTERN: Final[Pattern[str]] = compile(r"[^0-9kK]")
+MAX_RUT_LENGTH: Final = 12
 RUT_MODULE_ELEVEN_FACTORS: Final[tuple[int, ...]] = (2, 3, 4, 5, 6, 7)
 
 
-def detect_format(value: str) -> FormatName | None:
-    """Return the recognized syntax name for *value*, if any."""
+def detect_format(value: str) -> RutFormat | None:
+    """Return the recognized format for *value*, if any."""
     if FORMATTED_PATTERN.fullmatch(value):
-        return "formatted"
+        return RutFormat.FORMATTED
+
     if HYPHENATED_PATTERN.fullmatch(value):
-        return "hyphenated"
+        return RutFormat.HYPHENATED
+
     if NORMALIZED_PATTERN.fullmatch(value):
-        return "normalized"
+        return RutFormat.NORMALIZED
+
     return None
 
 
@@ -62,7 +66,7 @@ def module_eleven(body: str) -> str:
 
 
 def is_valid_check_digit(body: object, check_digit: object) -> bool:
-    """Return whether two components form a valid modulo-11 RUT."""
+    """Return whether *check_digit* is valid for *body*."""
     if (
         not isinstance(body, str)
         or not isinstance(check_digit, str)
