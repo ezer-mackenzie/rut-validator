@@ -19,6 +19,13 @@ def test_cli_format():
     assert result.output == "12345678-5\n"
 
 
+def test_cli_format_quiet_remains_a_compatible_no_op():
+    result = CliRunner().invoke(cli, ["format", "123456785", "--quiet"])
+
+    assert result.exit_code == 0
+    assert result.output == "12.345.678-5\n"
+
+
 def test_cli_invalid_value_has_nonzero_exit_code():
     result = CliRunner().invoke(cli, ["validate", "invalid"])
 
@@ -66,3 +73,38 @@ def test_cli_batch_outputs_json_lines_and_nonzero_for_invalid_rows():
     assert result.exit_code == 1
     assert rows[0]["valid"] is True
     assert rows[1]["error"]["code"] == "invalid_format"
+
+
+def test_cli_batch_does_not_silently_strip_input():
+    runner = CliRunner()
+    with runner.isolated_filesystem():
+        with open("ruts.txt", "w", encoding="utf-8") as stream:
+            stream.write(" 12.345.678-5\n   \n")
+
+        result = runner.invoke(cli, ["batch", "ruts.txt"])
+
+    rows = [json.loads(line) for line in result.output.splitlines()]
+    assert result.exit_code == 1
+    assert [row["line"] for row in rows] == [1, 2]
+    assert [row["error"]["code"] for row in rows] == [
+        "invalid_format",
+        "invalid_value",
+    ]
+
+
+def test_cli_batch_writes_output_file():
+    runner = CliRunner()
+    with runner.isolated_filesystem():
+        with open("ruts.txt", "w", encoding="utf-8") as stream:
+            stream.write("12.345.678-5\n")
+
+        result = runner.invoke(
+            cli,
+            ["batch", "ruts.txt", "--output", "result.jsonl"],
+        )
+        with open("result.jsonl", encoding="utf-8") as stream:
+            rows = [json.loads(line) for line in stream]
+
+    assert result.exit_code == 0
+    assert result.output == ""
+    assert rows[0]["normalized"] == "123456785"

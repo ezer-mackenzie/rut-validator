@@ -63,6 +63,7 @@ def validate(rut: str, as_json: bool) -> None:
 @click.option("--quiet", is_flag=True, help="Muestra sólo el resultado.")
 def format_command(rut: str, output_format: str, quiet: bool) -> None:
     """Convierte RUT a un formato canónico."""
+    # Kept for CLI compatibility: format already emits only the converted value.
     del quiet
     try:
         value = RutValidator.validate(rut)
@@ -104,11 +105,10 @@ def batch(file: Path, output: Path | None) -> None:
     for line_number, raw_value in enumerate(
         file.read_text(encoding="utf-8").splitlines(), 1
     ):
-        value = raw_value.strip()
-        if not value:
+        if raw_value == "":
             continue
         try:
-            data = _payload(value)
+            data = _payload(raw_value)
         except RutValidationError as exc:
             has_errors = True
             data = {"valid": False, "error": exc.as_dict()}

@@ -21,6 +21,9 @@ rut-validator format 123456785 --format hyphenated
 rut-validator format 123456785 --format normalized
 ```
 
+The legacy `--quiet` option remains accepted for compatibility. It is a no-op:
+`format` already writes only the converted value.
+
 ## Inspect
 
 ```bash
@@ -45,6 +48,9 @@ rut-validator batch ruts.txt --output result.jsonl
 
 Output uses JSON Lines. The command exits with status `1` when any line is
 invalid and `0` when every line is valid.
+
+Blank lines are skipped. Other lines are validated exactly as written; leading
+or trailing whitespace is not removed silently.
 
 ## Exit codes
 
