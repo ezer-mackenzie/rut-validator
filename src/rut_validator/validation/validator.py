@@ -3,8 +3,9 @@
 from __future__ import annotations
 
 import logging
-from typing import TYPE_CHECKING, Final
+from typing import TYPE_CHECKING
 
+from .. import _engine
 from ..core.enums import ValidationResult
 from ..errors import (
     RutInvalidFormatError,
@@ -16,7 +17,7 @@ if TYPE_CHECKING:
     from ..core.rut import Rut
 
 logger = logging.getLogger(__name__)
-RUT_MODULE_ELEVEN_FACTORS: Final[tuple[int, ...]] = (2, 3, 4, 5, 6, 7)
+RUT_MODULE_ELEVEN_FACTORS = _engine.RUT_MODULE_ELEVEN_FACTORS
 
 
 def calculate_check_digit(body: str) -> str:
@@ -120,24 +121,7 @@ class RutValidator:
         Returns:
             str: The calculated check digit (0-9 or 'K')
         """
-        if not body.isascii() or not body.isdigit():
-            raise RutInvalidValueError("El cuerpo del RUT debe contener sólo dígitos")
-
-        reversed_digits = map(int, reversed(body))
-        total = sum(
-            d * RUT_MODULE_ELEVEN_FACTORS[i % len(RUT_MODULE_ELEVEN_FACTORS)]
-            for i, d in enumerate(reversed_digits)
-        )
-        remainder = total % 11
-        result = 11 - remainder
-
-        if result == 11:
-            return "0"
-
-        if result == 10:
-            return "K"
-
-        return str(result)
+        return _engine.module_eleven(body)
 
     @classmethod
     def is_valid_check_digit(cls, body: object, check_digit: object) -> bool:
@@ -151,16 +135,4 @@ class RutValidator:
         Returns:
             bool: True if the check digit is valid, False otherwise.
         """
-        if (
-            not isinstance(body, str)
-            or not isinstance(check_digit, str)
-            or len(check_digit) != 1
-            or check_digit not in "0123456789kK"
-        ):
-            return False
-
-        try:
-            expected_check_digit = cls.module_eleven(body)
-        except RutInvalidValueError:
-            return False
-        return check_digit.upper() == expected_check_digit
+        return _engine.is_valid_check_digit(body, check_digit)

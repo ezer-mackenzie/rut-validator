@@ -19,6 +19,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Dependency metadata and the Poetry lock file are synchronized.
+- The development extra now installs FastAPI because the default test matrix
+  collects the FastAPI integration suite.
 - CI now verifies Poetry metadata consistency explicitly.
 - Dependency auditing now targets the declared project instead of unrelated
   packages installed as CI tooling.
@@ -29,6 +31,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   because format output is already quiet.
 - Validation constructs `Rut` through a single check-digit validation pass.
 - `Rut` now caches the normalized representation established during validation.
+- Shared validation primitives now live in a private dependency-free engine,
+  removing the dependency from `core.Rut` to the public validation layer.
 - Documentation now distinguishes validating APIs from low-level parsing and
   pattern helpers.
 

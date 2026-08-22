@@ -1,7 +1,6 @@
 """RUT pattern definitions and format detection."""
 
-from re import compile
-
+from .. import _engine
 from ..core.enums import RutFormat
 
 
@@ -14,21 +13,18 @@ class RutPatterns:
     """
 
     # Individual patterns for format detection
-    FORMATTED_PATTERN = compile(r"[0-9]{1,2}(?:\.[0-9]{3}){2}-[0-9kK]")
-    HYPHENATED_PATTERN = compile(r"[0-9]{7,8}-[0-9kK]")
-    NORMALIZED_PATTERN = compile(r"[0-9]{7,8}[0-9kK]")
+    FORMATTED_PATTERN = _engine.FORMATTED_PATTERN
+    HYPHENATED_PATTERN = _engine.HYPHENATED_PATTERN
+    NORMALIZED_PATTERN = _engine.NORMALIZED_PATTERN
 
     # Combined pattern for general validation
-    VALIDATION_PATTERN = compile(
-        r"(?:[0-9]{1,2}(?:\.[0-9]{3}){2}-[0-9kK]"
-        r"|[0-9]{7,8}-[0-9kK]|[0-9]{7,8}[0-9kK])"
-    )
+    VALIDATION_PATTERN = _engine.VALIDATION_PATTERN
 
     # Maximum supported length for a formatted RUT string.
     MAX_RUT_LENGTH = 15
 
     # Cleaning pattern (removes dots, hyphens, keeps digits and K/k)
-    CLEANING_PATTERN = compile(r"[^0-9kK]")
+    CLEANING_PATTERN = _engine.CLEANING_PATTERN
 
     @classmethod
     def detect_format(cls, rut: str) -> RutFormat | None:
@@ -41,16 +37,8 @@ class RutPatterns:
         Returns:
             RutFormat if the format is recognized, None otherwise.
         """
-        if cls.FORMATTED_PATTERN.fullmatch(rut):
-            return RutFormat.FORMATTED
-
-        elif cls.HYPHENATED_PATTERN.fullmatch(rut):
-            return RutFormat.HYPHENATED
-
-        elif cls.NORMALIZED_PATTERN.fullmatch(rut):
-            return RutFormat.NORMALIZED
-
-        return None
+        format_name = _engine.detect_format(rut)
+        return RutFormat(format_name) if format_name is not None else None
 
     @classmethod
     def is_valid_format(cls, rut: str) -> bool:
@@ -79,7 +67,7 @@ class RutPatterns:
         Returns:
             The normalized RUT string (digits + check digit, uppercased).
         """
-        return cls.CLEANING_PATTERN.sub("", rut).upper()
+        return _engine.normalize(rut)
 
     @classmethod
     def formatted(cls, rut: str) -> str:
@@ -92,11 +80,7 @@ class RutPatterns:
         Returns:
             The formatted RUT string (e.g., "12.345.678-5").
         """
-        normalized_rut = cls.normalize(rut)
-        body = normalized_rut[:-1]
-        check_digit = normalized_rut[-1]
-        body_formatted = f"{int(body):,}".replace(",", ".")
-        return f"{body_formatted}-{check_digit}"
+        return _engine.format_normalized(cls.normalize(rut))
 
     @classmethod
     def hyphenated(cls, rut: str) -> str:
@@ -109,10 +93,7 @@ class RutPatterns:
         Returns:
             The hyphenated RUT string (e.g., "12345678-5").
         """
-        normalized_rut = cls.normalize(rut)
-        body = normalized_rut[:-1]
-        check_digit = normalized_rut[-1]
-        return f"{body}-{check_digit}"
+        return _engine.hyphenate_normalized(cls.normalize(rut))
 
     @classmethod
     def normalized(cls, rut: str) -> str:

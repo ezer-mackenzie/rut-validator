@@ -2,6 +2,7 @@ from inspect import signature
 
 import pytest
 
+from rut_validator import _engine
 from rut_validator.core import Rut, RutFormat
 from rut_validator.errors import (
     RutInvalidFormatError,
@@ -92,14 +93,14 @@ def test_rut_rejects_a_format_that_contradicts_the_input():
 
 def test_validator_checks_the_digit_once(monkeypatch):
     calls = 0
-    original = RutValidator.is_valid_check_digit
+    original = _engine.is_valid_check_digit
 
     def counting_check(body: object, check_digit: object) -> bool:
         nonlocal calls
         calls += 1
         return original(body, check_digit)
 
-    monkeypatch.setattr(RutValidator, "is_valid_check_digit", counting_check)
+    monkeypatch.setattr(_engine, "is_valid_check_digit", counting_check)
 
     assert RutValidator.validate("12345678-5").normalized == "123456785"
     assert calls == 1

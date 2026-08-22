@@ -2,10 +2,19 @@
 
 from dataclasses import dataclass, field
 
-from ..errors import RutInvalidFormatError, RutModuleElevenValidationError
-from ..validation.parser import RutParser
-from ..validation.patterns import RutPatterns
+from .. import _engine
+from ..errors import (
+    RutInvalidFormatError,
+    RutInvalidValueError,
+    RutModuleElevenValidationError,
+)
 from .enums import RutFormat
+
+_FORMAT_BY_NAME = {
+    "formatted": RutFormat.FORMATTED,
+    "hyphenated": RutFormat.HYPHENATED,
+    "normalized": RutFormat.NORMALIZED,
+}
 
 
 @dataclass(frozen=True, slots=True, init=False, eq=False, repr=False)
@@ -25,7 +34,17 @@ class Rut:
         value: str,
         format_detected: RutFormat | None = None,
     ) -> None:
-        body, check_digit, detected_format = RutParser.destructure(value)
+        if not isinstance(value, str) or value.strip() == "":
+            raise RutInvalidValueError("El RUT debe ser un texto no vacío")
+        format_name = _engine.detect_format(value)
+        if format_name is None:
+            raise RutInvalidFormatError(
+                "Formato no válido, se esperaba algo como '12345678-9', "
+                "'123456789' o '12.345.678-9'"
+            )
+        detected_format = _FORMAT_BY_NAME[format_name]
+        normalized = _engine.normalize(value)
+        body, check_digit = normalized[:-1], normalized[-1]
         if format_detected is not None and format_detected != detected_format:
             raise RutInvalidFormatError(
                 "El formato indicado no coincide con el formato del RUT"
@@ -35,14 +54,12 @@ class Rut:
         assert resolved_format is not None
         object.__setattr__(self, "format", resolved_format)
 
-        from ..validation.validator import RutValidator
-
-        if not RutValidator.is_valid_check_digit(body, check_digit):
+        if not _engine.is_valid_check_digit(body, check_digit):
             raise RutModuleElevenValidationError(
-                expected=RutValidator.module_eleven(body),
+                expected=_engine.module_eleven(body),
                 received=check_digit,
             )
-        object.__setattr__(self, "_normalized", f"{body}{check_digit.upper()}")
+        object.__setattr__(self, "_normalized", normalized)
 
     @property
     def normalized(self) -> str:
@@ -52,12 +69,12 @@ class Rut:
     @property
     def formatted(self) -> str:
         """Return the canonical representation with dots and a hyphen."""
-        return RutPatterns.formatted(self.normalized)
+        return _engine.format_normalized(self.normalized)
 
     @property
     def hyphenated(self) -> str:
         """Return the canonical representation with only a hyphen."""
-        return RutPatterns.hyphenated(self.normalized)
+        return _engine.hyphenate_normalized(self.normalized)
 
     @property
     def body(self) -> int:

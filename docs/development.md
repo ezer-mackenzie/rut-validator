@@ -40,3 +40,20 @@ The project uses Conventional Commits:
 - `chore:` maintenance and releases.
 
 Every new public API must include tests, documentation, and a changelog entry.
+
+## Internal dependency direction
+
+The private `rut_validator._engine` module contains dependency-free syntax,
+formatting, and modulo-11 primitives shared by the domain object and public
+validation APIs. It is not public API.
+
+```text
+_engine -> core
+_engine -> validation -> core
+                         ^
+orm ---------------------|
+```
+
+`core` must not import `validation`, and neither standalone layer may import an
+optional framework. Keep public parsing and formatting entry points in
+`rut_validator.validation`; `_engine` exists only to prevent dependency cycles.

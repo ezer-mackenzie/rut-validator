@@ -1,5 +1,7 @@
+import ast
 import subprocess
 import sys
+from pathlib import Path
 
 import pytest
 
@@ -26,6 +28,26 @@ def test_validation_layer_exposes_framework_agnostic_implementation():
     assert RutParser
     assert RutPatterns
     assert RutValidator
+
+
+def _imported_modules(relative_path: str) -> set[str]:
+    source_path = Path(__file__).parents[1] / "src" / "rut_validator" / relative_path
+    tree = ast.parse(source_path.read_text(encoding="utf-8"))
+    return {
+        node.module or "" for node in ast.walk(tree) if isinstance(node, ast.ImportFrom)
+    }
+
+
+def test_domain_object_does_not_import_the_validation_layer():
+    imports = _imported_modules("core/rut.py")
+
+    assert not any("validation" in module for module in imports)
+
+
+def test_private_engine_does_not_import_core_or_validation_layers():
+    imports = _imported_modules("_engine.py")
+
+    assert not any("core" in module or "validation" in module for module in imports)
 
 
 @pytest.mark.parametrize(
