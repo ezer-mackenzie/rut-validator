@@ -20,8 +20,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Dependency metadata and the Poetry lock file are synchronized.
 - CI now verifies Poetry metadata consistency explicitly.
+- Dependency auditing now targets the declared project instead of unrelated
+  packages installed as CI tooling.
 - Unused isort and Flake8 development dependencies were removed; Ruff and
   Black remain the maintained linting and formatting tools.
+- Unused standalone RUT fixture files were removed.
 - The legacy `format --quiet` compatibility option is documented as a no-op
   because format output is already quiet.
 - Validation constructs `Rut` through a single check-digit validation pass.

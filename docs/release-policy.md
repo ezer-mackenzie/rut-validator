@@ -32,8 +32,13 @@ A release is tagged only when:
 3. wheel and source distribution build successfully;
 4. Twine validates both artifacts;
 5. the installed base wheel imports without optional frameworks;
-6. dependency auditing reports no known vulnerabilities;
+6. auditing the declared base project dependencies reports no known
+   vulnerabilities;
 7. package version, documentation, and changelog agree.
 
 RUT validation does not certify identity, ownership, or registration with the
 Chilean Internal Revenue Service (SII).
+
+Optional integration stacks are installed and tested in isolated CI jobs.
+Their transitive framework dependencies remain under Dependabot monitoring and
+are updated when compatible patched releases become available.

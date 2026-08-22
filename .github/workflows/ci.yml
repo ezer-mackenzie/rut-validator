@@ -69,7 +69,8 @@ jobs:
       - run: python examples/01_pure_validation.py
       - run: python examples/02_pydantic_usage.py
       - run: python examples/05_sqlmodel_usage.py
-      - run: pip-audit
+      - name: Audit declared base dependencies
+        run: pip-audit .
       - run: python -m build
       - run: twine check dist/*
 
