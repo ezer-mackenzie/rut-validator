@@ -60,6 +60,29 @@ def test_rut_invalid_format_raises_error():
         Rut("12-345678-9")
 
 
+def test_rut_rejects_a_format_that_contradicts_the_input():
+    with pytest.raises(
+        RutInvalidFormatError,
+        match="El formato indicado no coincide con el formato del RUT",
+    ):
+        Rut("123456785", RutFormat.FORMATTED)
+
+
+def test_validator_checks_the_digit_once(monkeypatch):
+    calls = 0
+    original = RutValidator.is_valid_check_digit
+
+    def counting_check(body: object, check_digit: object) -> bool:
+        nonlocal calls
+        calls += 1
+        return original(body, check_digit)
+
+    monkeypatch.setattr(RutValidator, "is_valid_check_digit", counting_check)
+
+    assert RutValidator.validate("12345678-5").normalized == "123456785"
+    assert calls == 1
+
+
 def test_rut_parser_destructure_detects_format():
     body, check_digit, detected_format = RutParser.destructure("12.345.678-5")
 
@@ -80,6 +103,13 @@ def test_rut_equality_and_hash():
     assert rut1 == rut2
     assert hash(rut1) == hash(rut2)
     assert {rut1} == {rut2}
+
+
+def test_rut_repr_does_not_expose_the_submitted_value():
+    rut = Rut("12.345.678-5")
+
+    assert repr(rut) == "Rut(value='<redacted>', format=RutFormat.FORMATTED)"
+    assert rut.value not in repr(rut)
 
 
 def test_rut_equality_across_all_formats():

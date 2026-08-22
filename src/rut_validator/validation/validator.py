@@ -9,7 +9,6 @@ from ..core.enums import ValidationResult
 from ..errors import (
     RutInvalidFormatError,
     RutInvalidValueError,
-    RutModuleElevenValidationError,
 )
 from .parser import RutParser
 
@@ -102,36 +101,16 @@ class RutValidator:
         """
         logger.debug("Validating RUT")
 
-        try:
-            body, check_digit, format_detected = RutParser.parse(rut)
-
-        except RutInvalidValueError:
+        if not isinstance(rut, str) or rut.strip() == "":
             raise RutInvalidValueError(
                 "No se puede parsear un RUT vacío, por favor ingrese un valor"
             )
 
-        except RutInvalidFormatError:
-            raise RutInvalidFormatError(
-                "Formato no válido, se esperaba algo como '12345678-9', "
-                "'123456789' o '12.345.678-9'"
-            )
-
-        if not cls.is_valid_check_digit(body, check_digit):
-            check_digit_expected = cls.module_eleven(body)
-
-            logger.debug("RUT check digit validation failed")
-
-            raise RutModuleElevenValidationError(
-                expected=check_digit_expected,
-                received=check_digit,
-            )
-
         from ..core.rut import Rut
 
+        value = Rut(rut)
         logger.debug("RUT validation successful")
-        assert isinstance(rut, str)
-        assert format_detected is not None
-        return Rut(rut, format_detected)
+        return value
 
     @classmethod
     def module_eleven(cls, body: str) -> str:

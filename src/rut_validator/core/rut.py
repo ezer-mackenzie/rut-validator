@@ -2,7 +2,7 @@
 
 from dataclasses import dataclass
 
-from ..errors import RutModuleElevenValidationError
+from ..errors import RutInvalidFormatError, RutModuleElevenValidationError
 from ..validation.parser import RutParser
 from ..validation.patterns import RutPatterns
 from .enums import RutFormat
@@ -45,6 +45,10 @@ class Rut:
         format_detected: RutFormat | None = None,
     ) -> None:
         body, check_digit, detected_format = RutParser.destructure(value)
+        if format_detected is not None and format_detected != detected_format:
+            raise RutInvalidFormatError(
+                "El formato indicado no coincide con el formato del RUT"
+            )
         object.__setattr__(self, "value", value)
         resolved_format = format_detected or detected_format
         assert resolved_format is not None
@@ -138,7 +142,7 @@ class Rut:
         return self.formatted
 
     def __repr__(self) -> str:
-        return f"Rut(value='{self.value}', format={self.format})"
+        return f"Rut(value='<redacted>', format={self.format})"
 
     def equals(self, other: object) -> bool:
         """Return True when two Rut objects represent the same normalized RUT."""
