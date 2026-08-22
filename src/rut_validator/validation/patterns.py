@@ -6,7 +6,12 @@ from ..core.enums import RutFormat
 
 
 class RutPatterns:
-    """Collection of regex patterns for RUT validation and format detection."""
+    """Low-level regex and transformation helpers.
+
+    Transformation methods do not validate the check digit. Application code
+    needing a validation guarantee should use ``RutValidator`` or
+    ``RutFormatter``.
+    """
 
     # Individual patterns for format detection
     FORMATTED_PATTERN = compile(r"[0-9]{1,2}(?:\.[0-9]{3}){2}-[0-9kK]")

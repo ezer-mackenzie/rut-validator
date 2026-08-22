@@ -65,6 +65,13 @@ except RutModuleElevenValidationError as error:
 Public error codes are `invalid_value`, `invalid_format`, and
 `invalid_check_digit`. Error payloads do not include the submitted RUT.
 
+## Framework-agnostic validation package
+
+`rut_validator.validation` also exports `RutFormatter`, `RutParser` and
+`RutPatterns`. `RutFormatter` validates before conversion. `RutParser` and
+`RutPatterns` are lower-level compatibility APIs and must not be treated as
+proof that a RUT is valid; use `validate_rut()` for that guarantee.
+
 ## Optional integrations
 
 | Import | Public symbols |

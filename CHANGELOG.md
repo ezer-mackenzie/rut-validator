@@ -5,6 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Fixed
+
+- Batch CLI validation no longer silently accepts leading or trailing
+  whitespace.
+- `Rut` rejects an explicitly supplied input format when it contradicts the
+  actual value.
+- `Rut.__repr__` redacts the submitted value to reduce accidental disclosure in
+  logs and debugging output.
+
+### Changed
+
+- Dependency metadata and the Poetry lock file are synchronized.
+- CI now verifies Poetry metadata consistency explicitly.
+- Unused isort and Flake8 development dependencies were removed; Ruff and
+  Black remain the maintained linting and formatting tools.
+- The legacy `format --quiet` compatibility option is documented as a no-op
+  because format output is already quiet.
+- Validation constructs `Rut` through a single check-digit validation pass.
+- Documentation now distinguishes validating APIs from low-level parsing and
+  pattern helpers.
+
 ## [1.0.0] - 2026-07-23
 
 ### Added

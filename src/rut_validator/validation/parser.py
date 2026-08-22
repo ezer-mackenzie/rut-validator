@@ -7,7 +7,11 @@ from .patterns import RutPatterns
 
 
 class RutParser:
-    """Parser for Chilean RUT strings with format detection."""
+    """Low-level parser for RUT syntax and format detection.
+
+    Parsing does not validate the check digit. Use ``RutValidator`` when a
+    complete validation guarantee is required.
+    """
 
     @classmethod
     def parse(cls, rut: object) -> tuple[str, str, RutFormat | None]:

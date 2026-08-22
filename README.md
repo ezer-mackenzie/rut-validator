@@ -24,6 +24,8 @@ Pydantic, FastAPI, Django, SQLAlchemy, and SQLModel.
 
 Validation confirms syntax and the check digit. It does not confirm that a RUT
 exists, is active, or belongs to a particular person or organization.
+Values shown below are synthetic validation fixtures and must not be interpreted
+as identifying real people.
 
 ## Installation
 
