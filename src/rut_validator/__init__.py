@@ -1,6 +1,4 @@
-"""
-rut-validator: Validation of Chilean RUTs for Pydantic and FastAPI
-"""
+"""Validate and represent Chilean RUT values."""
 
 from importlib.metadata import PackageNotFoundError, version
 
@@ -21,12 +19,12 @@ except PackageNotFoundError:  # pragma: no cover - source tree without install
 
 __all__ = [
     "Rut",
-    "RutFormat",  # Format enumeration
-    "RutInvalidFormatError",  # Custom exception
-    "RutInvalidValueError",  # Custom exception
-    "RutModuleElevenValidationError",  # Custom exception
-    "RutValidationError",  # Base exception
-    "RutValidator",  # For pure validation
+    "RutFormat",
+    "RutInvalidFormatError",
+    "RutInvalidValueError",
+    "RutModuleElevenValidationError",
+    "RutValidationError",
+    "RutValidator",
     "ValidationResult",
     "calculate_check_digit",
     "validate_rut",

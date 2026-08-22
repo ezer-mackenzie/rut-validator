@@ -13,24 +13,24 @@ class RutValidationError(ValueError):
         super().__init__(message)
 
     def as_dict(self) -> dict[str, Any]:
-        """Return a serialization safe for APIs and command-line JSON."""
+        """Return a JSON-serializable error payload."""
         return {"code": self.code, "message": self.message}
 
 
 class RutInvalidValueError(RutValidationError):
-    """Raised when the RUT value is empty or invalid."""
+    """Indicate that a required RUT value is missing or has the wrong type."""
 
     code = "invalid_value"
 
 
 class RutInvalidFormatError(RutValidationError):
-    """Raised when the RUT format is invalid."""
+    """Indicate that text does not use a supported RUT representation."""
 
     code = "invalid_format"
 
 
 class RutModuleElevenValidationError(RutValidationError):
-    """Raised when the RUT fails the modulo 11 validation."""
+    """Indicate that a RUT has an incorrect modulo-11 check digit."""
 
     code = "invalid_check_digit"
 
@@ -43,6 +43,7 @@ class RutModuleElevenValidationError(RutValidationError):
         )
 
     def as_dict(self) -> dict[str, Any]:
+        """Return a JSON payload containing expected and received digits."""
         payload = super().as_dict()
         payload.update(
             {

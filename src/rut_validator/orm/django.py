@@ -22,6 +22,7 @@ class RutDjangoValidator:
     code = "invalid_rut"
 
     def __call__(self, value: Any) -> None:
+        """Raise Django's ``ValidationError`` when *value* is not a valid RUT."""
         if not isinstance(value, str):
             raise ValidationError("El RUT debe ser un texto", code=self.code)
         try:
@@ -42,6 +43,7 @@ class RutDjango(RutDjangoBase):
         self.validators.append(RutDjangoValidator())
 
     def to_python(self, value: object) -> str | None:
+        """Convert a supported value to normalized RUT text."""
         if value is None:
             return None
         if not isinstance(value, str):
@@ -52,6 +54,7 @@ class RutDjango(RutDjangoBase):
             raise ValidationError(str(exc), code="invalid_rut") from exc
 
     def get_prep_value(self, value: object) -> str | None:
+        """Return normalized RUT text for database persistence."""
         return self.to_python(value)
 
     def formfield(self, **kwargs: Any) -> Any:

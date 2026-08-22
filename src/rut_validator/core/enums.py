@@ -1,8 +1,10 @@
+"""Enumerations used by the RUT domain and validation APIs."""
+
 from enum import Enum
 
 
 class RutFormat(Enum):
-    """Enumeration of supported RUT formats."""
+    """Supported input representations of a RUT."""
 
     FORMATTED = "formatted"  # 12.345.678-9
     HYPHENATED = "hyphenated"  # 12345678-9
@@ -10,7 +12,7 @@ class RutFormat(Enum):
 
 
 class ValidationResult(Enum):
-    """Result states for RUT validation."""
+    """Possible outcomes of non-raising validation."""
 
     VALID = "valid"
     INVALID_VALUE = "invalid_value"

@@ -14,6 +14,7 @@ class RutSQLAlchemy(TypeDecorator[str]):
     cache_ok = True
 
     def process_bind_param(self, value: str | None, dialect: Dialect) -> str | None:
+        """Validate and normalize a value before binding it to a statement."""
         del dialect
 
         if value is None:
@@ -26,6 +27,7 @@ class RutSQLAlchemy(TypeDecorator[str]):
             raise ValueError(str(exc)) from exc
 
     def process_result_value(self, value: str | None, dialect: Dialect) -> str | None:
+        """Validate normalized RUT text loaded from the database."""
         del dialect
         if value is None:
             return None
