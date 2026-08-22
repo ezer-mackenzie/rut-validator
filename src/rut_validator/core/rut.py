@@ -1,6 +1,6 @@
 """Validated RUT value object."""
 
-from dataclasses import dataclass, field
+from dataclasses import InitVar, dataclass, field
 
 from ..errors import (
     RutInvalidFormatError,
@@ -11,7 +11,14 @@ from . import engine
 from .enums import RutFormat
 
 
-@dataclass(frozen=True, slots=True, init=False, eq=False, repr=False)
+def _require_text(value: object) -> str:
+    """Return a non-empty text value or raise the public value error."""
+    if not isinstance(value, str) or value.strip() == "":
+        raise RutInvalidValueError("El RUT debe ser un texto no vacío")
+    return value
+
+
+@dataclass(frozen=True, slots=True, eq=False, repr=False)
 class Rut:
     """Immutable, hashable and validated Chilean RUT value object.
 
@@ -20,16 +27,13 @@ class Rut:
     """
 
     value: str
-    format: RutFormat
+    format_detected: InitVar[RutFormat | None] = None
+    format: RutFormat = field(init=False)
     _normalized: str = field(init=False, repr=False)
 
-    def __init__(
-        self,
-        value: str,
-        format_detected: RutFormat | None = None,
-    ) -> None:
-        if not isinstance(value, str) or value.strip() == "":
-            raise RutInvalidValueError("El RUT debe ser un texto no vacío")
+    def __post_init__(self, format_detected: RutFormat | None) -> None:
+        """Validate the input and initialize its derived canonical fields."""
+        value = _require_text(self.value)
         detected_format = engine.detect_format(value)
         if detected_format is None:
             raise RutInvalidFormatError(
@@ -47,9 +51,8 @@ class Rut:
                 expected=engine.module_eleven(body),
                 received=check_digit,
             )
-        # Frozen dataclasses require this standard initialization mechanism for
-        # validated and derived fields. No mutation is allowed after __init__.
-        object.__setattr__(self, "value", value)
+        # This is the supported way to initialize derived fields in a frozen
+        # dataclass; regular assignment remains prohibited after construction.
         object.__setattr__(self, "format", detected_format)
         object.__setattr__(self, "_normalized", normalized)
 
