@@ -11,7 +11,17 @@ when validation fails.
 
 Calculates the modulo-11 check digit for an ASCII-only numeric body.
 
+### `is_valid_rut(value)`
+
+Returns a boolean without raising a validation exception.
+
+### `get_validation_result(value)`
+
+Returns the detailed `ValidationResult` without raising a validation exception.
+
 ### `RutValidator`
+
+Compatibility facade for the functional validation API.
 
 - `validate(value) -> Rut`
 - `is_valid(value) -> bool`
@@ -81,5 +91,7 @@ proof that a RUT is valid; use `validate_rut()` for that guarantee.
 | `rut_validator.orm.sqlmodel` | `RutSQLModel`, `rut_sqlmodel_field` |
 | `rut_validator.orm.django` | `RutDjango`, `RutDjangoValidator` |
 
-Domain types live in `rut_validator.core`, framework-agnostic behavior lives in
-`rut_validator.validation`, and adapters live in `rut_validator.orm`.
+Domain types and their private invariant engine live in `rut_validator.core`.
+`rut_validator.validation` provides the stable framework-agnostic `1.x` API,
+and adapters live in `rut_validator.orm`. Application and adapter code should
+use public validation helpers rather than importing the private engine.

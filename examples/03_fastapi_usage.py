@@ -15,7 +15,7 @@ Then visit:
 from fastapi import FastAPI
 from pydantic import BaseModel
 
-from rut_validator import RutValidator
+from rut_validator import validate_rut
 from rut_validator.orm.pydantic import RutPydantic
 
 app = FastAPI(title="RUT Validator API")
@@ -72,7 +72,7 @@ def create_person(person: Person) -> PersonResponse:
 
     Returns 422 Unprocessable Entity if RUT is invalid.
     """
-    value = RutValidator.validate(person.rut)
+    value = validate_rut(person.rut)
     return PersonResponse(
         name=person.name,
         rut=str(person.rut),
@@ -106,7 +106,7 @@ def create_persons(persons: list[Person]) -> dict:
         "persons": [
             {
                 "name": p.name,
-                "rut": RutValidator.validate(p.rut).formatted,
+                "rut": validate_rut(p.rut).formatted,
             }
             for p in persons
         ],

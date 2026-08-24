@@ -7,6 +7,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `is_valid_rut()` and `get_validation_result()` provide functional replacements
+  for the non-raising `RutValidator` operations and are exported from the root
+  package.
+
+### Fixed
+
+- Pydantic JSON Schema now derives its accepted RUT pattern from the same
+  canonical definition used by runtime validation.
+
+### Changed
+
+- RUT parsing and validation now produce one private, immutable analysis result
+  in `core.engine`, removing repeated format detection and normalization.
+- `Rut`, `RutParser`, and `RutValidator` now share the same engine path while
+  preserving the complete public `1.x` contract.
+- Production validation no longer depends on the legacy `RutParser` and
+  `RutPatterns` facades; they remain available for compatibility.
+- CLI, optional adapters, formatter compatibility methods, documentation, and
+  examples now use the canonical functional validation helpers internally.
+- Characterization tests now freeze the `1.x` exports, constructor signature,
+  legacy aliases, error codes, and invalid-input classification ahead of the
+  version 2 migration.
+
 ## [1.0.1] - 2026-08-22
 
 ### Fixed

@@ -64,11 +64,11 @@ assert calculate_check_digit("20884437") == "7"
 For boolean-only checks:
 
 ```python
-from rut_validator import RutValidator
+from rut_validator import is_valid_rut
 
-assert RutValidator.is_valid("12.345.678-5")
-assert not RutValidator.is_valid("12.345.678-0")
-assert not RutValidator.is_valid(None)
+assert is_valid_rut("12.345.678-5")
+assert not is_valid_rut("12.345.678-0")
+assert not is_valid_rut(None)
 ```
 
 ## Error handling

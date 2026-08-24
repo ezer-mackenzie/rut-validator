@@ -42,14 +42,14 @@ assert calculate_check_digit("20884437") == "7"
 ## Boolean validation
 
 ```python
-from rut_validator import RutValidator
+from rut_validator import is_valid_rut
 
-assert RutValidator.is_valid("12.345.678-5")
-assert not RutValidator.is_valid("12.345.678-0")
-assert not RutValidator.is_valid(None)
+assert is_valid_rut("12.345.678-5")
+assert not is_valid_rut("12.345.678-0")
+assert not is_valid_rut(None)
 ```
 
-Use `is_valid()` when only a boolean is needed. Use `validate_rut()` when the
+Use `is_valid_rut()` when only a boolean is needed. Use `validate_rut()` when the
 application needs the validated value or a specific error.
 
 ## Handle errors

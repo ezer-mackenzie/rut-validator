@@ -27,17 +27,20 @@ assert str(left) == "12.345.678-5"
 - `check_digit`: check digit as `str`.
 - `is_formatted`, `is_hyphenated`, `is_normalized`: input format indicators.
 
-## `RutValidator`
+## Functional validation
 
 ```python
-from rut_validator import RutValidator, ValidationResult
+from rut_validator import ValidationResult, get_validation_result, validate_rut
 
-result = RutValidator.get_validation_result("12.345.678-5")
+result = get_validation_result("12.345.678-5")
 assert result is ValidationResult.VALID
 
-rut = RutValidator.validate("12.345.678-5")
+rut = validate_rut("12.345.678-5")
 assert rut.body == 12345678
 ```
+
+`RutValidator` remains available as a compatibility facade throughout the
+`1.x` series.
 
 `get_validation_result()` returns one of:
 
@@ -65,7 +68,7 @@ syntax and implementing specialized tooling. They are low-level primitives:
 methods such as `RutPatterns.normalize()` only transform characters and do not
 prove that the input is valid.
 
-Application code should use `validate_rut()`, `RutValidator` or `RutFormatter`
+Application code should use `validate_rut()` or `is_valid_rut()`
 when it needs a validation guarantee. The low-level names will remain available
 throughout the `1.x` series; any future removal will follow the deprecation
 policy.
