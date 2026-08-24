@@ -104,6 +104,7 @@ def batch(file: Path, output: Path | None) -> None:
     ):
         if raw_value == "":
             continue
+        data: dict[str, object]
         try:
             data = _payload(raw_value)
         except RutValidationError as exc:

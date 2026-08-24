@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- The CLI batch payload now has an explicit common mapping type, avoiding
+  partially unknown inference in strict type checkers.
+
 ## [2.0.0] - 2026-08-24
 
 ### Removed
