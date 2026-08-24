@@ -1,6 +1,7 @@
 import pytest
 from pydantic import BaseModel
 
+from rut_validator.core import engine
 from rut_validator.orm.pydantic import RutPydantic
 
 
@@ -27,10 +28,7 @@ class TestRutPydantic:
         # Check that the rut field has the expected properties
         rut_schema = schema["properties"]["rut"]
         assert rut_schema["type"] == "string"
-        assert rut_schema["pattern"] == (
-            r"^(?:[0-9]{1,2}(?:\.[0-9]{3}){2}-[0-9kK]"
-            r"|[0-9]{7,8}-[0-9kK]|[0-9]{7,8}[0-9kK])$"
-        )
+        assert rut_schema["pattern"] == rf"^{engine.VALIDATION_PATTERN.pattern}$"
         assert rut_schema["examples"] == [
             "12.345.678-5",
             "12345678-5",

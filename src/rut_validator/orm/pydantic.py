@@ -7,7 +7,7 @@ from pydantic.json_schema import JsonSchemaValue
 from pydantic_core import CoreSchema, core_schema
 
 from ..errors import RutValidationError
-from ..validation import RutValidator
+from ..validation import RutPatterns, RutValidator
 
 
 class RutPydantic(str):
@@ -49,10 +49,7 @@ class RutPydantic(str):
         field_schema.update(
             {
                 "type": "string",
-                "pattern": (
-                    r"^(?:[0-9]{1,2}(?:\.[0-9]{3}){2}-[0-9kK]"
-                    r"|[0-9]{7,8}-[0-9kK]|[0-9]{7,8}[0-9kK])$"
-                ),
+                "pattern": rf"^{RutPatterns.VALIDATION_PATTERN.pattern}$",
                 "examples": ["12.345.678-5", "12345678-5", "123456785"],
                 "description": "RUT chileno válido; se normaliza antes de almacenar.",
             }
