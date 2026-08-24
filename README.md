@@ -15,7 +15,7 @@ Pydantic, FastAPI, Django, SQLAlchemy, and SQLModel.
 - Strict modulo-11 check digit validation.
 - Formatted, hyphenated, and normalized input detection.
 - Immutable and hashable `Rut` value object.
-- Functional and class-based validation APIs.
+- Small functional validation API.
 - Structured errors with stable machine-readable codes.
 - CLI validation, formatting, inspection, and batch processing.
 - Normalized persistence through optional ORM adapters.
@@ -124,7 +124,8 @@ def create_person(person: Person) -> Person:
 ```
 
 Invalid values produce FastAPI's standard HTTP `422` response, and
-`RutPydantic` contributes its pattern and examples to OpenAPI.
+`RutPydantic` contributes examples and a description to OpenAPI. Runtime
+validation additionally verifies the modulo-11 check digit.
 
 ## Django
 
@@ -177,9 +178,8 @@ class Person(SQLModel, table=True):
     rut: RutSQLModel = rut_sqlmodel_field(unique=True, index=True)
 ```
 
-Imports under `rut_validator.orm` remain available with deprecation warnings
-during the 1.x migration window. New code should use
-`rut_validator.integrations`; see the [version 2 migration guide](docs/migration-v2.md).
+Version 2 integrations live only under `rut_validator.integrations`; see the
+[version 2 migration guide](docs/migration-v2.md) when upgrading from 1.x.
 
 ## CLI
 

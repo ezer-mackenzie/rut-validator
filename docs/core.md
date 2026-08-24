@@ -39,21 +39,12 @@ rut = validate_rut("12.345.678-5")
 assert rut.body == 12345678
 ```
 
-`RutValidator` remains available as a deprecated compatibility facade throughout
-the `1.x` series and will be removed in 2.0.0.
-
 `get_validation_result()` returns one of:
 
 - `VALID`
 - `INVALID_VALUE`
 - `INVALID_FORMAT`
 - `INVALID_CHECK_DIGIT`
-
-## Deprecated compatibility helpers
-
-`RutFormatter`, `RutParser`, and `RutPatterns` remain available during `1.x` for
-existing consumers. They emit `DeprecationWarning` and will be removed in
-2.0.0.
 
 Application code should use `validate_rut()` or `is_valid_rut()` when it needs a
 validation guarantee, then read the canonical properties from `Rut`.

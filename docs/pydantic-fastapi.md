@@ -26,7 +26,8 @@ assert person.model_dump_json() == '{"name":"Ana","rut":"123456785"}'
 
 `RutPydantic` is a strict `str` subtype. It accepts all three supported input
 formats and always stores the normalized representation. Its JSON Schema
-contains the accepted pattern, a description, and examples.
+contains a description and examples. Runtime validation also checks the
+modulo-11 digit, which cannot be expressed by a JSON Schema pattern.
 
 ## FastAPI
 

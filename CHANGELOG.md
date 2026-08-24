@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Removed
+
+- The deprecated `RutValidator`, `RutFormatter`, `RutParser`, and `RutPatterns`
+  compatibility classes.
+- The deprecated `Rut` constructor argument `format_detected`, aliases
+  `number`, `digit`, `is_dotted`, `is_numeric`, and method `equals()`.
+- The deprecated `rut_validator.validation` and `rut_validator.orm` packages.
+- The deprecated no-op CLI option `format --quiet`.
+
+### Changed
+
+- Framework-independent functions now live in `rut_validator.api` and remain
+  exported from the package root.
+- Optional adapters consume the public functional API and live exclusively in
+  `rut_validator.integrations`.
+- Pydantic JSON Schema no longer publishes a syntax-only regex that could not
+  express modulo-11 validation; runtime validation remains strict.
+
 ## [1.1.0] - 2026-08-24
 
 ### Added

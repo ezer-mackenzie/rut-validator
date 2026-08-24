@@ -2,7 +2,8 @@
 
 The project follows Semantic Versioning.
 
-- The `1.x` public API is stable.
+- The `2.x` public API is stable. Removed `1.x` compatibility APIs are listed in
+  the migration guide.
 - Domain types and invariant primitives live under `rut_validator.core`.
   Functional validation is exported from the package root, and optional
   adapters live under `rut_validator.integrations`.

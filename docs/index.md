@@ -19,7 +19,7 @@ assert rut.hyphenated == "12345678-5"
 - Strict modulo-11 validation.
 - Formatted, hyphenated, and normalized input.
 - Immutable and hashable `Rut` value object.
-- Functional and class-based validation APIs.
+- Small functional validation API.
 - CLI validation, formatting, inspection, and batch processing.
 - Optional Pydantic, FastAPI, Django, SQLAlchemy, and SQLModel integrations.
 - Consistent normalization before persistence.

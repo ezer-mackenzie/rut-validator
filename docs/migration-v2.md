@@ -1,8 +1,7 @@
 # Migrating from 1.x to 2.0
 
-Version 1.1 introduces the canonical version 2 API while retaining deprecated
-compatibility wrappers. Update applications during the 1.x series so the final
-2.0 upgrade only requires changing the package version.
+Version 2 removes the compatibility wrappers deprecated in 1.1. Update these
+imports and calls before changing the package version.
 
 ## Validation functions
 
@@ -42,12 +41,12 @@ The canonical API always validates before transforming input.
 
 ## Low-level parsing and patterns
 
-`RutParser` and `RutPatterns` will be removed. They exposed implementation
+`RutParser` and `RutPatterns` were removed. They exposed implementation
 details and permitted transformations without a complete validation guarantee.
 Use `validate_rut()` and read `body`, `check_digit`, `format`, or `normalized`
 from the resulting `Rut`.
 
-Regular expressions and cleaning patterns will no longer be public API. This
+Regular expressions and cleaning patterns are no longer public API. This
 allows the parser implementation to evolve without breaking consumers.
 
 ## `Rut` aliases
@@ -60,8 +59,8 @@ allows the parser implementation to evolve without breaking consumers.
 | `rut.is_numeric` | `rut.is_normalized` |
 | `rut.equals(other)` | `rut == other` |
 
-Construct `Rut` with only its input value. The `format_detected` argument will
-be removed:
+Construct `Rut` with only its input value. The `format_detected` argument was
+removed:
 
 ```python
 from rut_validator import Rut
@@ -80,9 +79,9 @@ Move imports from `rut_validator.orm` to `rut_validator.integrations`:
 | `rut_validator.orm.sqlalchemy` | `rut_validator.integrations.sqlalchemy` |
 | `rut_validator.orm.sqlmodel` | `rut_validator.integrations.sqlmodel` |
 
-The class and helper names do not change. Existing Django migrations that refer
-to `rut_validator.orm.django.RutDjango` remain loadable throughout 1.x. New
-migrations use the canonical integration path.
+The class and helper names do not change. Rewrite old Django migrations that
+refer to `rut_validator.orm.django.RutDjango` before uninstalling 1.x, because
+the compatibility module is not present in version 2.
 
 ## CLI
 
@@ -97,5 +96,5 @@ Run tests with deprecations converted to errors to find remaining legacy calls:
 python -W error::DeprecationWarning -m pytest
 ```
 
-After migrating, importing `rut_validator` or using the canonical API should not
-emit any deprecation warnings.
+After migrating, remove direct imports of `rut_validator.validation` and
+`rut_validator.orm`; neither package exists in version 2.
