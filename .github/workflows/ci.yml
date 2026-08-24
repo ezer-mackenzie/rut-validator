@@ -38,19 +38,19 @@ jobs:
       matrix:
         include:
           - extra: pydantic
-            tests: tests/orm/pydantic/test_pydantic.py
+            tests: tests/integrations/pydantic/test_pydantic.py
             support: ""
           - extra: fastapi
-            tests: tests/orm/pydantic/test_fastapi.py
+            tests: tests/integrations/pydantic/test_fastapi.py
             support: httpx
           - extra: django
-            tests: tests/orm/django
+            tests: tests/integrations/django
             support: ""
           - extra: sqlalchemy
-            tests: tests/orm/sqlalchemy
+            tests: tests/integrations/sqlalchemy
             support: ""
           - extra: sqlmodel
-            tests: tests/orm/sqlmodel
+            tests: tests/integrations/sqlmodel
             support: ""
     steps:
       - uses: actions/checkout@v7
@@ -75,7 +75,7 @@ jobs:
       - run: poetry check
       - run: ruff check src tests examples
       - run: black --check src tests examples
-      - run: mypy src/rut_validator
+      - run: mypy src/rut_validator tests/typing
       - run: mkdocs build --strict
       - run: python examples/01_pure_validation.py
       - run: python examples/02_pydantic_usage.py

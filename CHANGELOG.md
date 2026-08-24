@@ -31,6 +31,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Integration tests now follow the `tests/integrations` package layout, static
+  integration fixtures run in CI, architecture checks detect both Python import
+  forms, and pytest fails on unexpected warnings.
 - The private engine no longer retains combined regex constants, length
   constants, or expected-format branches left over from the 1.x compatibility
   layer; normalization now removes only separators from an already detected

@@ -20,9 +20,13 @@ def test_core_exports_only_domain_types():
 def _imported_modules(relative_path: str) -> set[str]:
     source_path = Path(__file__).parents[1] / "src" / "rut_validator" / relative_path
     tree = ast.parse(source_path.read_text(encoding="utf-8"))
-    return {
-        node.module or "" for node in ast.walk(tree) if isinstance(node, ast.ImportFrom)
-    }
+    modules: set[str] = set()
+    for node in ast.walk(tree):
+        if isinstance(node, ast.ImportFrom):
+            modules.add(node.module or "")
+        elif isinstance(node, ast.Import):
+            modules.update(alias.name for alias in node.names)
+    return modules
 
 
 def test_domain_object_depends_only_on_core_primitives():
@@ -50,6 +54,13 @@ def test_integrations_use_the_public_api(relative_path: str):
     imports = _imported_modules(relative_path)
 
     assert "api" in imports
+    assert "core" not in imports
+
+
+def test_sqlmodel_composes_public_integrations_only():
+    imports = _imported_modules("integrations/sqlmodel.py")
+
+    assert {"pydantic", "sqlalchemy"}.issubset(imports)
     assert "core" not in imports
 
 

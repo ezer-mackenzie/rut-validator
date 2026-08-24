@@ -8,7 +8,7 @@ from rut_validator.integrations.sqlalchemy import RutSQLAlchemy
 Base = declarative_base()
 
 
-class TestModel(Base):
+class RutRecord(Base):
     __tablename__ = "test_model"
     id = Column(Integer, primary_key=True)
     rut = Column(RutSQLAlchemy)
@@ -49,9 +49,9 @@ def test_sqlalchemy_session_round_trip_normalizes_value():
     try:
         Base.metadata.create_all(engine)
         with Session(engine) as session:
-            session.add(TestModel(rut="12.345.678-5"))
+            session.add(RutRecord(rut="12.345.678-5"))
             session.commit()
-            stored = session.scalars(select(TestModel)).one()
+            stored = session.scalars(select(RutRecord)).one()
             assert stored.rut == "123456785"
     finally:
         engine.dispose()
@@ -62,7 +62,7 @@ def test_sqlalchemy_session_rejects_invalid_value():
     try:
         Base.metadata.create_all(engine)
         with Session(engine) as session:
-            session.add(TestModel(rut="invalid"))
+            session.add(RutRecord(rut="invalid"))
             with pytest.raises(StatementError):
                 session.commit()
     finally:
@@ -74,13 +74,13 @@ def test_sqlalchemy_session_accepts_none_and_recovers_after_rollback():
     try:
         Base.metadata.create_all(engine)
         with Session(engine) as session:
-            session.add(TestModel(rut="invalid"))
+            session.add(RutRecord(rut="invalid"))
             with pytest.raises(StatementError):
                 session.commit()
             session.rollback()
 
-            session.add(TestModel(rut=None))
+            session.add(RutRecord(rut=None))
             session.commit()
-            assert session.scalars(select(TestModel)).one().rut is None
+            assert session.scalars(select(RutRecord)).one().rut is None
     finally:
         engine.dispose()

@@ -127,8 +127,8 @@ python_classes = "Test*"
 python_functions = "test_*"
 filterwarnings = [
     "error",
-    "ignore::UserWarning",
-    "ignore::DeprecationWarning"
+    # Starlette 1.0 transition warning until FastAPI selects its HTTP client.
+    "ignore:Using `httpx` with `starlette.testclient` is deprecated:starlette.exceptions.StarletteDeprecationWarning"
 ]
 
 [tool.coverage.run]
