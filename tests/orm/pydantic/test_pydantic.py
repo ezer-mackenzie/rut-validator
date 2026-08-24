@@ -2,7 +2,7 @@ import pytest
 from pydantic import BaseModel
 
 from rut_validator.core import engine
-from rut_validator.orm.pydantic import RutPydantic
+from rut_validator.integrations.pydantic import RutPydantic
 
 
 class TestRutPydantic:

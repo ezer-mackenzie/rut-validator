@@ -1,7 +1,7 @@
 import pytest
 from django.core.exceptions import ValidationError
 
-from rut_validator.orm.django import RutDjango
+from rut_validator.integrations.django import RutDjango
 
 
 class TestRutDjango:

@@ -4,7 +4,7 @@ import pytest
 from sqlalchemy.exc import StatementError
 from sqlmodel import Field, Session, SQLModel, create_engine, select
 
-from rut_validator.orm.sqlmodel import RutSQLModel, rut_sqlmodel_field
+from rut_validator.integrations.sqlmodel import RutSQLModel, rut_sqlmodel_field
 
 
 class Person(SQLModel, table=True):

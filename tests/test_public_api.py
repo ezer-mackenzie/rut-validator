@@ -1,3 +1,5 @@
+from importlib import import_module
+
 import pytest
 
 import rut_validator
@@ -10,10 +12,10 @@ from rut_validator import (
     validate_rut,
 )
 from rut_validator.errors import RutInvalidFormatError
-from rut_validator.orm.django import RutDjango
-from rut_validator.orm.pydantic import RutPydantic
-from rut_validator.orm.sqlalchemy import RutSQLAlchemy
-from rut_validator.orm.sqlmodel import RutSQLModel, rut_sqlmodel_field
+from rut_validator.integrations.django import RutDjango
+from rut_validator.integrations.pydantic import RutPydantic
+from rut_validator.integrations.sqlalchemy import RutSQLAlchemy
+from rut_validator.integrations.sqlmodel import RutSQLModel, rut_sqlmodel_field
 from rut_validator.validation import RutFormatter
 
 
@@ -49,3 +51,42 @@ def test_formatter_validates_and_formats():
 def test_redundant_validated_rut_alias_is_not_public():
     assert "ValidatedRut" not in rut_validator.__all__
     assert not hasattr(rut_validator, "ValidatedRut")
+
+
+@pytest.mark.parametrize(
+    ("legacy_module", "canonical_module", "symbol"),
+    [
+        (
+            "rut_validator.orm.pydantic",
+            "rut_validator.integrations.pydantic",
+            "RutPydantic",
+        ),
+        (
+            "rut_validator.orm.sqlalchemy",
+            "rut_validator.integrations.sqlalchemy",
+            "RutSQLAlchemy",
+        ),
+        (
+            "rut_validator.orm.sqlmodel",
+            "rut_validator.integrations.sqlmodel",
+            "RutSQLModel",
+        ),
+        (
+            "rut_validator.orm.django",
+            "rut_validator.integrations.django",
+            "RutDjango",
+        ),
+    ],
+)
+def test_legacy_integration_imports_warn_and_preserve_identity(
+    legacy_module: str,
+    canonical_module: str,
+    symbol: str,
+):
+    legacy = import_module(legacy_module)
+    canonical = import_module(canonical_module)
+
+    with pytest.warns(DeprecationWarning, match="removed in rut-validator 2.0.0"):
+        legacy_symbol = getattr(legacy, symbol)
+
+    assert legacy_symbol is getattr(canonical, symbol)

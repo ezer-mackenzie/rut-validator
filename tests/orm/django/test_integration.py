@@ -6,7 +6,7 @@ from django import forms
 from django.conf import settings
 from django.db import IntegrityError, connection, models
 
-from rut_validator.orm.django import RutDjango
+from rut_validator.integrations.django import RutDjango
 
 if not settings.configured:
     settings.configure(
@@ -87,6 +87,6 @@ def test_unique_constraint_is_enforced():
 def test_field_deconstruct_uses_stable_public_path():
     _, path, args, kwargs = RutDjango().deconstruct()
 
-    assert path == "rut_validator.orm.django.RutDjango"
+    assert path == "rut_validator.integrations.django.RutDjango"
     assert args == []
     assert kwargs["max_length"] == 9

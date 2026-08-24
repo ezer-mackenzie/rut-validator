@@ -3,7 +3,7 @@ from sqlalchemy import Column, Integer, create_engine, select
 from sqlalchemy.exc import StatementError
 from sqlalchemy.orm import Session, declarative_base
 
-from rut_validator.orm.sqlalchemy import RutSQLAlchemy
+from rut_validator.integrations.sqlalchemy import RutSQLAlchemy
 
 Base = declarative_base()
 
