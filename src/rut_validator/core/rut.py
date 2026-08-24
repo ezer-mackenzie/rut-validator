@@ -22,7 +22,11 @@ class Rut:
 
     def __post_init__(self, format_detected: RutFormat | None) -> None:
         if format_detected is not None:
-            warn_deprecated("Rut(..., format_detected=...)", "Rut(value)")
+            warn_deprecated(
+                "Rut(..., format_detected=...)",
+                "Rut(value)",
+                stacklevel=4,
+            )
         parsed = engine.validate(self.value, format_detected)
         # This is the supported way to initialize derived fields in a frozen
         # dataclass; regular assignment remains prohibited after construction.

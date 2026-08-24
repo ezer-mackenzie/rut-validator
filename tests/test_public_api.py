@@ -97,3 +97,5 @@ def test_legacy_integration_imports_warn_and_preserve_identity(
         legacy_symbol = getattr(legacy, symbol)
 
     assert legacy_symbol is getattr(canonical, symbol)
+    with pytest.raises(AttributeError):
+        getattr(legacy, "MissingIntegration")
