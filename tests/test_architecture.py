@@ -66,6 +66,7 @@ def test_validation_implementation_does_not_depend_on_legacy_facades():
     [
         "rut_validator",
         "rut_validator.core",
+        "rut_validator.integrations",
         "rut_validator.validation",
         "rut_validator.orm",
     ],
