@@ -19,11 +19,6 @@ FORMAT_PATTERNS: Final[tuple[tuple[RutFormat, Pattern[str]], ...]] = (
     (RutFormat.HYPHENATED, HYPHENATED_PATTERN),
     (RutFormat.NORMALIZED, NORMALIZED_PATTERN),
 )
-VALIDATION_PATTERN: Final[Pattern[str]] = compile(
-    rf"(?:{'|'.join(pattern.pattern for _, pattern in FORMAT_PATTERNS)})"
-)
-CLEANING_PATTERN: Final[Pattern[str]] = compile(r"[^0-9kK]")
-MAX_RUT_LENGTH: Final = 12
 RUT_MODULE_ELEVEN_FACTORS: Final[tuple[int, ...]] = (2, 3, 4, 5, 6, 7)
 
 
@@ -44,7 +39,7 @@ def detect_format(value: str) -> RutFormat | None:
 
 
 def normalize(value: str) -> str:
-    return CLEANING_PATTERN.sub("", value).upper()
+    return value.replace(".", "").replace("-", "").upper()
 
 
 def format_normalized(value: str) -> str:
@@ -119,16 +114,9 @@ def parse(value: object) -> _ParsedRut:
     )
 
 
-def validate(
-    value: object,
-    expected_format: RutFormat | None = None,
-) -> _ParsedRut:
+def validate(value: object) -> _ParsedRut:
     """Parse and validate a RUT into its canonical components."""
     parsed = parse(value)
-    if expected_format is not None and expected_format is not parsed.format:
-        raise RutInvalidFormatError(
-            "El formato indicado no coincide con el formato del RUT"
-        )
     if not is_valid_check_digit(parsed.body, parsed.check_digit):
         raise RutModuleElevenValidationError(
             expected=module_eleven(parsed.body),
