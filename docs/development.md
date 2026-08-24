@@ -56,14 +56,28 @@ and modulo-11 primitives shared by the domain object and public validation
 APIs. It uses the canonical `RutFormat` enum and is not public API.
 
 ```text
-core.engine -> core.Rut
-core.engine -> validation -> core.Rut
-                               ^
-orm ---------------------------|
+core.Rut -----------> core.engine
+root API -----------> core.Rut / core.engine
+integrations -------> root API
+CLI ----------------> root API
+legacy facades -----> root API / core.engine
 ```
 
 `core` must not import `validation`, and neither standalone layer may import an
-optional framework. Keep public parsing and formatting entry points in
-`rut_validator.validation`; the private engine exists only to centralize domain
-invariants and prevent dependency cycles. ORM adapters consume the public
-validation layer, never `core.engine` directly.
+optional framework. The private engine exists only to centralize domain
+invariants and prevent dependency cycles. Integrations consume public validation
+helpers, never `core.engine` directly.
+
+## `Rut` design decisions
+
+`Rut` keeps manual equality and hashing during the 1.x to 2.0 migration. A
+dataclass-generated equality method would require identical concrete classes,
+while the established contract compares `Rut` subclasses by their normalized
+value. `value` and `format` also describe the submitted representation and must
+not participate in equality.
+
+The manual redacted `repr` remains mandatory because the submitted RUT is
+personal data. `value` will continue to preserve the original input in 2.0;
+changing it to the normalized representation would combine an unrelated
+semantic change with the API cleanup. Applications should use `normalized` when
+they need canonical storage.
