@@ -1,5 +1,7 @@
 """SQLModel integration with validation and normalized database storage."""
 
+from typing import Annotated
+
 from sqlmodel import Field, Session, SQLModel, create_engine, select
 
 from rut_validator.integrations.sqlmodel import RutSQLModel, rut_sqlmodel_field
@@ -7,7 +9,10 @@ from rut_validator.integrations.sqlmodel import RutSQLModel, rut_sqlmodel_field
 
 class Person(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
-    rut: RutSQLModel = rut_sqlmodel_field(unique=True, index=True)
+    rut: Annotated[
+        RutSQLModel,
+        rut_sqlmodel_field(unique=True, index=True),
+    ]
 
 
 engine = create_engine("sqlite://")

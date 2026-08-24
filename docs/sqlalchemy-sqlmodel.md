@@ -44,6 +44,8 @@ pip install "rut-validator[sqlmodel]"
 ```
 
 ```python
+from typing import Annotated
+
 from sqlmodel import Field, SQLModel
 
 from rut_validator.integrations.sqlmodel import RutSQLModel, rut_sqlmodel_field
@@ -51,7 +53,10 @@ from rut_validator.integrations.sqlmodel import RutSQLModel, rut_sqlmodel_field
 
 class Person(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
-    rut: RutSQLModel = rut_sqlmodel_field(unique=True, index=True)
+    rut: Annotated[
+        RutSQLModel,
+        rut_sqlmodel_field(unique=True, index=True),
+    ]
 
 
 person = Person.model_validate({"rut": "12.345.678-5"})

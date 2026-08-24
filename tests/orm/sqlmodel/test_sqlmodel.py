@@ -1,6 +1,8 @@
 import json
+from typing import Annotated, get_type_hints
 
 import pytest
+from pydantic.fields import FieldInfo
 from sqlalchemy.exc import StatementError
 from sqlmodel import Field, Session, SQLModel, create_engine, select
 
@@ -9,15 +11,22 @@ from rut_validator.integrations.sqlmodel import RutSQLModel, rut_sqlmodel_field
 
 class Person(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
-    rut: RutSQLModel = rut_sqlmodel_field(unique=True)
+    rut: Annotated[RutSQLModel, rut_sqlmodel_field(unique=True)]
 
 
 class OptionalPerson(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
-    rut: RutSQLModel | None = rut_sqlmodel_field(default=None, nullable=True)
+    rut: Annotated[RutSQLModel | None, rut_sqlmodel_field(nullable=True)] = None
 
 
-def test_sqlmodel_round_trip_normalizes_rut():
+def test_sqlmodel_field_has_a_precise_public_return_type() -> None:
+    field = rut_sqlmodel_field(unique=True)
+
+    assert isinstance(field, FieldInfo)
+    assert get_type_hints(rut_sqlmodel_field)["return"] is FieldInfo
+
+
+def test_sqlmodel_round_trip_normalizes_rut() -> None:
     engine = create_engine("sqlite://")
     try:
         SQLModel.metadata.create_all(engine)
@@ -35,7 +44,7 @@ def test_sqlmodel_round_trip_normalizes_rut():
         engine.dispose()
 
 
-def test_sqlmodel_rejects_invalid_rut_when_persisting():
+def test_sqlmodel_rejects_invalid_rut_when_persisting() -> None:
     engine = create_engine("sqlite://")
     try:
         SQLModel.metadata.create_all(engine)
@@ -48,7 +57,7 @@ def test_sqlmodel_rejects_invalid_rut_when_persisting():
         engine.dispose()
 
 
-def test_sqlmodel_optional_field_and_json_serialization():
+def test_sqlmodel_optional_field_and_json_serialization() -> None:
     person = OptionalPerson.model_validate({"rut": None})
     valid = Person.model_validate({"rut": "12.345.678-5"})
 
