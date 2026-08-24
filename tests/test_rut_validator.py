@@ -143,6 +143,18 @@ def test_rut_equality_and_hash():
     assert {rut1} == {rut2}
 
 
+def test_rut_equality_and_hash_include_subclasses():
+    class SpecializedRut(Rut):
+        pass
+
+    rut = Rut("12.345.678-5")
+    specialized = SpecializedRut("123456785")
+
+    assert rut == specialized
+    assert specialized == rut
+    assert hash(rut) == hash(specialized)
+
+
 def test_rut_repr_does_not_expose_the_submitted_value():
     rut = Rut("12.345.678-5")
 
