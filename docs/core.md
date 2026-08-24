@@ -23,7 +23,8 @@ assert str(left) == "12.345.678-5"
 - `normalized`: body and check digit without separators.
 - `formatted`: thousands separators and a hyphen.
 - `hyphenated`: a hyphen without thousands separators.
-- `body`: numeric body as `int`.
+- `body`: numeric body as `int`; use `normalized` when textual leading zeros
+  must be preserved.
 - `check_digit`: check digit as `str`.
 - `is_formatted`, `is_hyphenated`, `is_normalized`: input format indicators.
 

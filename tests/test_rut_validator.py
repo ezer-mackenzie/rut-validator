@@ -63,6 +63,16 @@ def test_rut_detects_supported_formats(value: str, rut_format: RutFormat):
     assert Rut(value).format is rut_format
 
 
+@pytest.mark.parametrize("body", ["1234567", "12345678", "01234567"])
+def test_canonical_formats_round_trip_without_changing_identity(body: str):
+    normalized = body + calculate_check_digit(body)
+    rut = validate_rut(normalized)
+
+    assert validate_rut(rut.formatted).normalized == normalized
+    assert validate_rut(rut.hyphenated).normalized == normalized
+    assert validate_rut(str(rut)).normalized == normalized
+
+
 def test_rut_rejects_invalid_format_and_check_digit():
     with pytest.raises(RutInvalidFormatError):
         Rut("12-345678-9")

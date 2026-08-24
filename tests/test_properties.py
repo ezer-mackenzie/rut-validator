@@ -12,6 +12,8 @@ def test_every_generated_body_validates_with_its_calculated_digit(body: int):
     rut = validate_rut(f"{body_text}-{check_digit}")
 
     assert rut.normalized == f"{body_text}{check_digit}"
+    assert validate_rut(rut.formatted) == rut
+    assert validate_rut(rut.hyphenated) == rut
 
 
 @given(st.integers(min_value=1_000_000, max_value=99_999_999))

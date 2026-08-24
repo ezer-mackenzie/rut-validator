@@ -49,7 +49,11 @@ def normalize(value: str) -> str:
 
 def format_normalized(value: str) -> str:
     body, check_digit = value[:-1], value[-1]
-    return f"{int(body):,}".replace(",", ".") + f"-{check_digit}"
+    groups: list[str] = []
+    while body:
+        groups.append(body[-3:])
+        body = body[:-3]
+    return f"{'.'.join(reversed(groups))}-{check_digit}"
 
 
 def hyphenate_normalized(value: str) -> str:

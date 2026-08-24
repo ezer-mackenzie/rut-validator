@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Canonical dotted formatting now preserves leading zeros in the RUT body, so
+  formatting and reparsing cannot change the normalized identity.
 - The CLI batch payload now has an explicit common mapping type, avoiding
   partially unknown inference in strict type checkers.
 - `rut_sqlmodel_field()` now declares its concrete `FieldInfo` return contract
