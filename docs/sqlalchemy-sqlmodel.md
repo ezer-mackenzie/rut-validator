@@ -63,6 +63,11 @@ person = Person.model_validate({"rut": "12.345.678-5"})
 assert person.rut == "123456785"
 ```
 
+`rut_sqlmodel_field()` returns Pydantic's public `FieldInfo`, so the helper does
+not leak SQLModel's `Any` return type. Its keyword options remain dynamic to
+track SQLModel's evolving `Field()` signature without copying and freezing an
+external API; `Annotated` keeps the model attribute itself precisely typed.
+
 !!! important "Models with `table=True`"
 
     Use `model_validate()` when immediate validation is required. SQLModel may

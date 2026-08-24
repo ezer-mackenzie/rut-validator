@@ -15,9 +15,16 @@ poetry run pytest --cov=rut_validator
 poetry run ruff check src tests examples
 poetry run black --check src tests examples
 poetry run mypy src/rut_validator
+poetry run basedpyright
+poetry run actionlint
 poetry run mkdocs build --strict
 poetry build
 ```
+
+Basedpyright runs in strict mode over the standalone API, core, errors, and CLI.
+Optional adapters are checked with mypy typing fixtures and real framework
+tests because several framework hooks intentionally expose dynamic signatures
+or incomplete third-party stubs.
 
 ## Serve documentation
 

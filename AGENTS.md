@@ -67,6 +67,8 @@ poetry run pytest --cov=rut_validator
 poetry run ruff check src tests examples
 poetry run black --check src tests examples
 poetry run mypy src/rut_validator
+poetry run basedpyright
+poetry run actionlint
 poetry run mkdocs build --strict
 poetry build
 ```
