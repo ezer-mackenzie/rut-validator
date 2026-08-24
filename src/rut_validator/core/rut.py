@@ -2,19 +2,8 @@
 
 from dataclasses import InitVar, dataclass, field
 
-from ..errors import (
-    RutInvalidFormatError,
-    RutInvalidValueError,
-    RutModuleElevenValidationError,
-)
 from . import engine
 from .enums import RutFormat
-
-
-def _require_text(value: object) -> str:
-    if not isinstance(value, str) or value.strip() == "":
-        raise RutInvalidValueError("El RUT debe ser un texto no vacío")
-    return value
 
 
 @dataclass(frozen=True, slots=True, eq=False, repr=False)
@@ -31,28 +20,11 @@ class Rut:
     _normalized: str = field(init=False, repr=False)
 
     def __post_init__(self, format_detected: RutFormat | None) -> None:
-        value = _require_text(self.value)
-        detected_format = engine.detect_format(value)
-        if detected_format is None:
-            raise RutInvalidFormatError(
-                "Formato no válido, se esperaba algo como '12345678-9', "
-                "'123456789' o '12.345.678-9'"
-            )
-        normalized = engine.normalize(value)
-        body, check_digit = normalized[:-1], normalized[-1]
-        if format_detected is not None and format_detected != detected_format:
-            raise RutInvalidFormatError(
-                "El formato indicado no coincide con el formato del RUT"
-            )
-        if not engine.is_valid_check_digit(body, check_digit):
-            raise RutModuleElevenValidationError(
-                expected=engine.module_eleven(body),
-                received=check_digit,
-            )
+        parsed = engine.validate(self.value, format_detected)
         # This is the supported way to initialize derived fields in a frozen
         # dataclass; regular assignment remains prohibited after construction.
-        object.__setattr__(self, "format", detected_format)
-        object.__setattr__(self, "_normalized", normalized)
+        object.__setattr__(self, "format", parsed.format)
+        object.__setattr__(self, "_normalized", parsed.normalized)
 
     @property
     def normalized(self) -> str:

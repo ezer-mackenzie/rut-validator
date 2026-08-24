@@ -1,32 +1,44 @@
 """Internal primitives shared by the domain object and validation APIs."""
 
+from dataclasses import dataclass
 from re import Pattern, compile
 from typing import Final
 
-from ..errors import RutInvalidValueError
+from ..errors import (
+    RutInvalidFormatError,
+    RutInvalidValueError,
+    RutModuleElevenValidationError,
+)
 from .enums import RutFormat
 
 FORMATTED_PATTERN: Final[Pattern[str]] = compile(r"[0-9]{1,2}(?:\.[0-9]{3}){2}-[0-9kK]")
 HYPHENATED_PATTERN: Final[Pattern[str]] = compile(r"[0-9]{7,8}-[0-9kK]")
 NORMALIZED_PATTERN: Final[Pattern[str]] = compile(r"[0-9]{7,8}[0-9kK]")
+FORMAT_PATTERNS: Final[tuple[tuple[RutFormat, Pattern[str]], ...]] = (
+    (RutFormat.FORMATTED, FORMATTED_PATTERN),
+    (RutFormat.HYPHENATED, HYPHENATED_PATTERN),
+    (RutFormat.NORMALIZED, NORMALIZED_PATTERN),
+)
 VALIDATION_PATTERN: Final[Pattern[str]] = compile(
-    rf"(?:{FORMATTED_PATTERN.pattern}|{HYPHENATED_PATTERN.pattern}"
-    rf"|{NORMALIZED_PATTERN.pattern})"
+    rf"(?:{'|'.join(pattern.pattern for _, pattern in FORMAT_PATTERNS)})"
 )
 CLEANING_PATTERN: Final[Pattern[str]] = compile(r"[^0-9kK]")
 MAX_RUT_LENGTH: Final = 12
 RUT_MODULE_ELEVEN_FACTORS: Final[tuple[int, ...]] = (2, 3, 4, 5, 6, 7)
 
 
+@dataclass(frozen=True, slots=True)
+class _ParsedRut:
+    body: str
+    check_digit: str
+    format: RutFormat
+    normalized: str
+
+
 def detect_format(value: str) -> RutFormat | None:
-    if FORMATTED_PATTERN.fullmatch(value):
-        return RutFormat.FORMATTED
-
-    if HYPHENATED_PATTERN.fullmatch(value):
-        return RutFormat.HYPHENATED
-
-    if NORMALIZED_PATTERN.fullmatch(value):
-        return RutFormat.NORMALIZED
+    for rut_format, pattern in FORMAT_PATTERNS:
+        if pattern.fullmatch(value):
+            return rut_format
 
     return None
 
@@ -80,3 +92,42 @@ def is_valid_check_digit(body: object, check_digit: object) -> bool:
     except RutInvalidValueError:
         return False
     return check_digit.upper() == expected
+
+
+def parse(value: object) -> _ParsedRut:
+    """Parse a supported representation without checking its check digit."""
+    if not isinstance(value, str) or value.strip() == "":
+        raise RutInvalidValueError("El RUT debe ser un texto no vacío")
+
+    detected_format = detect_format(value)
+    if detected_format is None:
+        raise RutInvalidFormatError(
+            "Formato no válido, se esperaba algo como '12345678-9', "
+            "'123456789' o '12.345.678-9'"
+        )
+
+    normalized = normalize(value)
+    return _ParsedRut(
+        body=normalized[:-1],
+        check_digit=normalized[-1],
+        format=detected_format,
+        normalized=normalized,
+    )
+
+
+def validate(
+    value: object,
+    expected_format: RutFormat | None = None,
+) -> _ParsedRut:
+    """Parse and validate a RUT into its canonical components."""
+    parsed = parse(value)
+    if expected_format is not None and expected_format is not parsed.format:
+        raise RutInvalidFormatError(
+            "El formato indicado no coincide con el formato del RUT"
+        )
+    if not is_valid_check_digit(parsed.body, parsed.check_digit):
+        raise RutModuleElevenValidationError(
+            expected=module_eleven(parsed.body),
+            received=parsed.check_digit,
+        )
+    return parsed

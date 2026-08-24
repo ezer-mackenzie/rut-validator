@@ -51,6 +51,16 @@ def test_engine_does_not_import_validation_or_optional_layers():
     assert not any(any(name in module for name in forbidden) for module in imports)
 
 
+def test_validation_implementation_does_not_depend_on_legacy_facades():
+    validator_imports = _imported_modules("validation/validator.py")
+    parser_imports = _imported_modules("validation/parser.py")
+
+    assert not any(
+        "parser" in module or "patterns" in module for module in validator_imports
+    )
+    assert not any("patterns" in module for module in parser_imports)
+
+
 @pytest.mark.parametrize(
     "module",
     [

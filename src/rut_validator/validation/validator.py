@@ -10,8 +10,8 @@ from ..core.enums import ValidationResult
 from ..errors import (
     RutInvalidFormatError,
     RutInvalidValueError,
+    RutModuleElevenValidationError,
 )
-from .parser import RutParser
 
 if TYPE_CHECKING:
     from ..core.rut import Rut
@@ -26,7 +26,7 @@ def calculate_check_digit(body: str) -> str:
     Raises:
         RutInvalidValueError: If *body* contains non-ASCII or non-digit text.
     """
-    return RutValidator.module_eleven(body)
+    return engine.module_eleven(body)
 
 
 def validate_rut(value: object) -> Rut:
@@ -51,7 +51,7 @@ class RutValidator:
         logger.debug("Getting RUT validation result")
 
         try:
-            body, check_digit, _ = RutParser.parse(rut)
+            engine.validate(rut)
 
         except RutInvalidValueError:
             logger.debug("RUT invalid due to empty or missing value")
@@ -61,12 +61,12 @@ class RutValidator:
             logger.debug("RUT invalid due to incorrect format")
             return ValidationResult.INVALID_FORMAT
 
-        if cls.is_valid_check_digit(body, check_digit):
-            logger.debug("RUT check digit is valid")
-            return ValidationResult.VALID
+        except RutModuleElevenValidationError:
+            logger.debug("RUT check digit is invalid")
+            return ValidationResult.INVALID_CHECK_DIGIT
 
-        logger.debug("RUT check digit is invalid")
-        return ValidationResult.INVALID_CHECK_DIGIT
+        logger.debug("RUT check digit is valid")
+        return ValidationResult.VALID
 
     @classmethod
     def is_valid(cls, rut: object) -> bool:
