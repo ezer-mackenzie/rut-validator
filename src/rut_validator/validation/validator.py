@@ -37,7 +37,46 @@ def validate_rut(value: object) -> Rut:
         RutInvalidFormatError: If *value* uses an unsupported representation.
         RutModuleElevenValidationError: If its check digit is incorrect.
     """
-    return RutValidator.validate(value)
+    logger.debug("Validating RUT")
+
+    if not isinstance(value, str) or value.strip() == "":
+        raise RutInvalidValueError(
+            "No se puede parsear un RUT vacío, por favor ingrese un valor"
+        )
+
+    from ..core.rut import Rut
+
+    rut = Rut(value)
+    logger.debug("RUT validation successful")
+    return rut
+
+
+def get_validation_result(value: object) -> ValidationResult:
+    """Classify *value* without raising a validation exception."""
+    logger.debug("Getting RUT validation result")
+
+    try:
+        engine.validate(value)
+    except RutInvalidValueError:
+        logger.debug("RUT invalid due to empty or missing value")
+        return ValidationResult.INVALID_VALUE
+    except RutInvalidFormatError:
+        logger.debug("RUT invalid due to incorrect format")
+        return ValidationResult.INVALID_FORMAT
+    except RutModuleElevenValidationError:
+        logger.debug("RUT check digit is invalid")
+        return ValidationResult.INVALID_CHECK_DIGIT
+
+    logger.debug("RUT check digit is valid")
+    return ValidationResult.VALID
+
+
+def is_valid_rut(value: object) -> bool:
+    """Check *value* without raising a validation exception."""
+    result = get_validation_result(value)
+    is_valid = result is ValidationResult.VALID
+    logger.debug("RUT validity: %s (%s)", is_valid, result)
+    return is_valid
 
 
 class RutValidator:
@@ -48,34 +87,14 @@ class RutValidator:
     @classmethod
     def get_validation_result(cls, rut: object) -> ValidationResult:
         """Classify *rut* without raising a validation exception."""
-        logger.debug("Getting RUT validation result")
-
-        try:
-            engine.validate(rut)
-
-        except RutInvalidValueError:
-            logger.debug("RUT invalid due to empty or missing value")
-            return ValidationResult.INVALID_VALUE
-
-        except RutInvalidFormatError:
-            logger.debug("RUT invalid due to incorrect format")
-            return ValidationResult.INVALID_FORMAT
-
-        except RutModuleElevenValidationError:
-            logger.debug("RUT check digit is invalid")
-            return ValidationResult.INVALID_CHECK_DIGIT
-
-        logger.debug("RUT check digit is valid")
-        return ValidationResult.VALID
+        return get_validation_result(rut)
 
     @classmethod
     def is_valid(cls, rut: object) -> bool:
         """Check *rut* without raising a validation exception."""
-        validation_result = cls.get_validation_result(rut)
-        is_valid = validation_result == ValidationResult.VALID
-
-        logger.debug("RUT validity: %s (%s)", is_valid, validation_result)
-
+        result = cls.get_validation_result(rut)
+        is_valid = result is ValidationResult.VALID
+        logger.debug("RUT validity: %s (%s)", is_valid, result)
         return is_valid
 
     @classmethod
@@ -87,18 +106,7 @@ class RutValidator:
             RutInvalidFormatError: If *rut* uses an unsupported representation.
             RutModuleElevenValidationError: If its check digit is incorrect.
         """
-        logger.debug("Validating RUT")
-
-        if not isinstance(rut, str) or rut.strip() == "":
-            raise RutInvalidValueError(
-                "No se puede parsear un RUT vacío, por favor ingrese un valor"
-            )
-
-        from ..core.rut import Rut
-
-        value = Rut(rut)
-        logger.debug("RUT validation successful")
-        return value
+        return validate_rut(rut)
 
     @classmethod
     def module_eleven(cls, body: str) -> str:

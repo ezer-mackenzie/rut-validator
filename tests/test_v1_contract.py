@@ -5,7 +5,15 @@ from inspect import signature
 import pytest
 
 import rut_validator
-from rut_validator import Rut, RutFormat, RutValidator, ValidationResult, validation
+from rut_validator import (
+    Rut,
+    RutFormat,
+    RutValidator,
+    ValidationResult,
+    get_validation_result,
+    is_valid_rut,
+    validation,
+)
 from rut_validator.errors import (
     RutInvalidFormatError,
     RutInvalidValueError,
@@ -24,6 +32,8 @@ def test_root_exports_are_stable():
         "RutValidator",
         "ValidationResult",
         "calculate_check_digit",
+        "get_validation_result",
+        "is_valid_rut",
         "validate_rut",
     }
 
@@ -35,6 +45,8 @@ def test_validation_compatibility_exports_are_stable():
         "RutPatterns",
         "RutValidator",
         "calculate_check_digit",
+        "get_validation_result",
+        "is_valid_rut",
         "validate_rut",
     }
 
@@ -72,6 +84,8 @@ def test_validation_failures_keep_their_public_classification(value, error, resu
         RutValidator.validate(value)
 
     assert RutValidator.get_validation_result(value) is result
+    assert get_validation_result(value) is result
+    assert is_valid_rut(value) is (result is ValidationResult.VALID)
 
 
 def test_public_error_codes_are_stable():

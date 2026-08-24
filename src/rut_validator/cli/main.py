@@ -6,11 +6,11 @@ from pathlib import Path
 import click
 
 from ..errors import RutValidationError
-from ..validation import RutValidator
+from ..validation import validate_rut
 
 
 def _payload(value: str) -> dict[str, object]:
-    rut = RutValidator.validate(value)
+    rut = validate_rut(value)
     return {
         "valid": True,
         "normalized": rut.normalized,
@@ -66,7 +66,7 @@ def format_command(rut: str, output_format: str, quiet: bool) -> None:
     # Kept for CLI compatibility: format already emits only the converted value.
     del quiet
     try:
-        value = RutValidator.validate(rut)
+        value = validate_rut(rut)
     except RutValidationError as exc:
         raise click.ClickException(str(exc)) from exc
     formats = {

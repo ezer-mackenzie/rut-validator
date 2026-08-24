@@ -9,7 +9,13 @@ from .errors import (
     RutModuleElevenValidationError,
     RutValidationError,
 )
-from .validation import RutValidator, calculate_check_digit, validate_rut
+from .validation import (
+    RutValidator,
+    calculate_check_digit,
+    get_validation_result,
+    is_valid_rut,
+    validate_rut,
+)
 
 try:
     __version__ = version("rut-validator")
@@ -27,5 +33,7 @@ __all__ = [
     "RutValidator",
     "ValidationResult",
     "calculate_check_digit",
+    "get_validation_result",
+    "is_valid_rut",
     "validate_rut",
 ]

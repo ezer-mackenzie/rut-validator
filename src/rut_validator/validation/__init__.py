@@ -3,7 +3,13 @@
 from .formatter import RutFormatter
 from .parser import RutParser
 from .patterns import RutPatterns
-from .validator import RutValidator, calculate_check_digit, validate_rut
+from .validator import (
+    RutValidator,
+    calculate_check_digit,
+    get_validation_result,
+    is_valid_rut,
+    validate_rut,
+)
 
 __all__ = [
     "RutFormatter",
@@ -11,5 +17,7 @@ __all__ = [
     "RutPatterns",
     "RutValidator",
     "calculate_check_digit",
+    "get_validation_result",
+    "is_valid_rut",
     "validate_rut",
 ]

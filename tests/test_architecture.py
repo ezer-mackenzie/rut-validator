@@ -75,7 +75,7 @@ def test_standalone_layers_do_not_import_optional_frameworks(module):
 import sys
 import {module}
 import rut_validator
-assert rut_validator.RutValidator.is_valid("12.345.678-5")
+assert rut_validator.is_valid_rut("12.345.678-5")
 frameworks = {{"django", "sqlalchemy", "sqlmodel", "pydantic"}}
 assert not frameworks.intersection(sys.modules)
 """

@@ -1,7 +1,14 @@
 import pytest
 
 import rut_validator
-from rut_validator import Rut, calculate_check_digit, validate_rut
+from rut_validator import (
+    Rut,
+    ValidationResult,
+    calculate_check_digit,
+    get_validation_result,
+    is_valid_rut,
+    validate_rut,
+)
 from rut_validator.errors import RutInvalidFormatError
 from rut_validator.orm.django import RutDjango
 from rut_validator.orm.pydantic import RutPydantic
@@ -16,6 +23,9 @@ def test_public_standalone_helpers():
     assert isinstance(rut, Rut)
     assert rut.normalized == "123456785"
     assert calculate_check_digit("12345678") == "5"
+    assert is_valid_rut("12.345.678-5") is True
+    assert is_valid_rut("12.345.678-0") is False
+    assert get_validation_result(None) is ValidationResult.INVALID_VALUE
     assert rut_validator.__version__ != "0+unknown"
 
 

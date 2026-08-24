@@ -8,7 +8,7 @@ from ..errors import RutInvalidValueError
 class RutParser:
     """Low-level parser for RUT syntax and format detection.
 
-    Parsing does not validate the check digit. Use ``RutValidator`` when a
+    Parsing does not validate the check digit. Use ``validate_rut`` when a
     complete validation guarantee is required.
     """
 

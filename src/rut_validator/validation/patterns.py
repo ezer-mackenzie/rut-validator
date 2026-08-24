@@ -8,8 +8,7 @@ class RutPatterns:
     """Low-level regex and transformation helpers.
 
     Transformation methods do not validate the check digit. Application code
-    needing a validation guarantee should use ``RutValidator`` or
-    ``RutFormatter``.
+    needing a validation guarantee should use ``validate_rut``.
     """
 
     # Individual patterns for format detection

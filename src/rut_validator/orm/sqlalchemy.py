@@ -4,7 +4,7 @@ from sqlalchemy import Dialect
 from sqlalchemy.types import String, TypeDecorator
 
 from ..errors import RutValidationError
-from ..validation import RutValidator
+from ..validation import validate_rut
 
 
 class RutSQLAlchemy(TypeDecorator[str]):
@@ -21,7 +21,7 @@ class RutSQLAlchemy(TypeDecorator[str]):
             return None
 
         try:
-            return RutValidator.validate(value).normalized
+            return validate_rut(value).normalized
 
         except RutValidationError as exc:
             raise ValueError(str(exc)) from exc
@@ -32,7 +32,7 @@ class RutSQLAlchemy(TypeDecorator[str]):
         if value is None:
             return None
         try:
-            return RutValidator.validate(value).normalized
+            return validate_rut(value).normalized
         except RutValidationError as exc:
             raise ValueError("La base de datos contiene un RUT inválido") from exc
 

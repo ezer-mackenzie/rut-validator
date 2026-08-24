@@ -7,7 +7,7 @@ from django.db.models import CharField
 from django.utils.deconstruct import deconstructible
 
 from ..errors import RutValidationError
-from ..validation import RutValidator
+from ..validation import validate_rut
 
 if TYPE_CHECKING:
     RutDjangoBase: TypeAlias = CharField[str]
@@ -26,7 +26,7 @@ class RutDjangoValidator:
         if not isinstance(value, str):
             raise ValidationError("El RUT debe ser un texto", code=self.code)
         try:
-            RutValidator.validate(value)
+            validate_rut(value)
         except RutValidationError as exc:
             raise ValidationError(str(exc), code=self.code) from exc
 
@@ -49,7 +49,7 @@ class RutDjango(RutDjangoBase):
         if not isinstance(value, str):
             raise ValidationError("El RUT debe ser un texto", code="invalid_rut")
         try:
-            return RutValidator.validate(value).normalized
+            return validate_rut(value).normalized
         except RutValidationError as exc:
             raise ValidationError(str(exc), code="invalid_rut") from exc
 

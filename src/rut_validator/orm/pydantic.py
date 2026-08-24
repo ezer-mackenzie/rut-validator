@@ -7,7 +7,7 @@ from pydantic.json_schema import JsonSchemaValue
 from pydantic_core import CoreSchema, core_schema
 
 from ..errors import RutValidationError
-from ..validation import RutPatterns, RutValidator
+from ..validation import RutPatterns, validate_rut
 
 
 class RutPydantic(str):
@@ -19,7 +19,7 @@ class RutPydantic(str):
     @staticmethod
     def _normalize(value: str) -> str:
         try:
-            return RutValidator.validate(value).normalized
+            return validate_rut(value).normalized
         except RutValidationError as exc:
             raise ValueError(str(exc)) from exc
 
