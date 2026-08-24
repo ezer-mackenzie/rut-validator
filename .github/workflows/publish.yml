@@ -5,8 +5,30 @@ on:
     types: [published]
 
 jobs:
+  verify-ci:
+    name: Verify release commit
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+    steps:
+      - name: Check out release tag
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.release.tag_name }}
+
+      - name: Resolve release commit
+        run: echo "RELEASE_SHA=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
+
+      - name: Require successful CI for release commit
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          test "$(gh run list --workflow ci.yml --commit "$RELEASE_SHA" --limit 10 --json status,conclusion --jq 'any(.[]; .status == "completed" and .conclusion == "success")')" = true
+
   pypi-publish:
     name: Upload to PyPI
+    needs: verify-ci
     runs-on: ubuntu-latest
 
     environment: pypi
@@ -16,6 +38,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.release.tag_name }}
 
       - name: Set up Python
         uses: actions/setup-python@v7
