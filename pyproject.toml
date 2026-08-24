@@ -143,6 +143,7 @@ omit = [
 fail_under = 95
 exclude_lines = [
     "pragma: no cover",
+    "if TYPE_CHECKING:",
     "def __repr__",
     "raise AssertionError",
     "raise NotImplementedError"

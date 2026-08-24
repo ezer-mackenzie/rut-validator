@@ -21,7 +21,7 @@ class RutDjangoValidator:
 
     code = "invalid_rut"
 
-    def __call__(self, value: Any) -> None:
+    def __call__(self, value: object) -> None:
         """Raise Django's ``ValidationError`` when *value* is not a valid RUT."""
         if not isinstance(value, str):
             raise ValidationError("El RUT debe ser un texto", code=self.code)

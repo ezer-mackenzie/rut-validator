@@ -40,7 +40,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The private engine no longer retains combined regex constants, length
   constants, or expected-format branches left over from the 1.x compatibility
   layer; normalization now removes only separators from an already detected
-  valid format.
+  valid format. Check-digit comparison now accepts only already parsed string
+  components instead of retaining malformed-input compatibility branches.
 - Framework-independent functions now live in `rut_validator.api` and remain
   exported from the package root.
 - Optional adapters consume the public functional API and live exclusively in

@@ -77,20 +77,9 @@ def module_eleven(body: str) -> str:
     return str(result)
 
 
-def is_valid_check_digit(body: object, check_digit: object) -> bool:
-    """Check a body and digit without raising for malformed values."""
-    if (
-        not isinstance(body, str)
-        or not isinstance(check_digit, str)
-        or len(check_digit) != 1
-        or check_digit not in "0123456789kK"
-    ):
-        return False
-    try:
-        expected = module_eleven(body)
-    except RutInvalidValueError:
-        return False
-    return check_digit.upper() == expected
+def is_valid_check_digit(body: str, check_digit: str) -> bool:
+    """Compare parsed components using the modulo-11 invariant."""
+    return check_digit.upper() == module_eleven(body)
 
 
 def parse(value: object) -> _ParsedRut:

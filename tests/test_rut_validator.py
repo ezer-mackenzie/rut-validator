@@ -84,7 +84,7 @@ def test_validation_checks_the_digit_once(monkeypatch: pytest.MonkeyPatch):
     calls = 0
     original = engine.is_valid_check_digit
 
-    def counting_check(body: object, check_digit: object) -> bool:
+    def counting_check(body: str, check_digit: str) -> bool:
         nonlocal calls
         calls += 1
         return original(body, check_digit)

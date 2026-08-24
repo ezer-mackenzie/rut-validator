@@ -14,6 +14,13 @@ def test_cli_validate_json():
     assert json.loads(result.output)["normalized"] == "123456785"
 
 
+def test_cli_validate_prints_formatted_value_by_default():
+    result = CliRunner().invoke(cli, ["validate", "123456785"])
+
+    assert result.exit_code == 0
+    assert result.output == "12.345.678-5\n"
+
+
 def test_cli_format():
     result = CliRunner().invoke(cli, ["format", "123456785", "--format", "hyphenated"])
 
@@ -26,6 +33,13 @@ def test_cli_format_rejects_removed_quiet_option():
 
     assert result.exit_code == 2
     assert "No such option '--quiet'" in result.output
+
+
+def test_cli_format_reports_invalid_values():
+    result = CliRunner().invoke(cli, ["format", "invalid"])
+
+    assert result.exit_code == 1
+    assert "Formato no válido" in result.output
 
 
 def test_cli_invalid_value_has_nonzero_exit_code():
@@ -63,6 +77,13 @@ def test_cli_info_and_detailed_output():
     assert "normalized: 123456785" in detailed.output
 
 
+def test_cli_info_reports_invalid_values():
+    result = CliRunner().invoke(cli, ["info", "invalid"])
+
+    assert result.exit_code == 1
+    assert "Formato no válido" in result.output
+
+
 def test_cli_batch_outputs_json_lines_and_nonzero_for_invalid_rows():
     runner = CliRunner()
     with runner.isolated_filesystem():
@@ -75,6 +96,16 @@ def test_cli_batch_outputs_json_lines_and_nonzero_for_invalid_rows():
     assert result.exit_code == 1
     assert rows[0]["valid"] is True
     assert rows[1]["error"]["code"] == "invalid_format"
+
+
+def test_cli_batch_skips_empty_lines_but_preserves_source_numbers():
+    runner = CliRunner()
+    with runner.isolated_filesystem():
+        Path("ruts.txt").write_text("\n12.345.678-5\n", encoding="utf-8")
+        result = runner.invoke(cli, ["batch", "ruts.txt"])
+
+    assert result.exit_code == 0
+    assert json.loads(result.output)["line"] == 2
 
 
 def test_cli_batch_does_not_silently_strip_input():
