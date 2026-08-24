@@ -41,6 +41,12 @@ CI stores the wheel and source distribution that pass this gate. The PyPI
 workflow verifies that the GitHub Release tag matches package metadata and then
 publishes those exact artifacts; it does not rebuild the package independently.
 
+If publication fails after a correct tag was created, fix the workflow or
+trusted-publishing configuration and rerun it for the same GitHub Release only
+when PyPI has not accepted the files. If any file was accepted, increment the
+package version and create a new tag; PyPI filenames and released versions are
+never overwritten or reused.
+
 RUT validation does not certify identity, ownership, or registration with the
 Chilean Internal Revenue Service (SII).
 

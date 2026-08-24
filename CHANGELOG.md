@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.0] - 2026-08-24
+
 ### Fixed
 
 - Canonical dotted formatting now preserves leading zeros in the RUT body, so
@@ -17,8 +19,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   instead of propagating SQLModel's permissive `Any` annotation.
 - Validation error payloads now declare `dict[str, str]` instead of leaking an
   unnecessary `Any` value type.
-
-## [2.0.0] - 2026-08-24
 
 ### Removed
 
