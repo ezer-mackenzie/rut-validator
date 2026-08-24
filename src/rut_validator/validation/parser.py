@@ -1,5 +1,6 @@
 """Low-level parsing of supported RUT representations."""
 
+from .._deprecations import warn_deprecated
 from ..core import engine
 from ..core.enums import RutFormat
 from ..errors import RutInvalidValueError
@@ -20,6 +21,7 @@ class RutParser:
             RutInvalidValueError: If *rut* is missing or not text.
             RutInvalidFormatError: If *rut* uses an unsupported representation.
         """
+        warn_deprecated("RutParser", "validate_rut()")
         if not isinstance(rut, str) or rut.strip() == "":
             raise RutInvalidValueError(
                 "No se puede parsear un RUT vacío, por favor ingrese un valor"
@@ -36,5 +38,6 @@ class RutParser:
             RutInvalidValueError: If *rut* is missing or not text.
             RutInvalidFormatError: If *rut* uses an unsupported representation.
         """
+        warn_deprecated("RutParser", "validate_rut()")
         parsed = engine.parse(rut)
         return parsed.body, parsed.check_digit, parsed.format

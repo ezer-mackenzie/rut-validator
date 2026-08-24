@@ -11,6 +11,8 @@ from rut_validator.errors import (
 )
 from rut_validator.validation import RutParser, RutPatterns, RutValidator
 
+pytestmark = pytest.mark.filterwarnings("ignore::DeprecationWarning")
+
 
 def test_rut_object_normalizes_and_formats_correctly():
     rut = Rut("12.345.678-5")

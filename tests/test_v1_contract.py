@@ -20,6 +20,8 @@ from rut_validator.errors import (
     RutModuleElevenValidationError,
 )
 
+pytestmark = pytest.mark.filterwarnings("ignore::DeprecationWarning")
+
 
 def test_root_exports_are_stable():
     assert set(rut_validator.__all__) == {

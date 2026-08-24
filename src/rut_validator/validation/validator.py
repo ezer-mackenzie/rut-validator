@@ -5,6 +5,7 @@ from __future__ import annotations
 import logging
 from typing import TYPE_CHECKING
 
+from .._deprecations import warn_deprecated
 from ..core import engine
 from ..core.enums import ValidationResult
 from ..errors import (
@@ -87,12 +88,17 @@ class RutValidator:
     @classmethod
     def get_validation_result(cls, rut: object) -> ValidationResult:
         """Classify *rut* without raising a validation exception."""
+        warn_deprecated("RutValidator", "get_validation_result()")
         return get_validation_result(rut)
 
     @classmethod
     def is_valid(cls, rut: object) -> bool:
         """Check *rut* without raising a validation exception."""
-        result = cls.get_validation_result(rut)
+        warn_deprecated("RutValidator", "is_valid_rut()")
+        if cls is RutValidator:
+            result = get_validation_result(rut)
+        else:
+            result = cls.get_validation_result(rut)
         is_valid = result is ValidationResult.VALID
         logger.debug("RUT validity: %s (%s)", is_valid, result)
         return is_valid
@@ -106,6 +112,7 @@ class RutValidator:
             RutInvalidFormatError: If *rut* uses an unsupported representation.
             RutModuleElevenValidationError: If its check digit is incorrect.
         """
+        warn_deprecated("RutValidator", "validate_rut()")
         return validate_rut(rut)
 
     @classmethod
@@ -115,9 +122,14 @@ class RutValidator:
         Raises:
             RutInvalidValueError: If *body* contains non-ASCII or non-digit text.
         """
+        warn_deprecated("RutValidator.module_eleven()", "calculate_check_digit()")
         return engine.module_eleven(body)
 
     @classmethod
     def is_valid_check_digit(cls, body: object, check_digit: object) -> bool:
         """Check a body and digit without raising for malformed values."""
+        warn_deprecated(
+            "RutValidator.is_valid_check_digit()",
+            "validate_rut() or is_valid_rut()",
+        )
         return engine.is_valid_check_digit(body, check_digit)

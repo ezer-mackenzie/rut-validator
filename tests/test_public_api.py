@@ -40,11 +40,18 @@ def test_public_integration_imports():
 
 
 def test_formatter_validates_and_formats():
-    assert RutFormatter.to_original_format("123456785") == "12.345.678-5"
-    assert RutFormatter.to_normalize_format("12.345.678-5") == "123456785"
-    assert RutFormatter.to_hyphenated_format("123456785") == "12345678-5"
+    with pytest.warns(DeprecationWarning, match="RutFormatter"):
+        formatted = RutFormatter.to_original_format("123456785")
+    with pytest.warns(DeprecationWarning, match="RutFormatter"):
+        normalized = RutFormatter.to_normalize_format("12.345.678-5")
+    with pytest.warns(DeprecationWarning, match="RutFormatter"):
+        hyphenated = RutFormatter.to_hyphenated_format("123456785")
 
-    with pytest.raises(RutInvalidFormatError):
+    assert formatted == "12.345.678-5"
+    assert normalized == "123456785"
+    assert hyphenated == "12345678-5"
+
+    with pytest.warns(DeprecationWarning), pytest.raises(RutInvalidFormatError):
         RutFormatter.to_normalize_format("prefix-12.345.678-5")
 
 
