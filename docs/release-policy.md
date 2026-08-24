@@ -3,9 +3,9 @@
 The project follows Semantic Versioning.
 
 - The `1.x` public API is stable.
-- Domain types under `rut_validator.core`, framework-agnostic behavior under
-  `rut_validator.validation`, and adapters under `rut_validator.orm` form the
-  documented architecture.
+- Domain types and invariant primitives live under `rut_validator.core`.
+  Functional validation is exported from the package root, and optional
+  adapters live under `rut_validator.integrations`.
 - Names listed in the API reference are public. Names prefixed with `_` are
   internal implementation details.
 

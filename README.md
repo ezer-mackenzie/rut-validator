@@ -91,7 +91,7 @@ Public error codes are `invalid_value`, `invalid_format`, and
 ```python
 from pydantic import BaseModel
 
-from rut_validator.orm.pydantic import RutPydantic
+from rut_validator.integrations.pydantic import RutPydantic
 
 
 class User(BaseModel):
@@ -109,7 +109,7 @@ assert user.rut == "123456785"
 from fastapi import FastAPI
 from pydantic import BaseModel
 
-from rut_validator.orm.pydantic import RutPydantic
+from rut_validator.integrations.pydantic import RutPydantic
 
 app = FastAPI()
 
@@ -131,7 +131,7 @@ Invalid values produce FastAPI's standard HTTP `422` response, and
 ```python
 from django.db import models
 
-from rut_validator.orm.django import RutDjango
+from rut_validator.integrations.django import RutDjango
 
 
 class Person(models.Model):
@@ -147,7 +147,7 @@ representation.
 ```python
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
-from rut_validator.orm.sqlalchemy import RutSQLAlchemy
+from rut_validator.integrations.sqlalchemy import RutSQLAlchemy
 
 
 class Base(DeclarativeBase):
@@ -169,13 +169,17 @@ reads.
 ```python
 from sqlmodel import Field, SQLModel
 
-from rut_validator.orm.sqlmodel import RutSQLModel, rut_sqlmodel_field
+from rut_validator.integrations.sqlmodel import RutSQLModel, rut_sqlmodel_field
 
 
 class Person(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
     rut: RutSQLModel = rut_sqlmodel_field(unique=True, index=True)
 ```
+
+Imports under `rut_validator.orm` remain available with deprecation warnings
+during the 1.x migration window. New code should use
+`rut_validator.integrations`; see the [version 2 migration guide](docs/migration-v2.md).
 
 ## CLI
 

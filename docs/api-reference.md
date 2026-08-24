@@ -21,7 +21,8 @@ Returns the detailed `ValidationResult` without raising a validation exception.
 
 ### `RutValidator`
 
-Compatibility facade for the functional validation API.
+Deprecated compatibility facade for the functional validation API. It will be
+removed in 2.0.0.
 
 - `validate(value) -> Rut`
 - `is_valid(value) -> bool`
@@ -77,21 +78,23 @@ Public error codes are `invalid_value`, `invalid_format`, and
 
 ## Framework-agnostic validation package
 
-`rut_validator.validation` also exports `RutFormatter`, `RutParser` and
-`RutPatterns`. `RutFormatter` validates before conversion. `RutParser` and
-`RutPatterns` are lower-level compatibility APIs and must not be treated as
-proof that a RUT is valid; use `validate_rut()` for that guarantee.
+`rut_validator.validation` still exports `RutValidator`, `RutFormatter`,
+`RutParser` and `RutPatterns` as deprecated compatibility APIs. They emit
+`DeprecationWarning` when used and will be removed in 2.0.0. Use the functional
+root API and `Rut` properties instead.
 
 ## Optional integrations
 
 | Import | Public symbols |
 | --- | --- |
-| `rut_validator.orm.pydantic` | `RutPydantic` |
-| `rut_validator.orm.sqlalchemy` | `RutSQLAlchemy` |
-| `rut_validator.orm.sqlmodel` | `RutSQLModel`, `rut_sqlmodel_field` |
-| `rut_validator.orm.django` | `RutDjango`, `RutDjangoValidator` |
+| `rut_validator.integrations.pydantic` | `RutPydantic` |
+| `rut_validator.integrations.sqlalchemy` | `RutSQLAlchemy` |
+| `rut_validator.integrations.sqlmodel` | `RutSQLModel`, `rut_sqlmodel_field` |
+| `rut_validator.integrations.django` | `RutDjango`, `RutDjangoValidator` |
 
 Domain types and their private invariant engine live in `rut_validator.core`.
 `rut_validator.validation` provides the stable framework-agnostic `1.x` API,
-and adapters live in `rut_validator.orm`. Application and adapter code should
-use public validation helpers rather than importing the private engine.
+and adapters live in `rut_validator.integrations`. The former
+`rut_validator.orm` paths remain as deprecated shims until 2.0.0. Application
+and adapter code should use public validation helpers rather than importing the
+private engine.

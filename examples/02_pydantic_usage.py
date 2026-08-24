@@ -9,7 +9,7 @@ import json
 
 from pydantic import BaseModel, ValidationError
 
-from rut_validator.orm.pydantic import RutPydantic
+from rut_validator.integrations.pydantic import RutPydantic
 
 print("=" * 60)
 print("EXAMPLE 2: Pydantic Integration")

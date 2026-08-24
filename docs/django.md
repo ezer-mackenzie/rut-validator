@@ -9,7 +9,7 @@ pip install "rut-validator[django]"
 ```python
 from django.db import models
 
-from rut_validator.orm.django import RutDjango
+from rut_validator.integrations.django import RutDjango
 
 
 class Person(models.Model):

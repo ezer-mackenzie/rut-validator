@@ -104,18 +104,6 @@ def example_json_output():
         print("Could not parse JSON")
 
 
-def example_quiet_mode():
-    print("\n" + "=" * 60)
-    print("Example 6: Quiet Mode (for scripting)")
-    print("=" * 60)
-
-    rut = "20.884.437-7"
-
-    print("\nQuiet mode output (just the result):")
-    output = run_command(f"poetry run rut-validator format '{rut}' --quiet")
-    print(f"Result: {output.strip()}")
-
-
 def example_error_handling():
     print("\n" + "=" * 60)
     print("Example 7: Error Handling")
@@ -148,7 +136,6 @@ if __name__ == "__main__":
     example_rut_info()
     example_batch_processing()
     example_json_output()
-    example_quiet_mode()
     example_error_handling()
     example_help()
 

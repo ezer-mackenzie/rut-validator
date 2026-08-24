@@ -12,6 +12,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `is_valid_rut()` and `get_validation_result()` provide functional replacements
   for the non-raising `RutValidator` operations and are exported from the root
   package.
+- `rut_validator.integrations` is the canonical package for Pydantic, Django,
+  SQLAlchemy, and SQLModel adapters.
+- A version 2 migration guide documents every deprecated API and its
+  replacement.
+
+### Deprecated
+
+- `RutValidator`, `RutFormatter`, `RutParser`, and the methods of `RutPatterns`
+  now emit `DeprecationWarning` and will be removed in 2.0.0.
+- `Rut(..., format_detected=...)`, `Rut.equals()`, `Rut.number`, `Rut.digit`,
+  `Rut.is_dotted`, and `Rut.is_numeric` will be removed in 2.0.0.
+- The no-op CLI option `format --quiet` will be removed in 2.0.0.
+- Imports from `rut_validator.orm` now resolve lazily to the canonical
+  `rut_validator.integrations` classes while warning about their removal in
+  2.0.0.
 
 ### Fixed
 
@@ -31,6 +46,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Characterization tests now freeze the `1.x` exports, constructor signature,
   legacy aliases, error codes, and invalid-input classification ahead of the
   version 2 migration.
+- Documentation, examples, framework tests, and new Django migration paths now
+  use `rut_validator.integrations`; existing migrations using
+  `rut_validator.orm` remain importable through compatibility shims.
 
 ## [1.0.1] - 2026-08-22
 

@@ -41,6 +41,7 @@ nav:
       - SQLAlchemy and SQLModel: sqlalchemy-sqlmodel.md
       - Django: django.md
   - API reference: api-reference.md
+  - Migrating to 2.0: migration-v2.md
   - Development: development.md
   - Versioning and releases: release-policy.md
 

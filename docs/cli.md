@@ -21,7 +21,7 @@ rut-validator format 123456785 --format hyphenated
 rut-validator format 123456785 --format normalized
 ```
 
-The legacy `--quiet` option remains accepted for compatibility. It is a no-op:
+The legacy `--quiet` option remains accepted as a deprecated no-op until 2.0.0:
 `format` already writes only the converted value.
 
 ## Inspect

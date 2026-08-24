@@ -9,7 +9,7 @@ pip install "rut-validator[pydantic]"
 ```python
 from pydantic import BaseModel
 
-from rut_validator.orm.pydantic import RutPydantic
+from rut_validator.integrations.pydantic import RutPydantic
 
 
 class Person(BaseModel):
@@ -38,7 +38,7 @@ pip install "rut-validator[fastapi]"
 from fastapi import FastAPI
 from pydantic import BaseModel
 
-from rut_validator.orm.pydantic import RutPydantic
+from rut_validator.integrations.pydantic import RutPydantic
 
 app = FastAPI()
 

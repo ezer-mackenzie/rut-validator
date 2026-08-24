@@ -17,7 +17,8 @@ does not prove that a RUT exists, is active, or belongs to a person or company.
 - `src/rut_validator/core/`: domain objects, enums, and private invariant
   primitives shared by the domain and validation layers.
 - `src/rut_validator/validation/`: parsing, formatting, patterns, and validation.
-- `src/rut_validator/orm/`: optional framework and ORM adapters.
+- `src/rut_validator/integrations/`: canonical optional framework and ORM adapters.
+- `src/rut_validator/orm/`: deprecated import shims retained until 2.0.0.
 - `src/rut_validator/cli/`: Click-based command-line interface.
 - `tests/`: unit, property-based, public API, architecture, CLI, and integration tests.
 - `docs/`: MkDocs documentation for the public API and integrations.
@@ -30,7 +31,8 @@ does not prove that a RUT exists, is active, or belongs to a person or company.
   validation helpers rather than importing internal core modules.
 - Importing `rut_validator`, `rut_validator.core`, `rut_validator.validation`, or
   `rut_validator.orm` must not import optional frameworks.
-- Keep integrations optional and located in `src/rut_validator/orm/`.
+- Keep integrations optional and located in `src/rut_validator/integrations/`.
+- Keep `src/rut_validator/orm/` limited to compatibility shims.
 - Use `Rut` as the canonical immutable and hashable value object.
 - Preserve normalized storage as body plus check digit without separators.
 - Public formatting operations must validate before transforming a value.
@@ -45,7 +47,8 @@ does not prove that a RUT exists, is active, or belongs to a person or company.
 
 The root package exports the common standalone API, including `Rut`,
 `RutValidator`, `validate_rut`, and `calculate_check_digit`. Framework-specific
-types are imported from `rut_validator.orm` modules.
+types are imported from `rut_validator.integrations` modules. The former
+`rut_validator.orm` paths are deprecated compatibility imports.
 
 The package follows semantic versioning. Treat removal, renaming, changed error
 behavior, and changed accepted input as compatibility-sensitive changes. Every

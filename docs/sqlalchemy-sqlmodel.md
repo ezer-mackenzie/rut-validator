@@ -10,7 +10,7 @@ pip install "rut-validator[sqlalchemy]"
 from sqlalchemy import create_engine
 from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column
 
-from rut_validator.orm.sqlalchemy import RutSQLAlchemy
+from rut_validator.integrations.sqlalchemy import RutSQLAlchemy
 
 
 class Base(DeclarativeBase):
@@ -46,7 +46,7 @@ pip install "rut-validator[sqlmodel]"
 ```python
 from sqlmodel import Field, SQLModel
 
-from rut_validator.orm.sqlmodel import RutSQLModel, rut_sqlmodel_field
+from rut_validator.integrations.sqlmodel import RutSQLModel, rut_sqlmodel_field
 
 
 class Person(SQLModel, table=True):

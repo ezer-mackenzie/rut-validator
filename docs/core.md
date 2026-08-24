@@ -39,8 +39,8 @@ rut = validate_rut("12.345.678-5")
 assert rut.body == 12345678
 ```
 
-`RutValidator` remains available as a compatibility facade throughout the
-`1.x` series.
+`RutValidator` remains available as a deprecated compatibility facade throughout
+the `1.x` series and will be removed in 2.0.0.
 
 `get_validation_result()` returns one of:
 
@@ -49,29 +49,14 @@ assert rut.body == 12345678
 - `INVALID_FORMAT`
 - `INVALID_CHECK_DIGIT`
 
-## `RutFormatter`
+## Deprecated compatibility helpers
 
-The formatter validates before converting:
+`RutFormatter`, `RutParser`, and `RutPatterns` remain available during `1.x` for
+existing consumers. They emit `DeprecationWarning` and will be removed in
+2.0.0.
 
-```python
-from rut_validator.validation import RutFormatter
-
-assert RutFormatter.to_original_format("123456785") == "12.345.678-5"
-assert RutFormatter.to_normalize_format("12.345.678-5") == "123456785"
-assert RutFormatter.to_hyphenated_format("123456785") == "12345678-5"
-```
-
-## Low-level parsing and pattern helpers
-
-`RutParser` and `RutPatterns` are public compatibility APIs for inspecting
-syntax and implementing specialized tooling. They are low-level primitives:
-methods such as `RutPatterns.normalize()` only transform characters and do not
-prove that the input is valid.
-
-Application code should use `validate_rut()` or `is_valid_rut()`
-when it needs a validation guarantee. The low-level names will remain available
-throughout the `1.x` series; any future removal will follow the deprecation
-policy.
+Application code should use `validate_rut()` or `is_valid_rut()` when it needs a
+validation guarantee, then read the canonical properties from `Rut`.
 
 ## Privacy
 
