@@ -76,7 +76,12 @@ jobs:
       - run: ruff check src tests examples
       - run: black --check src tests examples
       - run: mypy src/rut_validator tests/typing
-      - run: basedpyright --pythonpath "$(command -v python)"
+      - name: Check standalone types with basedpyright
+        run: |
+          if [ ! -e .venv ]; then
+            ln -s "$(python -c 'import sys; print(sys.prefix)')" .venv
+          fi
+          basedpyright
       - run: actionlint
       - run: mkdocs build --strict
       - run: python examples/01_pure_validation.py
