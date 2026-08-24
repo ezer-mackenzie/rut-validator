@@ -31,6 +31,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- CLI batch processing now streams input and JSON Lines output incrementally;
+  file output uses an atomic temporary replacement and remains safe when input
+  and output paths are identical.
 - Integration tests now follow the `tests/integrations` package layout, static
   integration fixtures run in CI, architecture checks detect both Python import
   forms, and pytest fails on unexpected warnings.

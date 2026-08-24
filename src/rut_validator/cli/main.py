@@ -2,6 +2,8 @@
 
 import json as json_module
 from pathlib import Path
+from tempfile import TemporaryDirectory
+from typing import TextIO
 
 import click
 
@@ -20,6 +22,42 @@ def _payload(value: str) -> dict[str, object]:
         "check_digit": rut.check_digit,
         "input_format": rut.format.value,
     }
+
+
+def _write_batch_rows(source: TextIO, destination: TextIO) -> bool:
+    has_errors = False
+    for line_number, raw_line in enumerate(source, 1):
+        raw_value = raw_line.removesuffix("\n").removesuffix("\r")
+        if raw_value == "":
+            continue
+        data: dict[str, object]
+        try:
+            data = _payload(raw_value)
+        except RutValidationError as exc:
+            has_errors = True
+            data = {"valid": False, "error": exc.as_dict()}
+        data["line"] = line_number
+        destination.write(json_module.dumps(data, ensure_ascii=False) + "\n")
+    return has_errors
+
+
+def _process_batch(file: Path, output: Path | None) -> bool:
+    try:
+        with file.open(encoding="utf-8") as source:
+            if output is None:
+                return _write_batch_rows(source, click.get_text_stream("stdout"))
+
+            with TemporaryDirectory(
+                prefix=".rut-validator-",
+                dir=output.parent,
+            ) as temporary_directory:
+                temporary_output = Path(temporary_directory) / output.name
+                with temporary_output.open("w", encoding="utf-8") as destination:
+                    has_errors = _write_batch_rows(source, destination)
+                temporary_output.replace(output)
+                return has_errors
+    except OSError as exc:
+        raise click.ClickException("No se pudo procesar el archivo") from exc
 
 
 @click.group()
@@ -97,25 +135,5 @@ def info(rut: str, detailed: bool) -> None:
 @click.option("--output", type=click.Path(dir_okay=False, path_type=Path))
 def batch(file: Path, output: Path | None) -> None:
     """Valida un RUT por línea y entrega JSON Lines."""
-    rows: list[str] = []
-    has_errors = False
-    for line_number, raw_value in enumerate(
-        file.read_text(encoding="utf-8").splitlines(), 1
-    ):
-        if raw_value == "":
-            continue
-        data: dict[str, object]
-        try:
-            data = _payload(raw_value)
-        except RutValidationError as exc:
-            has_errors = True
-            data = {"valid": False, "error": exc.as_dict()}
-        data["line"] = line_number
-        rows.append(json_module.dumps(data, ensure_ascii=False))
-    rendered = "\n".join(rows) + ("\n" if rows else "")
-    if output is None:
-        click.echo(rendered, nl=False)
-    else:
-        output.write_text(rendered, encoding="utf-8")
-    if has_errors:
+    if _process_batch(file, output):
         raise click.exceptions.Exit(1)

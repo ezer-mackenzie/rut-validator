@@ -1,5 +1,7 @@
 import json
+from pathlib import Path
 
+import pytest
 from click.testing import CliRunner
 
 from rut_validator.cli import cli
@@ -108,3 +110,60 @@ def test_cli_batch_writes_output_file():
     assert result.exit_code == 0
     assert result.output == ""
     assert rows[0]["normalized"] == "123456785"
+
+
+def test_cli_batch_streams_without_reading_the_entire_file(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    runner = CliRunner()
+
+    def fail_if_called(*_args: object, **_kwargs: object) -> str:
+        raise AssertionError("batch must not call Path.read_text()")
+
+    monkeypatch.setattr(Path, "read_text", fail_if_called)
+    with runner.isolated_filesystem():
+        Path("ruts.txt").write_text("12.345.678-5\n", encoding="utf-8")
+        result = runner.invoke(cli, ["batch", "ruts.txt"])
+
+    assert result.exit_code == 0
+    assert json.loads(result.output)["normalized"] == "123456785"
+
+
+def test_cli_batch_can_atomically_replace_its_input_file():
+    runner = CliRunner()
+    with runner.isolated_filesystem():
+        path = Path("ruts.txt")
+        path.write_text("12.345.678-5\n", encoding="utf-8")
+
+        result = runner.invoke(
+            cli,
+            ["batch", str(path), "--output", str(path)],
+        )
+        row = json.loads(path.read_text(encoding="utf-8"))
+
+    assert result.exit_code == 0
+    assert row["normalized"] == "123456785"
+
+
+def test_cli_batch_empty_file_produces_empty_output():
+    runner = CliRunner()
+    with runner.isolated_filesystem():
+        Path("ruts.txt").write_text("", encoding="utf-8")
+        result = runner.invoke(cli, ["batch", "ruts.txt"])
+
+    assert result.exit_code == 0
+    assert result.output == ""
+
+
+def test_cli_batch_reports_output_errors_without_a_traceback():
+    runner = CliRunner()
+    with runner.isolated_filesystem():
+        Path("ruts.txt").write_text("12.345.678-5\n", encoding="utf-8")
+        result = runner.invoke(
+            cli,
+            ["batch", "ruts.txt", "--output", "missing/result.jsonl"],
+        )
+
+    assert result.exit_code == 1
+    assert "No se pudo procesar el archivo" in result.output
+    assert "Traceback" not in result.output
