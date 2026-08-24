@@ -37,6 +37,10 @@ A release is tagged only when:
    vulnerabilities;
 7. package version, documentation, and changelog agree.
 
+CI stores the wheel and source distribution that pass this gate. The PyPI
+workflow verifies that the GitHub Release tag matches package metadata and then
+publishes those exact artifacts; it does not rebuild the package independently.
+
 RUT validation does not certify identity, ownership, or registration with the
 Chilean Internal Revenue Service (SII).
 

@@ -31,6 +31,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- PyPI publication now verifies tag/version agreement and promotes the exact
+  wheel and source distribution validated by a successful CI run for the same
+  commit instead of rebuilding release artifacts independently.
 - CLI batch processing now streams input and JSON Lines output incrementally;
   file output uses an atomic temporary replacement and remains safe when input
   and output paths are identical.
