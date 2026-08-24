@@ -1,4 +1,5 @@
 from importlib import import_module
+from typing import get_type_hints
 
 import pytest
 
@@ -27,6 +28,13 @@ def test_public_standalone_helpers():
     assert is_valid_rut("12.345.678-0") is False
     assert get_validation_result(None) is ValidationResult.INVALID_VALUE
     assert rut_validator.__version__ != "0+unknown"
+
+
+def test_error_payload_has_a_precise_public_return_type():
+    assert (
+        get_type_hints(rut_validator.RutValidationError.as_dict)["return"]
+        == dict[str, str]
+    )
 
 
 def test_public_integration_imports():

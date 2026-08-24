@@ -15,6 +15,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   partially unknown inference in strict type checkers.
 - `rut_sqlmodel_field()` now declares its concrete `FieldInfo` return contract
   instead of propagating SQLModel's permissive `Any` annotation.
+- Validation error payloads now declare `dict[str, str]` instead of leaking an
+  unnecessary `Any` value type.
 
 ## [2.0.0] - 2026-08-24
 

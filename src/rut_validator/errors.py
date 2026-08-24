@@ -1,7 +1,5 @@
 """Custom exceptions for RUT validation."""
 
-from typing import Any
-
 
 class RutValidationError(ValueError):
     """Base exception carrying a stable machine-readable error code."""
@@ -12,7 +10,7 @@ class RutValidationError(ValueError):
         self.message = message
         super().__init__(message)
 
-    def as_dict(self) -> dict[str, Any]:
+    def as_dict(self) -> dict[str, str]:
         """Serialize the error without exposing the submitted RUT."""
         return {"code": self.code, "message": self.message}
 
@@ -42,7 +40,7 @@ class RutModuleElevenValidationError(RutValidationError):
             f"se esperaba '{expected}' en vez de '{received}'"
         )
 
-    def as_dict(self) -> dict[str, Any]:
+    def as_dict(self) -> dict[str, str]:
         """Include the expected and received digits in the error payload."""
         payload = super().as_dict()
         payload.update(
