@@ -39,7 +39,7 @@ def test_fastapi_openapi_contains_rut_schema():
     rut_schema = schema["components"]["schemas"]["PersonRequest"]["properties"]["rut"]
 
     assert rut_schema["type"] == "string"
-    assert "pattern" in rut_schema
+    assert "pattern" not in rut_schema
     assert rut_schema["examples"] == [
         "12.345.678-5",
         "12345678-5",

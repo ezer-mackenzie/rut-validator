@@ -2,19 +2,18 @@
 
 from importlib.metadata import PackageNotFoundError, version
 
+from .api import (
+    calculate_check_digit,
+    get_validation_result,
+    is_valid_rut,
+    validate_rut,
+)
 from .core import Rut, RutFormat, ValidationResult
 from .errors import (
     RutInvalidFormatError,
     RutInvalidValueError,
     RutModuleElevenValidationError,
     RutValidationError,
-)
-from .validation import (
-    RutValidator,
-    calculate_check_digit,
-    get_validation_result,
-    is_valid_rut,
-    validate_rut,
 )
 
 try:
@@ -30,7 +29,6 @@ __all__ = [
     "RutInvalidValueError",
     "RutModuleElevenValidationError",
     "RutValidationError",
-    "RutValidator",
     "ValidationResult",
     "calculate_check_digit",
     "get_validation_result",

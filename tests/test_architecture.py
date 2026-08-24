@@ -6,12 +6,6 @@ from pathlib import Path
 import pytest
 
 from rut_validator.core import Rut, RutFormat, ValidationResult
-from rut_validator.validation import (
-    RutFormatter,
-    RutParser,
-    RutPatterns,
-    RutValidator,
-)
 
 
 def test_core_exports_only_domain_types():
@@ -23,13 +17,6 @@ def test_core_exports_only_domain_types():
     assert ValidationResult
 
 
-def test_validation_layer_exposes_framework_agnostic_implementation():
-    assert RutFormatter
-    assert RutParser
-    assert RutPatterns
-    assert RutValidator
-
-
 def _imported_modules(relative_path: str) -> set[str]:
     source_path = Path(__file__).parents[1] / "src" / "rut_validator" / relative_path
     tree = ast.parse(source_path.read_text(encoding="utf-8"))
@@ -38,40 +25,44 @@ def _imported_modules(relative_path: str) -> set[str]:
     }
 
 
-def test_domain_object_does_not_import_the_validation_layer():
+def test_domain_object_depends_only_on_core_primitives():
     imports = _imported_modules("core/rut.py")
 
-    assert not any("validation" in module for module in imports)
+    assert not any("api" in module or "integrations" in module for module in imports)
 
 
-def test_engine_does_not_import_validation_or_optional_layers():
+def test_engine_does_not_import_public_or_optional_layers():
     imports = _imported_modules("core/engine.py")
+    forbidden = ("api", "integrations", "django", "pydantic", "sqlalchemy", "sqlmodel")
 
-    forbidden = ("validation", "orm", "django", "pydantic", "sqlalchemy", "sqlmodel")
     assert not any(any(name in module for name in forbidden) for module in imports)
 
 
-def test_validation_implementation_does_not_depend_on_legacy_facades():
-    validator_imports = _imported_modules("validation/validator.py")
-    parser_imports = _imported_modules("validation/parser.py")
+@pytest.mark.parametrize(
+    "relative_path",
+    [
+        "integrations/django.py",
+        "integrations/pydantic.py",
+        "integrations/sqlalchemy.py",
+    ],
+)
+def test_integrations_use_the_public_api(relative_path: str):
+    imports = _imported_modules(relative_path)
 
-    assert not any(
-        "parser" in module or "patterns" in module for module in validator_imports
-    )
-    assert not any("patterns" in module for module in parser_imports)
+    assert "api" in imports
+    assert "core" not in imports
 
 
 @pytest.mark.parametrize(
     "module",
     [
         "rut_validator",
+        "rut_validator.api",
         "rut_validator.core",
         "rut_validator.integrations",
-        "rut_validator.validation",
-        "rut_validator.orm",
     ],
 )
-def test_standalone_layers_do_not_import_optional_frameworks(module):
+def test_standalone_layers_do_not_import_optional_frameworks(module: str):
     code = f"""
 import sys
 import {module}

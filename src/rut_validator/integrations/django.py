@@ -6,8 +6,8 @@ from django.core.exceptions import ValidationError
 from django.db.models import CharField
 from django.utils.deconstruct import deconstructible
 
+from ..api import validate_rut
 from ..errors import RutValidationError
-from ..validation import validate_rut
 
 if TYPE_CHECKING:
     RutDjangoBase: TypeAlias = CharField[str]

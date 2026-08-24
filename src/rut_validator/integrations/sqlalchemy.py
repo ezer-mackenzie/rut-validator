@@ -3,8 +3,8 @@
 from sqlalchemy import Dialect
 from sqlalchemy.types import String, TypeDecorator
 
+from ..api import validate_rut
 from ..errors import RutValidationError
-from ..validation import validate_rut
 
 
 class RutSQLAlchemy(TypeDecorator[str]):

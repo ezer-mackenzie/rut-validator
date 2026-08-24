@@ -1,6 +1,5 @@
 import json
 
-import pytest
 from click.testing import CliRunner
 
 from rut_validator.cli import cli
@@ -20,12 +19,11 @@ def test_cli_format():
     assert result.output == "12345678-5\n"
 
 
-def test_cli_format_quiet_remains_a_compatible_no_op():
-    with pytest.warns(DeprecationWarning, match="--quiet"):
-        result = CliRunner().invoke(cli, ["format", "123456785", "--quiet"])
+def test_cli_format_rejects_removed_quiet_option():
+    result = CliRunner().invoke(cli, ["format", "123456785", "--quiet"])
 
-    assert result.exit_code == 0
-    assert result.output == "12.345.678-5\n"
+    assert result.exit_code == 2
+    assert "No such option '--quiet'" in result.output
 
 
 def test_cli_invalid_value_has_nonzero_exit_code():

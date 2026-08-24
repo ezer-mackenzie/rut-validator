@@ -5,9 +5,8 @@ from pathlib import Path
 
 import click
 
-from .._deprecations import warn_deprecated
+from ..api import validate_rut
 from ..errors import RutValidationError
-from ..validation import validate_rut
 
 
 def _payload(value: str) -> dict[str, object]:
@@ -61,11 +60,8 @@ def validate(rut: str, as_json: bool) -> None:
     default="formatted",
     show_default=True,
 )
-@click.option("--quiet", is_flag=True, help="Muestra sólo el resultado.")
-def format_command(rut: str, output_format: str, quiet: bool) -> None:
+def format_command(rut: str, output_format: str) -> None:
     """Convierte RUT a un formato canónico."""
-    if quiet:
-        warn_deprecated("rut-validator format --quiet", "the format command")
     try:
         value = validate_rut(rut)
     except RutValidationError as exc:
