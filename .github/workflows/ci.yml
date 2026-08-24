@@ -76,7 +76,7 @@ jobs:
       - run: ruff check src tests examples
       - run: black --check src tests examples
       - run: mypy src/rut_validator tests/typing
-      - run: basedpyright
+      - run: basedpyright --pythonpath "$(command -v python)"
       - run: actionlint
       - run: mkdocs build --strict
       - run: python examples/01_pure_validation.py

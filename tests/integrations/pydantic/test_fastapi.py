@@ -1,4 +1,14 @@
+import warnings
+
 from fastapi import FastAPI
+from starlette.exceptions import StarletteDeprecationWarning
+
+warnings.filterwarnings(
+    "ignore",
+    message="Using `httpx` with `starlette.testclient` is deprecated",
+    category=StarletteDeprecationWarning,
+)
+
 from fastapi.testclient import TestClient
 from pydantic import BaseModel
 

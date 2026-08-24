@@ -40,7 +40,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Integration tests now follow the `tests/integrations` package layout, static
   integration fixtures run in CI, architecture checks detect both Python import
   forms, basedpyright checks strict public typing, actionlint validates workflows,
-  and pytest fails on unexpected warnings.
+  and pytest fails on unexpected warnings. The temporary Starlette transition
+  filter is scoped to the FastAPI test module so isolated extras do not import
+  undeclared frameworks while parsing pytest configuration.
 - The private engine no longer retains combined regex constants, length
   constants, or expected-format branches left over from the 1.x compatibility
   layer; normalization now removes only separators from an already detected
