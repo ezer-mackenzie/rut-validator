@@ -22,7 +22,7 @@ jobs:
           ref: ${{ github.event.workflow_run.head_sha }}
 
       - name: Download coverage report
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: coverage-report
           path: coverage
