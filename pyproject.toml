@@ -49,7 +49,7 @@ dev = [
     "black",
     "ruff",
     "mypy",
-    "basedpyright (>=1.39.10,<2)",
+    "basedpyright (>=1.40.1,<2)",
     "actionlint-py (>=1.7.12.24,<2)",
     "pre-commit",
     "hypothesis (>=6.168.1,<7)",

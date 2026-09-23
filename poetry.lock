@@ -166,15 +166,15 @@ extras = ["regex"]
 
 [[package]]
 name = "basedpyright"
-version = "1.39.10"
+version = "1.40.1"
 description = "static type checking for Python (but based)"
 optional = true
-python-versions = ">=3.8"
+python-versions = ">=3.10"
 groups = ["main"]
 markers = "extra == \"dev\""
 files = [
-    {file = "basedpyright-1.39.10-py3-none-any.whl", hash = "sha256:cbd75d83c0be841329bcfef2d2f1182f152a6d975b8eb199e75cf5b8e9a3de78"},
-    {file = "basedpyright-1.39.10.tar.gz", hash = "sha256:c8eaf5302f3265e275c7df4fba194d7afa7c1cb53fbfd448e90098360aca2c2e"},
+    {file = "basedpyright-1.40.1-py3-none-any.whl", hash = "sha256:222dc0382caf9816eb23a27cb7059fa96356ddc500b3b7b306072848fd650244"},
+    {file = "basedpyright-1.40.1.tar.gz", hash = "sha256:da1c9913b6d169340a0dbb6df76ea97f476ccb697da8f92659ac46032f6d2ce8"},
 ]
 
 [package.dependencies]
