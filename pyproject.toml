@@ -44,7 +44,7 @@ all = [
     "fastapi (>=0.141.1,<1.0.0)",
 ]
 dev = [
-    "pytest (>=7.0.0)",
+    "pytest (>=9.2.0)",
     "pytest-cov",
     "black",
     "ruff",
